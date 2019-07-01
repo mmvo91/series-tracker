@@ -1,12 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import moment from "moment"
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Collapse from "react-bootstrap/Collapse";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const Show = (props) => {
+    const [open, setCollapse] = useState(false);
+    const [rotation, setRotation] = useState(0);
+
     return (
         <Col md={3} className="py-2">
             <Card>
@@ -18,7 +23,18 @@ const Show = (props) => {
                     <Card.Text>
                         <p><b>Premiere Date: </b>{moment(props.premiered).format('MMMM Do YYYY')}</p>
                         <p>{props.status}</p>
-                        <div dangerouslySetInnerHTML={{__html: props.summary}}/>
+                        <div>
+                            <FontAwesomeIcon onClick={() => setCollapse(!open)}
+                                             rotation={rotation}
+                                             icon="chevron-right"/>
+                            {' Summary'}
+                        </div>
+                        <Collapse in={open}
+                                  onEntering={() => setRotation(90)}
+                                  onExiting={() => setRotation(0)}>
+                            <div className="py-2"
+                                 dangerouslySetInnerHTML={{__html: props.summary}}/>
+                        </Collapse>
                     </Card.Text>
                     <div className="text-center">
                         <ButtonGroup className="flex-wrap">
