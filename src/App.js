@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faChevronRight} from '@fortawesome/free-solid-svg-icons'
+import {faChevronRight, faTv} from '@fortawesome/free-solid-svg-icons'
 import Container from "react-bootstrap/Container";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import Navigation from "./components/Navigation";
@@ -14,11 +14,12 @@ import Seasons from "./pages/Seasons";
 import Queue from "./pages/Queue";
 import New from "./pages/New"
 
-library.add(faChevronRight);
+library.add(faChevronRight, faTv);
 
 function App() {
     return (
         <Router>
+            <Navigation/>
             <Container fluid className="py-2">
                 <Route exact path="/" component={Shows}/>
                 <Route path="/login" component={Login}/>
