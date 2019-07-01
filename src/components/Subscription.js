@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import axios from "axios";
+import api from "../Api";
 
 export default class Subscription extends Component {
     state = {
@@ -21,7 +21,7 @@ export default class Subscription extends Component {
     newSub = (x) => {
         x.preventDefault();
 
-        axios.post('/users/1/subscriptions', this.state)
+        api.post('/users/1/subscriptions', this.state)
             .then(res => {
                 this.setState({
                     msg: res.data['msg']
