@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 const Navigation = () => {
     return (
         <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="/">
                 <FontAwesomeIcon
                     alt="icon"
                     width="30"
