@@ -4,6 +4,7 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {faChevronRight, faTv} from '@fortawesome/free-solid-svg-icons'
 import Container from "react-bootstrap/Container";
 import {BrowserRouter as Router, Route} from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute"
 import Navigation from "./components/Navigation";
 import Login from "./pages/Login"
 import Register from "./pages/Register";
@@ -21,16 +22,16 @@ function App() {
         <Router>
             <Navigation/>
             <Container fluid className="py-2">
-                <Route exact path="/" component={Shows}/>
+                <PrivateRoute exact path="/" component={Shows}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
                 <Route path="/reset" component={Reset}/>
-                <Route exact path="/new" component={New}/>
-                <Route exact path="/queue" component={Queue}/>
-                <Route exact path="/shows" component={Shows}/>
-                <Route exact path="/shows/:id" component={Episodes}/>
-                <Route exact path="/shows/:id/season" component={Seasons}/>
-                <Route exact path="/shows/:id/season/:season" component={Episodes}/>
+                <PrivateRoute exact path="/new" component={New}/>
+                <PrivateRoute exact path="/queue" component={Queue}/>
+                <PrivateRoute exact path="/shows" component={Shows}/>
+                <PrivateRoute exact path="/shows/:id" component={Episodes}/>
+                <PrivateRoute exact path="/shows/:id/season" component={Seasons}/>
+                <PrivateRoute exact path="/shows/:id/season/:season" component={Episodes}/>
             </Container>
         </Router>
     );
