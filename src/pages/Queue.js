@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import {Row} from "react-bootstrap";
+import Row from "react-bootstrap/Row";
+import Spinner from "react-bootstrap/Spinner"
 import api from "../Api"
 import SoloEpisode from "../components/SoloEpisodeCard";
 
 export default class Queue extends Component {
     state = {
-        data: []
+        data: null
     };
 
     componentDidMount() {
@@ -44,16 +45,27 @@ export default class Queue extends Component {
         return (
             <Row>
                 {
-                    this.state.data.length !== 0
-                        ? this.state.data.map((datum) =>
-                            (
-                                <SoloEpisode
-                                    key={datum.id}
-                                    update={this.update}
-                                    watched={datum.watched}
-                                    {...datum}/>
-                            ))
-                        : <span>Nothing in Queue</span>
+                    this.state.data !== null
+                        ? (
+                            this.state.data.length !== 0
+                                ? (
+                                    this.state.data.map((datum) =>
+                                        (
+                                            <SoloEpisode
+                                                key={datum.id}
+                                                update={this.update}
+                                                watched={datum.watched}
+                                                {...datum}/>
+                                        ))
+                                )
+                                : <div className="w-100 text-center py-2">Nothing in Queue</div>
+                        )
+                        : (
+                            <div className="w-100 text-center py-2">
+                                <Spinner animation="border"
+                                         variant="primary"/>
+                            </div>
+                        )
                 }
             </Row>
         )
