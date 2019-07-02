@@ -1,7 +1,14 @@
 import React from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import {LinkContainer} from 'react-router-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+
+const LinkNav = (props) => {
+    return (
+        <LinkContainer to={props.to}><Nav.Link>{props.title}</Nav.Link></LinkContainer>
+    )
+};
 
 const Navigation = () => {
     return (
@@ -17,9 +24,9 @@ const Navigation = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto text-center">
-                    <Nav.Link href="/shows">Shows</Nav.Link>
-                    <Nav.Link href="/queue">Queue</Nav.Link>
-                    <Nav.Link href="/new">New</Nav.Link>
+                    <LinkNav to={"/shows"} title="Shows"/>
+                    <LinkNav to={"/queue"} title="Queue"/>
+                    <LinkNav to={"/new"} title="New"/>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
