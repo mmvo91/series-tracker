@@ -4,6 +4,9 @@ import Nav from 'react-bootstrap/Nav'
 import {LinkContainer} from 'react-router-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
+import {useStore} from 'overstated'
+import UserStore from '../stores/UserStore'
+
 const LinkNav = (props) => {
     return (
         <LinkContainer to={props.to}><Nav.Link>{props.title}</Nav.Link></LinkContainer>
@@ -11,6 +14,10 @@ const LinkNav = (props) => {
 };
 
 const Navigation = () => {
+    const {loggedIn} = useStore(UserStore, store => ({
+        loggedIn: store.state.loggedIn,
+    }));
+
     return (
         <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
             <Navbar.Brand href="/">
@@ -23,11 +30,17 @@ const Navigation = () => {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
             <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto text-center">
-                    <LinkNav to={"/shows"} title="Shows"/>
-                    <LinkNav to={"/queue"} title="Queue"/>
-                    <LinkNav to={"/new"} title="New"/>
-                </Nav>
+                {
+                    loggedIn
+                        ? (
+                            <Nav className="mr-auto text-center">
+                                <LinkNav to={"/shows"} title="Shows"/>
+                                <LinkNav to={"/queue"} title="Queue"/>
+                                <LinkNav to={"/new"} title="New"/>
+                            </Nav>
+                        )
+                        : null
+                }
             </Navbar.Collapse>
         </Navbar>
     )
