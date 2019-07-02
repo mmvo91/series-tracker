@@ -7,6 +7,7 @@ import moment from "moment"
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Collapse from "react-bootstrap/Collapse";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import LinkButton from "../components/LinkButton";
 
 const Show = (props) => {
     const [open, setCollapse] = useState(false);
@@ -38,9 +39,7 @@ const Show = (props) => {
                     </Card.Text>
                     <div className="text-center">
                         <ButtonGroup className="flex-wrap">
-                            <Button href={"/shows/" + props.id + "/season"}>
-                                Seasons
-                            </Button>
+                            <LinkButton to={"/shows/" + props.id + "/season"} text="Seasons"/>
                             {
                                 props.watched
                                     ? <Button onClick={props.update} key={props.id} id={props.id} variant="danger">Mark
