@@ -11,6 +11,7 @@ def create_app():
     extensions.sql.init_app(app)
     extensions.ma.init_app(app)
     extensions.bcrypt.init_app(app)
+    extensions.jwt.init_app(app)
 
     app.register_blueprint(routes.api_bp)
 
