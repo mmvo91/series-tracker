@@ -14,6 +14,10 @@ class Watched(sql.Model):
     season_id = sql.Column(sql.Integer, sql.ForeignKey('seasons.id'))
     episode_id = sql.Column(sql.Integer, sql.ForeignKey('episodes.id'), primary_key=True)
     watched = sql.Column(sql.Boolean, default=False)
+    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
+    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
+    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
+    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
 
     show = sql.relationship('Show')
     episode = sql.relationship('Episode')
@@ -23,6 +27,10 @@ class SeasonWatched(sql.Model):
     user_id = sql.Column(sql.Integer, sql.ForeignKey('users.id'), primary_key=True)
     show_id = sql.Column(sql.Integer, sql.ForeignKey('shows.id'), primary_key=True)
     season_id = sql.Column(sql.Integer, sql.ForeignKey('seasons.id'), primary_key=True)
+    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
+    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
+    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
+    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
 
     season = sql.relationship('Season')
 
@@ -50,6 +58,10 @@ class Subscription(sql.Model):
     __tablename__ = 'subscribe'
     user_id = sql.Column(sql.Integer, sql.ForeignKey('users.id'), primary_key=True)
     show_id = sql.Column(sql.Integer, sql.ForeignKey('shows.id'), primary_key=True)
+    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
+    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
+    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
+    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
 
     show = sql.relationship('Show')
 
