@@ -4,13 +4,16 @@ import Spinner from "react-bootstrap/Spinner"
 import api from "../Api"
 import SoloEpisode from "../components/SoloEpisodeCard";
 
-export default class Queue extends Component {
+import UserStore from "../stores/UserStore"
+import {connect} from "overstated"
+
+export default connect(UserStore)(class Queue extends Component {
     state = {
         data: null
     };
 
     componentDidMount() {
-        api.get('/users/1/queue')
+        api.get('/users/' + this.props.store.state.id + '/queue')
             .then(res => {
                 this.setState({data: res.data});
             })
@@ -25,7 +28,7 @@ export default class Queue extends Component {
             id: watched_id
         };
 
-        api.put('/users/1/subscriptions/' + e.target.value + '/episodes', data)
+        api.put('/users/' + this.props.store.state.id + '/subscriptions/' + e.target.value + '/episodes', data)
             .then(res => {
                 let previous_data = this.state.data;
 
@@ -70,4 +73,4 @@ export default class Queue extends Component {
             </Row>
         )
     }
-}
+})

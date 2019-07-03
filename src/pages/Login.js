@@ -35,12 +35,14 @@ export default connect(UserStore)(class Login extends Component {
 
         axios.post(config.url.API + '/token', data)
             .then(res => {
-                this.props.store.loggedIn(res.data['id']);
-                this.setState({
-                    message: res.data['msg']
-                });
-
-                this.props.history.push('/shows')
+                if (res.data['id']) {
+                    this.props.store.loggedIn(res.data['id']);
+                    this.props.history.push('/shows')
+                } else {
+                    this.setState({
+                        message: res.data['msg']
+                    });
+                }
             })
             .catch(res => {
                     this.setState({

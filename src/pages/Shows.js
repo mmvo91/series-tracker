@@ -4,13 +4,16 @@ import api from "../Api"
 import Show from "../components/ShowCard"
 import Subscription from "../components/Subscription"
 
-export default class Shows extends Component {
+import UserStore from "../stores/UserStore"
+import {connect} from "overstated"
+
+export default connect(UserStore)(class Shows extends Component {
     state = {
         data: []
     };
 
     componentDidMount() {
-        api.get('/users/1/subscriptions')
+        api.get('/users/' + this.props.store.state.id + '/subscriptions')
             .then(res => {
                 this.setState({data: res.data})
             })
@@ -30,7 +33,7 @@ export default class Shows extends Component {
             watched: !this.state.data[idx]['watched']
         };
 
-        api.put('/users/1/subscriptions', data)
+        api.put('/users/' + this.props.store.state.id + '/subscriptions', data)
             .then(res => {
                 let current_data = this.state.data;
                 current_data[idx]['watched'] = !this.state.data[idx]['watched'];
@@ -45,7 +48,7 @@ export default class Shows extends Component {
 
         const show_id = e.target.id;
 
-        api.delete('/users/1/subscriptions/' + show_id)
+        api.delete('/users/' + this.props.store.state.id + '/subscriptions/' + show_id)
             .then(res => {
                 console.log('deleted')
             })
@@ -68,4 +71,4 @@ export default class Shows extends Component {
             </div>
         )
     }
-}
+})

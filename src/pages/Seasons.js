@@ -3,13 +3,16 @@ import {Row} from "react-bootstrap";
 import api from "../Api"
 import Season from "../components/SeasonCard"
 
-export default class Seasons extends Component {
+import UserStore from "../stores/UserStore"
+import {connect} from "overstated"
+
+export default connect(UserStore)(class Seasons extends Component {
     state = {
         data: []
     };
 
     componentDidMount() {
-        api.get('/users/1/subscriptions/' + this.props.match.params.id + '/seasons')
+        api.get('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/seasons')
             .then(res => {
                 this.setState({data: res.data});
             })
@@ -31,7 +34,7 @@ export default class Seasons extends Component {
             watched: watched
         };
 
-        api.put('/users/1/subscriptions/' + this.props.match.params.id + '/seasons', data)
+        api.put('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/seasons', data)
             .then(res => {
                 let current_data = this.state.data;
                 current_data[idx]['watched'] = watched;
@@ -58,4 +61,4 @@ export default class Seasons extends Component {
             </Row>
         )
     }
-}
+})

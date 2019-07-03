@@ -6,7 +6,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import api from "../Api";
 
-export default class Subscription extends Component {
+import UserStore from "../stores/UserStore"
+import {connect} from "overstated"
+
+export default connect(UserStore)(class Subscription extends Component {
     state = {
         show: null,
         msg: null
@@ -21,7 +24,7 @@ export default class Subscription extends Component {
     newSub = (x) => {
         x.preventDefault();
 
-        api.post('/users/1/subscriptions', this.state)
+        api.post('/users/' + this.props.store.state.id + '/subscriptions', this.state)
             .then(res => {
                 this.setState({
                     msg: res.data['msg']
@@ -55,4 +58,4 @@ export default class Subscription extends Component {
             </Row>
         )
     }
-}
+})

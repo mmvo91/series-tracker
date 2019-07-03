@@ -4,13 +4,16 @@ import api from "../Api"
 import SoloEpisode from "../components/SoloEpisodeCard";
 import Spinner from "react-bootstrap/Spinner";
 
-export default class New extends Component {
+import UserStore from "../stores/UserStore"
+import {connect} from "overstated"
+
+export default connect(UserStore)(class New extends Component {
     state = {
         data: null
     };
 
     componentDidMount() {
-        api.get('/users/1/new')
+        api.get('/users/' + this.props.store.state.id + '/new')
             .then(res => {
                 this.setState({data: res.data});
             })
@@ -25,7 +28,7 @@ export default class New extends Component {
             id: watched_id
         };
 
-        api.put('/users/1/subscriptions/' + e.target.value + '/episodes', data)
+        api.put('/users/' + this.props.store.state.id + '/subscriptions/' + e.target.value + '/episodes', data)
             .then(res => {
                 let previous_data = this.state.data;
 
@@ -69,4 +72,4 @@ export default class New extends Component {
             </Row>
         )
     }
-}
+})

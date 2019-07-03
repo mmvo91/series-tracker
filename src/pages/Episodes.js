@@ -3,7 +3,10 @@ import {Row} from "react-bootstrap";
 import api from "../Api"
 import Episode from "../components/EpisodeCard"
 
-export default class Episodes extends Component {
+import UserStore from "../stores/UserStore"
+import {connect} from "overstated"
+
+export default connect(UserStore)(class Episodes extends Component {
     state = {
         data: []
     };
@@ -11,9 +14,9 @@ export default class Episodes extends Component {
     componentDidMount() {
         let url = '';
         if (this.props.match.params.season !== undefined) {
-            url = '/users/1/subscriptions/' + this.props.match.params.id + '/episodes?season=' + this.props.match.params.season;
+            url = '/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/episodes?season=' + this.props.match.params.season;
         } else {
-            url = '/users/1/subscriptions/' + this.props.match.params.id + '/episodes';
+            url = '/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/episodes';
         }
 
         api.get(url)
@@ -38,7 +41,7 @@ export default class Episodes extends Component {
             watched: !this.state.data[idx]['watched']
         };
 
-        api.put('/users/1/subscriptions/' + this.props.match.params.id + '/episodes', data)
+        api.put('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/episodes', data)
             .then(res => {
 
 
@@ -66,4 +69,4 @@ export default class Episodes extends Component {
             </Row>
         )
     }
-}
+})
