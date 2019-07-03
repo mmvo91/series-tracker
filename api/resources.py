@@ -15,6 +15,11 @@ TODAY = datetime.datetime.today()
 
 
 class Token(Resource):
+    @jwt_required
+    def get(self):
+        x = get_jwt_identity()
+        return {'id': x, 'msg': 'Valid token'}
+
     def post(self):
         data = request.json
         username = data['username']
