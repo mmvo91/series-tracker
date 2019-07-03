@@ -2,12 +2,12 @@ from flask import Flask
 
 import extensions
 from api import routes
-from config import Config
+from config import config
 
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config)
     extensions.sql.init_app(app)
     extensions.ma.init_app(app)
     extensions.bcrypt.init_app(app)
