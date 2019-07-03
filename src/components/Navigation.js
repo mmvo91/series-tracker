@@ -9,7 +9,9 @@ import UserStore from '../stores/UserStore'
 
 const LinkNav = (props) => {
     return (
-        <LinkContainer to={props.to}><Nav.Link>{props.title}</Nav.Link></LinkContainer>
+        <LinkContainer to={props.to}>
+            <Nav.Link>{props.title}</Nav.Link>
+        </LinkContainer>
     )
 };
 
@@ -20,14 +22,16 @@ const Navigation = () => {
 
     return (
         <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
-            <Navbar.Brand href="/">
-                <FontAwesomeIcon
-                    alt="icon"
-                    width="30"
-                    height="30"
-                    icon="tv"/>
-                {' Tracker'}
-            </Navbar.Brand>
+            <LinkContainer to="/">
+                <Navbar.Brand>
+                    <FontAwesomeIcon
+                        alt="icon"
+                        width="30"
+                        height="30"
+                        icon="tv"/>
+                    {' Tracker'}
+                </Navbar.Brand>
+            </LinkContainer>
             {
                 loggedIn
                     ? (
