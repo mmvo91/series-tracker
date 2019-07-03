@@ -33,7 +33,7 @@ export default connect(UserStore)(class Login extends Component {
             password: this.state.password,
         };
 
-        axios.post(config.url.API + '/token', data)
+        axios.post(config.url.API + '/token', data, {withCredentials: true})
             .then(res => {
                 if (res.data['id']) {
                     this.props.store.loggedIn(res.data['id']);
