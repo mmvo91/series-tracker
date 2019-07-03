@@ -1,7 +1,10 @@
 import datetime
 
 from flask import request, jsonify
-from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies
+from flask_jwt_extended import (
+    create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies,
+    jwt_required, get_jwt_identity
+)
 from flask_restful import Resource
 
 import extensions
@@ -230,6 +233,21 @@ class New(Resource):
         ).filter(
             models.Watched.episode.has(models.Episode.air_date < TODAY),
             models.Watched.episode.has(models.Episode.air_date > under_two_weeks_ago),
+            models.Watched.user_id == user_id,
+            models.Watched.watched.is_(False)
+        ).all()
+
+        schema = schemas.SubscriptionWatchSchema(many=True)
+
+        return schema.dump(new)
+
+
+class Upcoming(Resource):
+    def get(self, user_id):
+        new = models.Watched.query.join(models.Episode).order_by(
+            models.Episode.air_date
+        ).filter(
+            models.Watched.episode.has(models.Episode.air_date > TODAY),
             models.Watched.user_id == user_id,
             models.Watched.watched.is_(False)
         ).all()
