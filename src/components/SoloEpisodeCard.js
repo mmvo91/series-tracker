@@ -6,7 +6,6 @@ import Button from "react-bootstrap/Button";
 import moment from "moment"
 
 const SoloEpisode = (props) => {
-    console.log(props);
     return (
         <Col md={3} className="py-2">
             <Card>
