@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import config from "../Config"
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card";
@@ -32,7 +33,7 @@ export default connect(UserStore)(class Login extends Component {
             password: this.state.password,
         };
 
-        axios.post('http://127.0.0.1:5000/token', data)
+        axios.post(config.url.API + '/token', data)
             .then(res => {
                 this.props.store.loggedIn(res.data['id']);
                 this.setState({

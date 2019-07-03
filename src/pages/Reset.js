@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import config from "../Config"
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card";
@@ -28,7 +29,7 @@ export default class Reset extends Component {
             new_password: this.state.new_password
         };
 
-        axios.put('/users', data)
+        axios.put(config.url.API + '/users', data)
             .then(res => {
                 this.setState({
                     message: res.data['msg']

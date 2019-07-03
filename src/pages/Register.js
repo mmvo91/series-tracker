@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import config from "../Config"
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card";
@@ -26,7 +27,7 @@ export default class Register extends Component {
             password: this.state.password,
         };
 
-        axios.post('http://127.0.0.1:5000/users', data)
+        axios.post(config.url.API + '/users', data)
             .then(res => {
                 this.setState({
                     message: res.data['msg']
