@@ -28,20 +28,22 @@ const Navigation = () => {
                     icon="tv"/>
                 {' Tracker'}
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-            <Navbar.Collapse id="responsive-navbar-nav">
-                {
-                    loggedIn
-                        ? (
-                            <Nav className="mr-auto text-center">
-                                <LinkNav to={"/shows"} title="Shows"/>
-                                <LinkNav to={"/queue"} title="Queue"/>
-                                <LinkNav to={"/new"} title="New"/>
-                            </Nav>
-                        )
-                        : null
-                }
-            </Navbar.Collapse>
+            {
+                loggedIn
+                    ? (
+                        <React.Fragment>
+                            <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
+                            <Navbar.Collapse id="responsive-navbar-nav">
+                                <Nav className="mr-auto text-center">
+                                    <LinkNav to={"/shows"} title="Shows"/>
+                                    <LinkNav to={"/queue"} title="Queue"/>
+                                    <LinkNav to={"/new"} title="New"/>
+                                </Nav>
+                            </Navbar.Collapse>
+                        </React.Fragment>
+                    )
+                    : null
+            }
         </Navbar>
     )
 };
