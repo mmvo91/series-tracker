@@ -40,6 +40,7 @@ class Token(Resource):
 
 
 class Users(Resource):
+    @jwt_required
     def post(self):
         data = request.json
         username = data['username']
@@ -55,6 +56,7 @@ class Users(Resource):
             extensions.sql.session.commit()
             return {'msg': 'User Created'}
 
+    @jwt_required
     def put(self):
         data = request.json
         username = data['username']
@@ -77,6 +79,7 @@ class Users(Resource):
 
 
 class User(Resource):
+    @jwt_required
     def get(self, user_id):
         user = models.User.query.get(user_id)
         schema = schemas.UserSchema()
@@ -84,6 +87,7 @@ class User(Resource):
 
 
 class Subscriptions(Resource):
+    @jwt_required
     def get(self, user_id):
         subscription = models.Subscription.query.join(
             models.Show
@@ -98,6 +102,7 @@ class Subscriptions(Resource):
 
         return schema.dump(subscription)
 
+    @jwt_required
     def post(self, user_id):
         data = request.json
 
@@ -124,6 +129,7 @@ class Subscriptions(Resource):
 
         return {'msg': f"Successfully subscribed to {new_subscription}"}
 
+    @jwt_required
     def put(self, user_id):
         show_id = request.json['show_id']
         watched = request.json['watched']
@@ -137,6 +143,7 @@ class Subscriptions(Resource):
 
 
 class Subscription(Resource):
+    @jwt_required
     def delete(self, user_id, show_id):
         subscription = models.Subscription.query.get((user_id, show_id))
 
@@ -147,6 +154,7 @@ class Subscription(Resource):
 
 
 class Seasons(Resource):
+    @jwt_required
     def get(self, user_id, show_id):
         seasons = models.SeasonWatched.query.join(
             models.Season
@@ -161,6 +169,7 @@ class Seasons(Resource):
 
         return schema.dump(seasons)
 
+    @jwt_required
     def put(self, user_id, show_id):
         season = request.json['season']
         watched = request.json['watched']
@@ -173,6 +182,7 @@ class Seasons(Resource):
 
 
 class Episodes(Resource):
+    @jwt_required
     def get(self, user_id, show_id):
         params = request.args
 
@@ -195,6 +205,7 @@ class Episodes(Resource):
 
         return data
 
+    @jwt_required
     def put(self, user_id, show_id):
         episode_id = request.json['id']
         watch_state = request.json['watched']
@@ -210,6 +221,7 @@ class Episodes(Resource):
 
 
 class Queue(Resource):
+    @jwt_required
     def get(self, user_id):
         queue = models.Watched.query.join(models.Episode).order_by(
             models.Episode.air_date
@@ -225,6 +237,7 @@ class Queue(Resource):
 
 
 class New(Resource):
+    @jwt_required
     def get(self, user_id):
         under_two_weeks_ago = TODAY - datetime.timedelta(days=13)
 
