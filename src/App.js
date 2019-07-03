@@ -6,6 +6,7 @@ import Container from "react-bootstrap/Container";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute"
 import Navigation from "./components/Navigation";
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login"
 import Register from "./pages/Register";
 import Reset from "./pages/Reset"
@@ -14,6 +15,7 @@ import Episodes from "./pages/Episodes"
 import Seasons from "./pages/Seasons";
 import Queue from "./pages/Queue";
 import New from "./pages/New"
+import Upcoming from "./pages/Upcoming";
 
 library.add(faChevronRight, faTv);
 
@@ -27,6 +29,7 @@ function App() {
                 <Route path="/register" component={Register}/>
                 <Route path="/reset" component={Reset}/>
                 <PrivateRoute exact path="/new" component={New}/>
+                <PrivateRoute exact path="/upcoming" component={Upcoming}/>
                 <PrivateRoute exact path="/queue" component={Queue}/>
                 <PrivateRoute exact path="/shows" component={Shows}/>
                 <PrivateRoute exact path="/shows/:id" component={Episodes}/>

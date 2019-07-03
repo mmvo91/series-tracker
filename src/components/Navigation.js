@@ -42,6 +42,7 @@ const Navigation = () => {
                                     <LinkNav to={"/shows"} title="Shows"/>
                                     <LinkNav to={"/queue"} title="Queue"/>
                                     <LinkNav to={"/new"} title="New"/>
+                                    <LinkNav to={"/upcoming"} title="Upcoming"/>
                                 </Nav>
                             </Navbar.Collapse>
                         </React.Fragment>
