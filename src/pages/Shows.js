@@ -34,7 +34,7 @@ export default connect(UserStore)(class Shows extends Component {
         };
 
         api.put('/users/' + this.props.store.state.id + '/subscriptions', data)
-            .then(res => {
+            .then(() => {
                 let current_data = this.state.data;
                 current_data[idx]['watched'] = !this.state.data[idx]['watched'];
                 this.setState({
@@ -49,7 +49,7 @@ export default connect(UserStore)(class Shows extends Component {
         const show_id = e.target.id;
 
         api.delete('/users/' + this.props.store.state.id + '/subscriptions/' + show_id)
-            .then(res => {
+            .then(() => {
                 console.log('deleted')
             })
     };
@@ -61,7 +61,8 @@ export default connect(UserStore)(class Shows extends Component {
                 <Row>
                     {
                         this.state.data.map((datum) => (
-                            <Show update={this.update}
+                            <Show key={datum.show.id}
+                                  update={this.update}
                                   delete={this.delete}
                                   watched={datum.watched}
                                   {...datum.show}/>
