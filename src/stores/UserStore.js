@@ -11,5 +11,12 @@ export default class UserStore extends Store {
             id: id,
             loggedIn: true
         })
+    };
+
+    logOut = () => {
+        return this.setState({
+            id: null,
+            loggedIn: true
+        })
     }
 }

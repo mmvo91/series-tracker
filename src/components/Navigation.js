@@ -3,6 +3,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import {LinkContainer} from 'react-router-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import api from "../Api"
 
 import {useStore} from 'overstated'
 import UserStore from '../stores/UserStore'
@@ -16,9 +17,17 @@ const LinkNav = (props) => {
 };
 
 const Navigation = () => {
-    const {loggedIn} = useStore(UserStore, store => ({
+    const {loggedIn, logOut} = useStore(UserStore, store => ({
         loggedIn: store.state.loggedIn,
+        logOut: store.logOut
     }));
+
+    const loggingOut = () => {
+        api.delete('/token')
+            .then(res => {
+                logOut()
+            });
+    };
 
     return (
         <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
@@ -37,12 +46,15 @@ const Navigation = () => {
                     ? (
                         <React.Fragment>
                             <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-                            <Navbar.Collapse id="responsive-navbar-nav">
-                                <Nav className="mr-auto text-center">
+                            <Navbar.Collapse className="text-center" id="responsive-navbar-nav">
+                                <Nav className="mr-auto">
                                     <LinkNav to={"/shows"} title="Shows"/>
                                     <LinkNav to={"/queue"} title="Queue"/>
                                     <LinkNav to={"/new"} title="New"/>
                                     <LinkNav to={"/upcoming"} title="Upcoming"/>
+                                </Nav>
+                                <Nav>
+                                    <Nav.Link href={"/"} onClick={loggingOut}>Logout</Nav.Link>
                                 </Nav>
                             </Navbar.Collapse>
                         </React.Fragment>
