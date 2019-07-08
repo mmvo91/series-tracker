@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faChevronRight, faTv} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faChevronRight, faExpand, faMinus, faPlus, faTv} from '@fortawesome/free-solid-svg-icons'
 import Container from "react-bootstrap/Container";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import api from "./Api"
@@ -22,7 +22,7 @@ import Upcoming from "./pages/Upcoming";
 import UserStore from "./stores/UserStore"
 import {connect} from "overstated"
 
-library.add(faChevronRight, faTv);
+library.add(faChevronRight, faTv, faExpand, faCheck, faMinus, faPlus);
 
 class App extends React.Component {
     state = {
@@ -35,7 +35,7 @@ class App extends React.Component {
                 this.props.store.loggedIn(res.data['id']);
                 this.setState({auth: true})
             })
-            .catch(res => {
+            .catch(() => {
                 this.setState({auth: false})
             })
     };

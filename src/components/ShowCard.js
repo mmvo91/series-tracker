@@ -4,10 +4,10 @@ import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import moment from "moment"
-import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Collapse from "react-bootstrap/Collapse";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import LinkButton from "../components/LinkButton";
+import LinkIconButton from "../components/LinkIconButton";
+import IconButton from "./IconButton";
 
 const Show = (props) => {
     const [open, setCollapse] = useState(false);
@@ -38,19 +38,35 @@ const Show = (props) => {
                         </Collapse>
                     </Card.Text>
                     <div className="text-center">
-                        <ButtonGroup className="flex-wrap">
-                            <LinkButton to={"/shows/" + props.id + "/season"} text="Seasons"/>
-                            {
-                                props.watched
-                                    ? <Button onClick={props.update} key={props.id} id={props.id} variant="danger">Mark
-                                        Not
-                                        Watched</Button>
-                                    : <Button onClick={props.update} key={props.id} id={props.id}>Mark Watched</Button>
-                            }
-                            <Button onClick={props.delete} key={props.id} id={props.id} variant="danger">
-                                Unsubscribe
-                            </Button>
-                        </ButtonGroup>
+                        <LinkIconButton
+                            to={"/shows/" + props.id + "/season"}
+                            text="Seasons"
+                            icon="expand"
+                            color="text-muted"/>
+                        {
+                            props.watched
+                                ? <IconButton
+                                    update={props.update}
+                                    id={props.id}
+                                    icon="check"
+                                    color="text-primary"
+                                    text="Watched"/>
+                                : <IconButton
+                                    update={props.update}
+                                    id={props.id}
+                                    icon="check"
+                                    text="Not Watched"/>
+                        }
+                        <Button onClick={props.delete}
+                                key={props.id}
+                                id={props.id}
+                                variant="white">
+                            <FontAwesomeIcon icon="minus"
+                                             className="text-danger"
+                                             size="lg"/>
+                            <br/>
+                            <small>Unsubscribe</small>
+                        </Button>
                     </div>
                 </Card.Body>
             </Card>

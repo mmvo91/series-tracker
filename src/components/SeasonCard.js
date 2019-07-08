@@ -2,9 +2,8 @@ import React from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import LinkButton from "./LinkButton";
+import LinkIconButton from "./LinkIconButton";
+import IconButton from "./IconButton";
 
 const Season = (props) => {
     return (
@@ -21,17 +20,26 @@ const Season = (props) => {
 
                     <Image fluid src={props.image}/>
 
-                    <ButtonGroup>
-                        <LinkButton to={"/shows/" + props.show_id + "/season/" + props.number} text="Episodes"/>
+                    <div className="text-center">
+                        <LinkIconButton to={"/shows/" + props.show_id + "/season/" + props.number}
+                                        text="Episodes"
+                                        icon="expand"
+                                        color="text-muted"/>
                         {
                             props.watched
-                                ? <Button onClick={props.update} key={props.number} id={props.number} variant="danger">Mark
-                                    Not
-                                    Watched</Button>
-                                : <Button onClick={props.update} key={props.number} id={props.number}>Mark
-                                    Watched</Button>
+                                ? <IconButton
+                                    update={props.update}
+                                    id={props.number}
+                                    icon="check"
+                                    color="text-primary"
+                                    text="Watched"/>
+                                : <IconButton
+                                    update={props.update}
+                                    id={props.number}
+                                    icon="check"
+                                    text="Not Watched"/>
                         }
-                    </ButtonGroup>
+                    </div>
                 </Card.Body>
             </Card>
         </Col>

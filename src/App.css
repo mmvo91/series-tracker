@@ -35,3 +35,7 @@
 .fa-chevron-right {
   transition: .2s transform ease-in-out;
 }
+
+button > * {
+  pointer-events: none;
+}

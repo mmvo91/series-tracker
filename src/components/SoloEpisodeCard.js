@@ -2,8 +2,8 @@ import React from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
-import Button from "react-bootstrap/Button";
 import moment from "moment"
+import IconButton from "../components/IconButton"
 
 const SoloEpisode = (props) => {
     return (
@@ -16,16 +16,24 @@ const SoloEpisode = (props) => {
                     <p><b>Air Date: </b>{moment(props.episode.air_date).format('MMMM Do YYYY')}</p>
                     <p><b>Season: </b>{props.episode.season} <b>Episode: </b>{props.episode.number}</p>
                     <div dangerouslySetInnerHTML={{__html: props.episode.summary}}/>
-                    {
-                        props.watched
-                            ? <Button onClick={props.update} key={props.episode.id} id={props.episode.id}
-                                      variant="danger">Mark Not
-                                Watched</Button>
-                            : <Button onClick={props.update} key={props.episode.id} id={props.episode.id}
-                                      value={props.episode.show_id}>
-                                Mark Watched
-                            </Button>
-                    }
+                    <div className="float-right">
+                        {
+                            props.watched
+                                ? <IconButton
+                                    update={props.update}
+                                    id={props.episode.id}
+                                    value={props.episode.show_id}
+                                    icon="check"
+                                    color="text-primary"
+                                    text="Watched"/>
+                                : <IconButton
+                                    update={props.update}
+                                    id={props.episode.id}
+                                    value={props.episode.show_id}
+                                    icon="check"
+                                    text="Not Watched"/>
+                        }
+                    </div>
                 </Card.Body>
             </Card>
         </Col>
