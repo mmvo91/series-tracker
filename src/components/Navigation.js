@@ -24,13 +24,13 @@ const Navigation = () => {
 
     const loggingOut = () => {
         api.delete('/token')
-            .then(res => {
+            .then(() => {
                 logOut()
             });
     };
 
     return (
-        <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
             <LinkContainer to="/">
                 <Navbar.Brand>
                     <FontAwesomeIcon

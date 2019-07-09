@@ -1,0 +1,31 @@
+@import "flatly/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.card {
+  box-shadow: $box-shadow-sm;
+}
+
+.fa-glyphicon {
+  font-size: 2em;
+}
+
+@include media-breakpoint-up(md) {
+  .fa-glyphicon {
+    font-size: 1.33em;
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  .nav-link {
+    font-size: 20px;
+  }
+}
+
+@import "~bootstrap/scss/bootstrap";
+@import "flatly/bootswatch";
+
+body {
+  background-color: $light;
+}

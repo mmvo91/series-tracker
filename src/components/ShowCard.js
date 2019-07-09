@@ -42,14 +42,14 @@ const Show = (props) => {
                             to={"/shows/" + props.id + "/season"}
                             text="Seasons"
                             icon="expand"
-                            color="text-muted"/>
+                            color="text-primary"/>
                         {
                             props.watched
                                 ? <IconButton
                                     update={props.update}
                                     id={props.id}
                                     icon="check"
-                                    color="text-primary"
+                                    color="text-success"
                                     text="Watched"/>
                                 : <IconButton
                                     update={props.update}

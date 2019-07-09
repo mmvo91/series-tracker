@@ -24,7 +24,7 @@ const SoloEpisode = (props) => {
                                     id={props.episode.id}
                                     value={props.episode.show_id}
                                     icon="check"
-                                    color="text-primary"
+                                    color="text-success"
                                     text="Watched"/>
                                 : <IconButton
                                     update={props.update}

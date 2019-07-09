@@ -22,7 +22,7 @@ const IconButton = (props) => {
 IconButton.defaultProps = {
     bg: 'white',
     color: 'text-muted',
-    size: 'lg'
+    size: 'glyphicon'
 };
 
 export default IconButton;

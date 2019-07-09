@@ -24,14 +24,14 @@ const Season = (props) => {
                         <LinkIconButton to={"/shows/" + props.show_id + "/season/" + props.number}
                                         text="Episodes"
                                         icon="expand"
-                                        color="text-muted"/>
+                                        color="text-primary"/>
                         {
                             props.watched
                                 ? <IconButton
                                     update={props.update}
                                     id={props.number}
                                     icon="check"
-                                    color="text-primary"
+                                    color="text-success"
                                     text="Watched"/>
                                 : <IconButton
                                     update={props.update}

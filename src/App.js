@@ -1,4 +1,5 @@
 import React from 'react';
+import './scss/custom.scss'
 import './App.css';
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {faCheck, faChevronRight, faExpand, faMinus, faPlus, faTv} from '@fortawesome/free-solid-svg-icons'

@@ -22,7 +22,7 @@ const Episode = (props) => {
                                     update={props.update}
                                     id={props.id}
                                     icon="check"
-                                    color="text-primary"
+                                    color="text-success"
                                     text="Watched"/>
                                 : <IconButton
                                     update={props.update}
