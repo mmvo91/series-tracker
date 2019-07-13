@@ -2,16 +2,23 @@ import React, {Component} from "react";
 import {Row} from "react-bootstrap";
 import api from "../Api"
 import Season from "../components/SeasonCard"
+import ShowDisplay from "../components/ShowDisplay";
 
 import UserStore from "../stores/UserStore"
 import {connect} from "overstated"
 
 export default connect(UserStore)(class Seasons extends Component {
     state = {
+        show: {},
         data: []
     };
 
     componentDidMount() {
+        api.get('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id)
+            .then(res => {
+                this.setState({show: res.data});
+            });
+
         api.get('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/seasons')
             .then(res => {
                 this.setState({data: res.data});
@@ -46,19 +53,22 @@ export default connect(UserStore)(class Seasons extends Component {
 
     render() {
         return (
-            <Row>
-                {
-                    this.state.data.map((datum) =>
-                        (
-                            <Season
-                                show_id={this.props.match.params.id}
-                                key={datum}
-                                update={this.update}
-                                watched={datum.watched}
-                                {...datum.season}/>
-                        ))
-                }
-            </Row>
+            <div>
+                <ShowDisplay {...this.state.show.show}/>
+                <Row>
+                    {
+                        this.state.data.map((datum) =>
+                            (
+                                <Season
+                                    show_id={this.props.match.params.id}
+                                    key={datum}
+                                    update={this.update}
+                                    watched={datum.watched}
+                                    {...datum.season}/>
+                            ))
+                    }
+                </Row>
+            </div>
         )
     }
 })
