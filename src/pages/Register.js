@@ -37,7 +37,7 @@ export default class Register extends Component {
 
     render() {
         return (
-            <Card>
+            <Card className="col-md-6 m-auto">
                 <Card.Body>
                     <Card.Title>
                         Register

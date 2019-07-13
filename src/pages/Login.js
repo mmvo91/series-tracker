@@ -54,7 +54,7 @@ export default connect(UserStore)(class Login extends Component {
 
     render() {
         return (
-            <Card>
+            <Card className="col-md-6 m-auto">
                 <Card.Body>
                     <Card.Title>
                         Login
