@@ -7,7 +7,7 @@ import IconButton from "./IconButton";
 
 const Season = (props) => {
     return (
-        <Col md={3} className="py-2">
+        <Col md={4} lg={3} className="py-2">
             <Card>
                 <Card.Body>
                     <Card.Title>
@@ -18,7 +18,7 @@ const Season = (props) => {
                         }
                     </Card.Title>
 
-                    <Image fluid src={props.image}/>
+                    <Image fluid src={props.image} className="mx-auto d-block my-3"/>
 
                     <div className="text-center">
                         <LinkIconButton to={"/shows/" + props.show_id + "/season/" + props.number}

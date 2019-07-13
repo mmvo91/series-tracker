@@ -11,8 +11,8 @@ const Episode = (props) => {
             <Card>
                 <Card.Body>
                     <Card.Title>{props.name}</Card.Title>
-                    <Image fluid src={props.image}/>
-                    <p><b>Air Date: </b>{moment(props.air_date).format('MMMM Do YYYY')}</p>
+                    <Image fluid src={props.image} className="mx-auto d-block my-3"/>
+                    <p><b>Air Date: </b>{moment.utc(props.air_date).format('MMMM Do YYYY')}</p>
                     <p><b>Season: </b>{props.season} <b>Episode: </b>{props.number}</p>
                     <div dangerouslySetInnerHTML={{__html: props.summary}}/>
                     <div className="float-right">

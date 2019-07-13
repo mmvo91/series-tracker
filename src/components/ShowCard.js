@@ -14,15 +14,13 @@ const Show = (props) => {
     const [rotation, setRotation] = useState(0);
 
     return (
-        <Col md={3} className="py-2">
+        <Col md={4} lg={3} className="py-2">
             <Card>
                 <Card.Body>
                     <Card.Title>{props.name}</Card.Title>
-                    <div className="text-center py-2">
-                        <Image fluid src={props.image}/>
-                    </div>
+                    <Image fluid src={props.image} className="mx-auto d-block my-3"/>
                     <Card.Text>
-                        <p><b>Premiere Date: </b>{moment(props.premiered).format('MMMM Do YYYY')}</p>
+                        <p><b>Premiere Date: </b>{moment.utc(props.premiered).format('MMMM Do YYYY')}</p>
                         <p>{props.status}</p>
                         <div>
                             <FontAwesomeIcon onClick={() => setCollapse(!open)}

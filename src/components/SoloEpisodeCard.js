@@ -12,8 +12,8 @@ const SoloEpisode = (props) => {
                 <Card.Body>
                     <Card.Title>{props.episode.name}</Card.Title>
                     <Card.Subtitle>{props.show.name}</Card.Subtitle>
-                    <Image fluid src={props.episode.image}/>
-                    <p><b>Air Date: </b>{moment(props.episode.air_date).format('MMMM Do YYYY')}</p>
+                    <Image fluid src={props.episode.image} className="mx-auto d-block my-3"/>
+                    <p><b>Air Date: </b>{moment.utc(props.episode.air_date).format('MMMM Do YYYY')}</p>
                     <p><b>Season: </b>{props.episode.season} <b>Episode: </b>{props.episode.number}</p>
                     <div dangerouslySetInnerHTML={{__html: props.episode.summary}}/>
                     <div className="float-right">
