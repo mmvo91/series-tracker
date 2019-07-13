@@ -45,7 +45,8 @@ export default connect(UserStore)(class Subscription extends Component {
         x.preventDefault();
 
         let data = {
-            show: this.state.selected[0].show.name
+            show: this.state.selected[0].show.name,
+            show_id: this.state.selected[0].show.id
         };
 
         api.post('/users/' + this.props.store.state.id + '/subscriptions', data)
