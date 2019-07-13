@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Row} from "react-bootstrap";
 import api from "../Api"
+import Title from "../components/Title"
 import SoloEpisode from "../components/SoloEpisodeCard";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -34,10 +35,7 @@ export default connect(UserStore)(class New extends Component {
     render() {
         return (
             <div>
-                <h2>
-                    New
-                </h2>
-                <hr/>
+                <Title title="New"/>
                 <Row>
                     {
                         this.state.new !== null
@@ -63,10 +61,7 @@ export default connect(UserStore)(class New extends Component {
                     }
                 </Row>
 
-                <h2>
-                    Queue
-                </h2>
-                <hr/>
+                <Title title="Queue"/>
                 <Row>
                     {
                         this.state.queue !== null
@@ -92,10 +87,7 @@ export default connect(UserStore)(class New extends Component {
                     }
                 </Row>
 
-                <h2>
-                    Upcoming
-                </h2>
-                <hr/>
+                <Title title="Upcoming"/>
                 <Row>
                     {
                         this.state.upcoming !== null
