@@ -24,7 +24,7 @@ export default connect(UserStore)(class New extends Component {
         api.get('/users/' + this.props.store.state.id + '/queue')
             .then(res => {
                 this.setState({queue: res.data});
-            })
+            });
 
         api.get('/users/' + this.props.store.state.id + '/upcoming')
             .then(res => {

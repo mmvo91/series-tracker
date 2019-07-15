@@ -42,7 +42,7 @@ export default connect(UserStore)(class Seasons extends Component {
         };
 
         api.put('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/seasons', data)
-            .then(res => {
+            .then(() => {
                 let current_data = this.state.data;
                 current_data[idx]['watched'] = watched;
                 this.setState({
