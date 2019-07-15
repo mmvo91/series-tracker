@@ -52,6 +52,7 @@ const Navigation = () => {
                                     <LinkNav to={"/queue"} title="Queue"/>
                                     <LinkNav to={"/new"} title="New"/>
                                     <LinkNav to={"/upcoming"} title="Upcoming"/>
+                                    <LinkNav to={"/completion"} title="Completion"/>
                                 </Nav>
                                 <Nav>
                                     <Nav.Link href={"/"} onClick={loggingOut}>Logout</Nav.Link>

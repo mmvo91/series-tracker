@@ -18,7 +18,9 @@ import Episodes from "./pages/Episodes"
 import Seasons from "./pages/Seasons";
 import Queue from "./pages/Queue";
 import New from "./pages/New"
+import Completion from "./pages/Completion"
 import Upcoming from "./pages/Upcoming";
+import RecentSub from "./pages/RecentSub";
 
 import UserStore from "./stores/UserStore"
 import {connect} from "overstated"
@@ -53,6 +55,7 @@ class App extends React.Component {
                         <Route path="/register" component={Register}/>
                         <Route path="/reset" component={Reset}/>
                         <PrivateRoute exact path="/new" component={New}/>
+                        <PrivateRoute exact path="/completion" component={Completion}/>
                         <PrivateRoute exact path="/upcoming" component={Upcoming}/>
                         <PrivateRoute exact path="/queue" component={Queue}/>
                         <PrivateRoute exact path="/shows" component={Shows}/>
