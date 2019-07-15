@@ -58,6 +58,7 @@ class App extends React.Component {
                         <PrivateRoute exact path="/completion" component={Completion}/>
                         <PrivateRoute exact path="/upcoming" component={Upcoming}/>
                         <PrivateRoute exact path="/queue" component={Queue}/>
+                        <PrivateRoute exact path="/recent" component={RecentSub}/>
                         <PrivateRoute exact path="/shows" component={Shows}/>
                         <PrivateRoute exact path="/shows/:id" component={Episodes}/>
                         <PrivateRoute exact path="/shows/:id/season" component={Seasons}/>
