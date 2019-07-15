@@ -3,12 +3,13 @@ import datetime
 from flask import request, jsonify
 from flask_jwt_extended import (
     create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies,
-    jwt_required, get_jwt_identity
+    jwt_required, get_jwt_identity, unset_jwt_cookies
 )
 from flask_restful import Resource
 
 import extensions
 from api import models, schemas
+from extensions import sql
 from logic import logic, wrapper
 
 TODAY = datetime.datetime.today()
@@ -127,6 +128,10 @@ class Subscriptions(Resource):
 
                 if show is None:
                     return {'msg': f"Was not able to subscribe to {new_subscription}"}
+        else:
+            x = models.Subscription.query.get((user_id, show.id))
+            if x is not None:
+                return {'msg': f'Already subscribed to {new_subscription}'}
 
         extensions.sql.session.commit()
 
