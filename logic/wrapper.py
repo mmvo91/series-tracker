@@ -8,14 +8,17 @@ class Wrapper(object):
 
     def __init__(self, show=None):
         self._show = show
-        self._id = self.query_show(show)['id']
+        self._id = self.query_show(show)['id'] if show is not None else None
 
     @staticmethod
     def _get(url):
         return requests.get(url).json()
 
-    def _or_nah(self, show):
+    def _or_show(self, show):
         return self._show or show
+
+    def _or_id(self, show_id):
+        return self._id or show_id
 
     @staticmethod
     def _query_parameter(param, value, truth=True):
@@ -25,13 +28,17 @@ class Wrapper(object):
             return ''
 
     def query_show(self, show=None):
-        url = f'{self.BASE_SINGLE}/shows{self._query_parameter("q", self._or_nah(show))}'
+        url = f'{self.BASE_SINGLE}/shows{self._query_parameter("q", self._or_show(show))}'
         return self._get(url)
 
-    def seasons(self):
-        url = f'{self.BASE_SHOW}/{self._id}/seasons'
+    def show(self, show_id=None):
+        url = f'{self.BASE_SHOW}/{self._or_id(show_id)}'
         return self._get(url)
 
-    def episodes(self):
-        url = f'{self.BASE_SHOW}/{self._id}/episodes'
+    def seasons(self, show_id=None):
+        url = f'{self.BASE_SHOW}/{self._or_id(show_id)}/seasons'
+        return self._get(url)
+
+    def episodes(self, show_id=None):
+        url = f'{self.BASE_SHOW}/{self._or_id(show_id)}/episodes'
         return self._get(url)
