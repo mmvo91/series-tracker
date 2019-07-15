@@ -275,6 +275,14 @@ class Subscriptions(Resource):
 
 class Subscription(Resource):
     @jwt_required
+    def get(self, user_id, show_id):
+        subscription = models.Subscription.query.get((user_id, show_id))
+
+        schema = schemas.SubscriptionSchema()
+
+        return schema.dump(subscription)
+
+    @jwt_required
     def delete(self, user_id, show_id):
         subscription = models.Subscription.query.get((user_id, show_id))
 
