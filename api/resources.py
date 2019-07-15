@@ -16,7 +16,7 @@ TODAY = datetime.datetime.today()
 
 
 class Token(Resource):
-    @jwt_required
+    @jwt_refresh_token_required
     def get(self):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity=current_user)
