@@ -100,6 +100,7 @@ def _add_episodes(show_id):
             number=episode['number'],
             season=episode['season'],
             summary=episode['summary'],
+            run_time=episode['runtime'],
             image=image,
             show_id=file.id,
         )
@@ -123,6 +124,7 @@ def update_episodes(show):  # new episodes
                 number=episode['number'],
                 season=episode['season'],
                 summary=episode['summary'],
+                run_time=episodes['runtime'],
                 image=episode['image']['medium'],
                 show_id=file.id,
             )

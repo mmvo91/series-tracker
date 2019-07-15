@@ -44,6 +44,7 @@ class Episode(sql.Model):
     number = sql.Column(sql.Integer)
     season = sql.Column(sql.Integer)
     summary = sql.Column(sql.String)
+    run_time = sql.Column(sql.Integer)
     image = sql.Column(sql.String)
     show_id = sql.Column(sql.Integer, sql.ForeignKey('shows.id'))
     ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())

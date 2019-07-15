@@ -131,6 +131,7 @@ def show_update():
                 number=episode['number'],
                 season=episode['season'],
                 summary=episode['summary'] if episode['summary'] != '' else None,
+                run_time=episode['runtime'],
                 image=image,
                 show_id=show.id,
             )
