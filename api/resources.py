@@ -266,6 +266,7 @@ class New(Resource):
 
 
 class Upcoming(Resource):
+    @jwt_required
     def get(self, user_id):
         new = models.Watched.query.join(models.Episode).order_by(
             models.Episode.air_date
