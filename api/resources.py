@@ -22,6 +22,7 @@ class Token(Resource):
         access_token = create_access_token(identity=current_user)
 
         response = {'id': current_user, 'msg': 'Valid token'}
+        response = jsonify(response)
         set_access_cookies(response, access_token)
 
         return response
