@@ -171,7 +171,7 @@ class Seasons(Resource):
         ).order_by(
             models.Season.number.asc()
         ).filter(
-            models.SeasonWatched.season.has(models.Season.premiereDate < TODAY),
+            models.SeasonWatched.season.has(models.Season.premiereDate <= TODAY),
             models.SeasonWatched.user_id == user_id,
             models.SeasonWatched.show_id == show_id
         ).all()
@@ -197,9 +197,9 @@ class Episodes(Resource):
         params = request.args
 
         watched = models.Watched.query.join(models.Episode).order_by(
-            models.Episode.number.desc()
+            models.Episode.number
         ).filter(
-            models.Watched.episode.has(models.Episode.air_date < TODAY),
+            models.Watched.episode.has(models.Episode.air_date <= TODAY),
             models.Watched.user_id == user_id,
             models.Watched.show_id == show_id
         )
@@ -236,10 +236,10 @@ class Queue(Resource):
         queue = models.Watched.query.join(models.Episode).order_by(
             models.Episode.air_date
         ).filter(
-            models.Watched.episode.has(models.Episode.air_date < TODAY),
+            models.Watched.episode.has(models.Episode.air_date <= TODAY),
             models.Watched.user_id == user_id,
             models.Watched.watched.is_(False)
-        ).all()
+        ).limit(50).all()
 
         schema = schemas.SubscriptionWatchSchema(many=True)
 
@@ -252,10 +252,10 @@ class New(Resource):
         under_two_weeks_ago = TODAY - datetime.timedelta(days=13)
 
         new = models.Watched.query.join(models.Episode).order_by(
-            models.Episode.air_date.desc()
+            models.Episode.air_date
         ).filter(
-            models.Watched.episode.has(models.Episode.air_date < TODAY),
-            models.Watched.episode.has(models.Episode.air_date > under_two_weeks_ago),
+            models.Watched.episode.has(models.Episode.air_date <= TODAY),
+            models.Watched.episode.has(models.Episode.air_date >= under_two_weeks_ago),
             models.Watched.user_id == user_id,
             models.Watched.watched.is_(False)
         ).all()
