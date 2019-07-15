@@ -102,6 +102,117 @@ class User(Resource):
         return schema.dump(user)
 
 
+class Completions(Resource):
+    def get(self, user_id):
+        completed_subscriptions = sql.session.execute(
+            models.Subscription.query.filter(
+                models.Subscription.show.has(models.Show.premiered <= TODAY),
+                models.Subscription.user_id == user_id,
+                models.Subscription.watched.is_(True)
+            ).statement.with_only_columns([sql.func.count()]).order_by(None)).scalar()
+
+        subscriptions = sql.session.execute(
+            models.Subscription.query.filter(
+                models.Subscription.show.has(models.Show.premiered <= TODAY),
+                models.Subscription.user_id == user_id,
+            ).statement.with_only_columns([sql.func.count()]).order_by(None)
+        ).scalar()
+
+        completed_seasons = sql.session.execute(
+            models.SeasonWatched.query.filter(
+                models.SeasonWatched.season.has(models.Season.premiereDate <= TODAY),
+                models.SeasonWatched.user_id == user_id,
+                models.SeasonWatched.watched.is_(True)
+            ).statement.with_only_columns([sql.func.count()]).order_by(None)).scalar()
+
+        seasons = sql.session.execute(
+            models.SeasonWatched.query.filter(
+                models.SeasonWatched.season.has(models.Season.premiereDate <= TODAY),
+                models.SeasonWatched.user_id == user_id,
+            ).statement.with_only_columns([sql.func.count()]).order_by(None)
+        ).scalar()
+
+        completed_episodes = sql.session.execute(
+            models.Watched.query.filter(
+                models.Watched.episode.has(models.Episode.air_date <= TODAY),
+                models.Watched.user_id == user_id,
+                models.Watched.watched.is_(True)
+            ).statement.with_only_columns([sql.func.count()]).order_by(None)).scalar()
+
+        episodes = sql.session.execute(
+            models.Watched.query.filter(
+                models.Watched.episode.has(models.Episode.air_date <= TODAY),
+                models.Watched.user_id == user_id,
+            ).statement.with_only_columns([sql.func.count()]).order_by(None)
+        ).scalar()
+
+        overall = {
+            'watched_subscriptions': completed_subscriptions,
+            'subscriptions': subscriptions,
+            'watched_seasons': completed_seasons,
+            'seasons': seasons,
+            'watched_episodes': completed_episodes,
+            'episodes': episodes
+        }
+
+        subscriptions = models.Subscription.query.filter_by(user_id=user_id).all()
+        per_show = []
+        for subscription in subscriptions:
+            completed_seasons = sql.session.execute(
+                models.SeasonWatched.query.filter(
+                    models.SeasonWatched.season.has(models.Season.premiereDate <= TODAY),
+                    models.SeasonWatched.user_id == user_id,
+                    models.SeasonWatched.show_id == subscription.show_id,
+                    models.SeasonWatched.watched.is_(True)
+                ).statement.with_only_columns([sql.func.count()]).order_by(None)).scalar()
+
+            seasons = sql.session.execute(
+                models.SeasonWatched.query.filter(
+                    models.SeasonWatched.season.has(models.Season.premiereDate <= TODAY),
+                    models.SeasonWatched.user_id == user_id,
+                    models.SeasonWatched.show_id == subscription.show_id,
+                ).statement.with_only_columns([sql.func.count()]).order_by(None)
+            ).scalar()
+
+            completed_episodes = sql.session.execute(
+                models.Watched.query.filter(
+                    models.Watched.episode.has(models.Episode.air_date <= TODAY),
+                    models.Watched.user_id == user_id,
+                    models.Watched.show_id == subscription.show_id,
+                    models.Watched.watched.is_(True)
+                ).statement.with_only_columns([sql.func.count()]).order_by(None)).scalar()
+
+            episodes = sql.session.execute(
+                models.Watched.query.filter(
+                    models.Watched.episode.has(models.Episode.air_date <= TODAY),
+                    models.Watched.user_id == user_id,
+                    models.Watched.show_id == subscription.show_id
+                ).statement.with_only_columns([sql.func.count()]).order_by(None)
+            ).scalar()
+
+            data = {
+                'id': subscription.show_id,
+                'show': subscription.show.name,
+                'image': subscription.show.image,
+                'watched_seasons': completed_seasons,
+                'seasons': seasons,
+                'watched_episodes': completed_episodes,
+                'episodes': episodes
+            }
+
+            if 0 < data['watched_episodes'] != data['episodes'] > 0:
+                per_show.append(data)
+
+        return {
+            'overall': overall,
+            'show': sorted(per_show, key=lambda i: weird_division(i['watched_episodes'], i['episodes']), reverse=True)
+        }
+
+
+def weird_division(n, d):
+    return n / d if d else 0
+
+
 class Subscriptions(Resource):
     @jwt_required
     def get(self, user_id):
