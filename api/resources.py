@@ -49,6 +49,11 @@ class Token(Resource):
             else:
                 return {'msg': 'Error logging in'}
 
+    def delete(self):
+        response = jsonify({'logout': True})
+        unset_jwt_cookies(response)
+        return response
+
 
 class Users(Resource):
     @jwt_required
