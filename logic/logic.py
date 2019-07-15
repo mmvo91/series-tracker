@@ -10,9 +10,9 @@ def add_user(user, password):
     sql.session.commit()
 
 
-def add_show(show):
-    x = Wrapper(show)
-    y = x.query_show()
+def add_show(show_id):
+    x = Wrapper()
+    y = x.show(show_id)
 
     if y['status'] == 'Ended':
         stat = True

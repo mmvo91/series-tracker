@@ -113,9 +113,9 @@ class Subscriptions(Resource):
         data = request.json
 
         new_subscription = data['show']
+        show_id = data['show_id']
 
-        show = models.Show.query.filter_by(name=new_subscription).first()
-
+        show = models.Show.query.get(show_id)
         if show is None:
             data = wrapper.Wrapper().query_show(new_subscription)
             id_ = data['id']
@@ -124,7 +124,7 @@ class Subscriptions(Resource):
 
             if show is None:
                 logic.add_show(new_subscription)
-                show = models.Show.query.filter_by(name=new_subscription).first()
+                show = models.Show.query.get(show_id)
 
                 if show is None:
                     return {'msg': f"Was not able to subscribe to {new_subscription}"}
