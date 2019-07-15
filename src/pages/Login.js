@@ -37,7 +37,11 @@ export default connect(UserStore)(class Login extends Component {
             .then(res => {
                 if (res.data['id']) {
                     this.props.store.loggedIn(res.data['id']);
-                    this.props.history.push(this.props.location.state.from.pathname)
+                    if (this.props.location.pathname !== '/login') {
+                        this.props.history.push(this.props.location.pathname)
+                    } else {
+                        this.props.history.push('/')
+                    }
                 } else {
                     this.setState({
                         message: res.data['msg']
