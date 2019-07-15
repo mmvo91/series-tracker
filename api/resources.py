@@ -408,3 +408,19 @@ class Upcoming(Resource):
         schema = schemas.SubscriptionWatchSchema(many=True)
 
         return schema.dump(new)
+
+
+class Recent(Resource):
+    def get(self, user_id):
+        a_week_ago = TODAY - datetime.timedelta(days=7)
+
+        recent = models.Subscription.query.order_by(
+            models.Subscription.CreatedDate.desc()
+        ).filter(
+            models.Subscription.user_id == user_id,
+            models.Subscription.CreatedDate > a_week_ago
+        ).all()
+
+        schema = schemas.SubscriptionSchema(many=True)
+
+        return schema.dump(recent)
