@@ -169,7 +169,7 @@ class Seasons(Resource):
         seasons = models.SeasonWatched.query.join(
             models.Season
         ).order_by(
-            models.Season.number.desc()
+            models.Season.number.asc()
         ).filter(
             models.SeasonWatched.season.has(models.Season.premiereDate < TODAY),
             models.SeasonWatched.user_id == user_id,
