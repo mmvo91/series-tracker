@@ -1,7 +1,7 @@
 import datetime
 
-from extensions import sql
-from .show import Episode
+from api.extensions import sql
+from api.models import Episode
 
 TODAY = datetime.datetime.today()
 

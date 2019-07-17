@@ -1,8 +1,8 @@
 from marshmallow import fields
 
 from api import models
-from extensions import ma
-from .show import ShowSchema, SeasonSchema, EpisodesSchema
+from api.extensions import ma
+from api.schemas import ShowSchema, SeasonSchema, EpisodesSchema
 
 
 class SubscriptionSchema(ma.ModelSchema):

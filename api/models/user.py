@@ -1,4 +1,4 @@
-from extensions import sql
+from api.extensions import sql
 
 
 class User(sql.Model):

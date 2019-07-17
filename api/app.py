@@ -1,8 +1,7 @@
 from flask import Flask
 
-import extensions
-from api import routes
-from config import config
+from api import extensions, routes
+from api.config import config
 
 
 def create_app():

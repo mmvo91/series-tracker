@@ -7,10 +7,9 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource
 
-import extensions
-from api import models, schemas
-from extensions import sql
-from logic import logic, wrapper
+from api import models, schemas, extensions
+from api.extensions import sql
+from api.logic import logic, wrapper
 
 TODAY = datetime.datetime.today()
 

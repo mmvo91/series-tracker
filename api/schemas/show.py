@@ -1,5 +1,5 @@
 from api import models
-from extensions import ma
+from api.extensions import ma
 
 
 class ShowSchema(ma.ModelSchema):

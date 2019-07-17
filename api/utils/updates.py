@@ -1,9 +1,9 @@
 from datetime import datetime
 
 from api import models
-from app import create_app
-from extensions import sql
-from logic import wrapper
+from api.app import create_app
+from api.extensions import sql
+from api.logic import wrapper
 
 app = create_app()
 app.app_context().push()
