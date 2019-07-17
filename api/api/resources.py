@@ -185,10 +185,6 @@ class Completions(Resource):
         }
 
 
-def weird_division(n, d):
-    return n / d if d else 0
-
-
 class Subscriptions(Resource):
     @jwt_required
     def get(self, user_id):
@@ -220,7 +216,7 @@ class Subscriptions(Resource):
             show = models.Show.query.get(id_)
 
             if show is None:
-                logic.add_show(new_subscription)
+                logic.add_show(id_)
                 show = models.Show.query.get(show_id)
 
                 if show is None:
