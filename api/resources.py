@@ -185,10 +185,6 @@ class Completions(Resource):
         }
 
 
-def weird_division(n, d):
-    return n / d if d else 0
-
-
 class Subscriptions(Resource):
     @jwt_required
     def get(self, user_id):
