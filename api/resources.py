@@ -216,7 +216,7 @@ class Subscriptions(Resource):
             show = models.Show.query.get(id_)
 
             if show is None:
-                logic.add_show(new_subscription)
+                logic.add_show(id_)
                 show = models.Show.query.get(show_id)
 
                 if show is None:
