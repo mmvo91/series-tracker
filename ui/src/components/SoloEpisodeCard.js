@@ -7,7 +7,7 @@ import IconButton from "../components/IconButton"
 
 const SoloEpisode = (props) => {
     return (
-        <Col md={3} className="py-2">
+        <Col md={4} lg={3} className="py-2">
             <Card>
                 <Card.Body>
                     <Card.Title>{props.episode.name}</Card.Title>
