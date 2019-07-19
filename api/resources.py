@@ -236,7 +236,11 @@ class Subscriptions(Resource):
         show_id = request.json['show_id']
         watched = request.json['watched']
 
-        episodes = models.Watched.query.filter_by(user_id=user_id, show_id=show_id).all()
+        episodes = models.Watched.query.filter(
+            models.Watched.user_id == user_id,
+            models.Watched.show_id == show_id,
+            models.Watched.episode.has(models.Episode.air_date <= TODAY)
+        ).all()
 
         for episode in episodes:
             logic.watched(user_id, show_id, episode.episode_id, watched)
