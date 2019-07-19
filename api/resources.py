@@ -333,8 +333,11 @@ class Episodes(Resource):
 class Queue(Resource):
     @jwt_required
     def get(self, user_id):
-        queue = models.Watched.query.join(models.Episode).order_by(
-            models.Episode.air_date
+        queue = models.Watched.query.join(
+            models.Episode
+        ).order_by(
+            models.Episode.air_date,
+            models.Episode.number
         ).filter(
             models.Watched.episode.has(models.Episode.air_date <= TODAY),
             models.Watched.user_id == user_id,
