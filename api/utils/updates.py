@@ -106,6 +106,7 @@ def show_update():
             )
 
             if y is None:
+                print(f'{show.name} has a new season {x.number}')
                 sql.session.add(x)
             else:
                 if y.name != x.name:
@@ -138,6 +139,7 @@ def show_update():
 
             if y is None:
                 sql.session.add(x)
+                print(f'{show.name} has a new episode {x.name}')
             else:
                 if y.air_date != x.air_date:
                     y.air_date = x.air_date
