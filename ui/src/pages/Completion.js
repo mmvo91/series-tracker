@@ -9,6 +9,7 @@ import Image from "react-bootstrap/Image";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import {LinkContainer} from "react-router-bootstrap";
+import Badge from "react-bootstrap/Badge";
 
 export default connect(UserStore)(class Completion extends Component {
     state = {
@@ -47,11 +48,11 @@ export default connect(UserStore)(class Completion extends Component {
                     {
                         this.state.data.show.map(show => (
                                 <Col md={4} lg={3} className="py-2">
-                                    <LinkContainer to={"/shows/" + show.id + "/season"}>
+                                    <LinkContainer to={"/shows/" + show.show_id + "/season"}>
                                         <Card>
                                             <Card.Body>
                                                 <Card.Title>
-                                                    {show.show}
+                                                    {show.name}
                                                 </Card.Title>
 
                                                 <Image fluid src={show.image} className="mx-auto d-block"/>
