@@ -144,8 +144,8 @@ def show_update():
                     print(f'{show.name} Episode {y.name} has a new air date: {x.air_date}')
 
                 if y.name != x.name:
-                    y.name = x.name
                     print(f'{show.name} Episode {y.name} has a new name: {x.name}')
+                    y.name = x.name
 
                 if y.summary != x.summary:
                     y.summary = x.summary
