@@ -23,6 +23,14 @@ export default connect(UserStore)(class Completion extends Component {
             })
     }
 
+    formatter = (num) => {
+        if (Number.isInteger(num)) {
+            return num
+        } else {
+            return (num).toFixed(2)
+        }
+    };
+
     render() {
         if (this.state.data !== null) {
             return (
@@ -56,6 +64,12 @@ export default connect(UserStore)(class Completion extends Component {
                                                 </Card.Title>
 
                                                 <Image fluid src={show.image} className="mx-auto d-block"/>
+
+                                                <div className="h6 text-center py-3">
+                                                    <Badge pill variant="secondary">
+                                                        {this.formatter(show.unwatched_run_time / 60)} hour(s) remaining
+                                                    </Badge>
+                                                </div>
 
                                                 <div className="d-flex justify-content-center py-2">
                                                     <ProgressMeter completed={show.watched_seasons}
