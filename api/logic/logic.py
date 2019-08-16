@@ -19,9 +19,14 @@ def add_show(show_id):
     else:
         stat = False
 
+    try:
+        image = y['image']['medium']
+    except TypeError:
+        image = None
+
     s = models.Show(
         id=y['id'], name=y['name'], premiered=y['premiered'], status=stat, summary=y['summary'],
-        image=y['image']['medium']
+        image=image
     )
     sql.session.add(s)
     sql.session.commit()
