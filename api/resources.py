@@ -56,7 +56,6 @@ class Token(Resource):
 
 
 class Users(Resource):
-    @jwt_required
     def post(self):
         data = request.json
         username = data['username']
