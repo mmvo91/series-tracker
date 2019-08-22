@@ -7,8 +7,8 @@ import IconButton from "../components/IconButton"
 
 const Episode = (props) => {
     return (
-        <Col md={4} lg={3} className="py-2">
-            <Card>
+        <Col sm={6} md={4} lg={3} className="py-2">
+            <Card className="h-100">
                 <Card.Body>
                     <Card.Title>{props.name}</Card.Title>
                     <Image fluid src={props.image} className="mx-auto d-block my-3"/>
