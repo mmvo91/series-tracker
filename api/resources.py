@@ -401,3 +401,33 @@ class Recent(Resource):
         schema = schemas.SubscriptionSchema(many=True)
 
         return schema.dump(recent)
+
+
+class Multiverse(Resource):
+    def get(self, user_id):
+        multiverse = models.Universe.query.all()
+
+        schema = schemas.UniverseSchema(many=True)
+
+        return schema.dump(multiverse)
+
+
+class Universe(Resource):
+    def get(self, user_id, universe_id):
+        universe = models.Universe.query.get(universe_id)
+        show_ids = [show.id for show in universe.shows]
+
+        universe_episodes = models.Watched.query.join(
+            models.Episode
+        ).order_by(
+            models.Episode.air_date,
+            models.Episode.number
+        ).filter(
+            models.Watched.show_id.in_(show_ids),
+            models.Watched.user_id == user_id,
+            models.Watched.watched.is_(False)
+        ).all()
+
+        schema = schemas.SubscriptionWatchSchema(many=True)
+
+        return schema.dump(universe_episodes)

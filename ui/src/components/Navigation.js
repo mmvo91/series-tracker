@@ -49,6 +49,7 @@ const Navigation = () => {
                             <Navbar.Collapse className="text-center" id="responsive-navbar-nav">
                                 <Nav className="mr-auto">
                                     <LinkNav to={"/recent"} title="Recent"/>
+                                    <LinkNav to={"/universe"} title="Universe"/>
                                     <LinkNav to={"/shows"} title="Shows"/>
                                     <LinkNav to={"/queue"} title="Queue"/>
                                     <LinkNav to={"/new"} title="New"/>

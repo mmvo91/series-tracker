@@ -20,3 +20,5 @@ api.add_resource(resources.Subscription, "/users/<user_id>/subscriptions/<show_i
 api.add_resource(resources.Seasons, "/users/<user_id>/subscriptions/<show_id>/seasons")
 api.add_resource(resources.Episodes, "/users/<user_id>/subscriptions/<show_id>/episodes")
 api.add_resource(resources.Completions, "/users/<user_id>/completion")
+api.add_resource(resources.Multiverse, "/users/<user_id>/universe")
+api.add_resource(resources.Universe, "/users/<user_id>/universe/<universe_id>")
