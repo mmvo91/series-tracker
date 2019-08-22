@@ -15,6 +15,8 @@ const Episode = (props) => {
                     <p><b>Air Date: </b>{moment.utc(props.air_date).format('MMMM Do YYYY')}</p>
                     <p><b>Season: </b>{props.season} <b>Episode: </b>{props.number}</p>
                     <div dangerouslySetInnerHTML={{__html: props.summary}}/>
+                </Card.Body>
+                <Card.Footer>
                     <div className="float-right">
                         {
                             props.watched
@@ -31,7 +33,7 @@ const Episode = (props) => {
                                     text="Not Watched"/>
                         }
                     </div>
-                </Card.Body>
+                </Card.Footer>
             </Card>
         </Col>
     )

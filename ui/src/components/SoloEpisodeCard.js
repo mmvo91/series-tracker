@@ -16,6 +16,8 @@ const SoloEpisode = (props) => {
                     <p><b>Air Date: </b>{moment.utc(props.episode.air_date).format('MMMM Do YYYY')}</p>
                     <p><b>Season: </b>{props.episode.season} <b>Episode: </b>{props.episode.number}</p>
                     <div dangerouslySetInnerHTML={{__html: props.episode.summary}}/>
+                </Card.Body>
+                <Card.Footer>
                     <div className="float-right">
                         {
                             props.watched
@@ -34,7 +36,7 @@ const SoloEpisode = (props) => {
                                     text="Not Watched"/>
                         }
                     </div>
-                </Card.Body>
+                </Card.Footer>
             </Card>
         </Col>
     )
