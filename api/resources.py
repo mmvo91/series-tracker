@@ -276,7 +276,7 @@ class Seasons(Resource):
         ).order_by(
             models.Season.number.asc()
         ).filter(
-            models.SeasonWatched.season.has(models.Season.premiereDate <= TODAY),
+            # models.SeasonWatched.season.has(models.Season.premiereDate <= today()),
             models.SeasonWatched.user_id == user_id,
             models.SeasonWatched.show_id == show_id
         ).all()
@@ -304,7 +304,7 @@ class Episodes(Resource):
         watched = models.Watched.query.join(models.Episode).order_by(
             models.Episode.number
         ).filter(
-            models.Watched.episode.has(models.Episode.air_date <= TODAY),
+            # models.Watched.episode.has(models.Episode.air_date <= today()),
             models.Watched.user_id == user_id,
             models.Watched.show_id == show_id
         )
