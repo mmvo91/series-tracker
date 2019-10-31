@@ -35,7 +35,7 @@ export default connect(UserStore)(class Completion extends Component {
         if (this.state.data !== null) {
             return (
                 <Row>
-                    <Col md={4} lg={3} className="py-2">
+                    <Col md={4} lg={3} xl={2} className="py-2">
                         <Card className="h-100">
                             <Card.Body>
                                 <Card.Title>
@@ -55,7 +55,7 @@ export default connect(UserStore)(class Completion extends Component {
                     </Col>
                     {
                         this.state.data.show.map(show => (
-                                <Col md={4} lg={3} className="py-2">
+                            <Col md={4} lg={3} xl={2} className="py-2">
                                     <LinkContainer to={"/shows/" + show.show_id + "/season"}>
                                         <Card className="h-100">
                                             <Card.Body>
