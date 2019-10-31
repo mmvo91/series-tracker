@@ -56,8 +56,8 @@ def show_update():
     shows = models.Show.query.all()
 
     for show in shows:
-        maze = wrapper.Wrapper(show.name)
-        s = maze.query_show()
+        maze = wrapper.Wrapper()
+        s = maze.show(show.id)
         seasons = maze.seasons()
         episodes = maze.episodes()
 

@@ -32,6 +32,7 @@ class Wrapper(object):
         return self._get(url)
 
     def show(self, show_id=None):
+        self._id = show_id if show_id is not None else self._id
         url = f'{self.BASE_SHOW}/{self._or_id(show_id)}'
         return self._get(url)
 

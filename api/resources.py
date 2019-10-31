@@ -210,7 +210,8 @@ class Subscriptions(Resource):
 
         show = models.Show.query.get(show_id)
         if show is None:
-            data = wrapper.Wrapper().query_show(new_subscription)
+            # data = wrapper.Wrapper().query_show(new_subscription)
+            data = wrapper.Wrapper().show(show_id)
             id_ = data['id']
             new_subscription = data['name']
             show = models.Show.query.get(id_)
