@@ -11,7 +11,9 @@ from api import models, schemas, extensions
 from api.extensions import sql
 from api.logic import logic, wrapper
 
-TODAY = datetime.datetime.today()
+
+def today():
+    return datetime.datetime.today()
 
 
 class Token(Resource):
@@ -134,9 +136,9 @@ class Completions(Resource):
             sql.func.sum(models.Episode.run_time).filter(models.Watched.watched.is_(False)).label('unwatched_run_time')
         ).filter(
             models.Watched.user_id == user_id,
-            models.Show.premiered <= TODAY,
-            models.Season.premiereDate <= TODAY,
-            models.Episode.air_date <= TODAY,
+            models.Show.premiered <= today(),
+            models.Season.premiereDate <= today(),
+            models.Episode.air_date <= today(),
         ).join(
             (models.Show, models.Show.id == models.Watched.show_id),
             (models.Subscription, models.Subscription.show_id == models.Watched.show_id),
@@ -157,9 +159,9 @@ class Completions(Resource):
             sql.func.sum(models.Episode.run_time).filter(models.Watched.watched.is_(False)).label('unwatched_run_time')
         ).filter(
             models.Watched.user_id == user_id,
-            models.Show.premiered <= TODAY,
-            models.Season.premiereDate <= TODAY,
-            models.Episode.air_date <= TODAY,
+            models.Show.premiered <= today(),
+            models.Season.premiereDate <= today(),
+            models.Episode.air_date <= today(),
         ).join(
             (models.Show, models.Show.id == models.Watched.show_id),
             (models.Season, models.Season.id == models.Watched.season_id),
@@ -238,7 +240,7 @@ class Subscriptions(Resource):
         episodes = models.Watched.query.filter(
             models.Watched.user_id == user_id,
             models.Watched.show_id == show_id,
-            models.Watched.episode.has(models.Episode.air_date <= TODAY)
+            models.Watched.episode.has(models.Episode.air_date <= today())
         ).all()
 
         for episode in episodes:
@@ -342,7 +344,7 @@ class Queue(Resource):
             models.Episode.air_date,
             models.Episode.number
         ).filter(
-            models.Watched.episode.has(models.Episode.air_date <= TODAY),
+            models.Watched.episode.has(models.Episode.air_date <= today()),
             models.Watched.user_id == user_id,
             models.Watched.watched.is_(False)
         ).limit(50).all()
@@ -355,12 +357,12 @@ class Queue(Resource):
 class New(Resource):
     @jwt_required
     def get(self, user_id):
-        under_two_weeks_ago = TODAY - datetime.timedelta(days=13)
+        under_two_weeks_ago = today() - datetime.timedelta(days=13)
 
         new = models.Watched.query.join(models.Episode).order_by(
             models.Episode.air_date
         ).filter(
-            models.Watched.episode.has(models.Episode.air_date <= TODAY),
+            models.Watched.episode.has(models.Episode.air_date <= today()),
             models.Watched.episode.has(models.Episode.air_date >= under_two_weeks_ago),
             models.Watched.user_id == user_id,
             models.Watched.watched.is_(False)
@@ -377,7 +379,7 @@ class Upcoming(Resource):
         new = models.Watched.query.join(models.Episode).order_by(
             models.Episode.air_date
         ).filter(
-            models.Watched.episode.has(models.Episode.air_date > TODAY),
+            models.Watched.episode.has(models.Episode.air_date > today()),
             models.Watched.user_id == user_id,
             models.Watched.watched.is_(False)
         ).all()
@@ -389,7 +391,7 @@ class Upcoming(Resource):
 
 class Recent(Resource):
     def get(self, user_id):
-        a_week_ago = TODAY - datetime.timedelta(days=7)
+        a_week_ago = today() - datetime.timedelta(days=7)
 
         recent = models.Subscription.query.order_by(
             models.Subscription.CreatedDate.desc()

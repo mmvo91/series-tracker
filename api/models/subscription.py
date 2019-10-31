@@ -3,7 +3,9 @@ import datetime
 from api.extensions import sql
 from api.models import Episode
 
-TODAY = datetime.datetime.today()
+
+def today():
+    return datetime.datetime.today()
 
 
 class Watched(sql.Model):
@@ -44,7 +46,7 @@ class SeasonWatched(sql.Model):
             )]
         ).where(
             sql.and_(
-                Watched.episode.has(Episode.air_date < TODAY),
+                Watched.episode.has(Episode.air_date < today()),
                 Watched.show_id == show_id,
                 Watched.user_id == user_id,
                 Watched.season_id == season_id,
@@ -75,7 +77,7 @@ class Subscription(sql.Model):
             )]
         ).where(
             sql.and_(
-                Watched.episode.has(Episode.air_date < TODAY),
+                Watched.episode.has(Episode.air_date < today()),
                 Watched.show_id == show_id,
                 Watched.user_id == user_id,
                 Watched.watched.is_(False)
