@@ -303,6 +303,7 @@ class Episodes(Resource):
         params = request.args
 
         watched = models.Watched.query.join(models.Episode).order_by(
+            models.Watched.watched,
             models.Episode.number
         ).filter(
             # models.Watched.episode.has(models.Episode.air_date <= today()),
