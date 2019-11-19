@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 from api import models
@@ -94,14 +95,24 @@ def show_update():
 
             y = models.Season.query.get(season['id'])
 
+            if season['premiereDate'] != '' and season['premiereDate'] is not None:
+                premiere = datetime.strptime(season['premiereDate'], '%Y-%m-%d').date()
+            else:
+                premiere = None
+
+            if season['endDate'] != '' and season['endDate'] is not None:
+                end = datetime.strptime(season['endDate'], '%Y-%m-%d').date()
+            else:
+                end = None
+
             x = models.Season(
                 id=season['id'],
                 show_id=show.id,
                 number=season['number'],
                 name=season_name,
                 episodeOrder=season['episodeOrder'],
-                premiereDate=season['premiereDate'],
-                endDate=season['endDate'],
+                premiereDate=premiere,
+                endDate=end,
                 image=image,
             )
 
