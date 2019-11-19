@@ -6,6 +6,11 @@ from api.app import create_app
 from api.extensions import sql
 from api.logic import wrapper
 
+logging.basicConfig(
+    filename='logs/update.log',
+    level=logging.INFO
+)
+
 app = create_app()
 app.app_context().push()
 
@@ -74,13 +79,13 @@ def show_update():
 
         if show.status is not status:
             show.status = status
-            print(f'{show.name} ended has become {status}')
+            logging.info(f'{show.name} ended has become {status}')
         if show.summary != s['summary']:
             show.summary = s['summary']
-            print(f'{show.name} has a new summary')
+            logging.info(f'{show.name} has a new summary')
         if show.image != image:
             show.image = image
-            print(f'{show.name} has a new image')
+            logging.info(f'{show.name} has a new image')
 
         for season in seasons:
             if season['name'] == "":
@@ -117,16 +122,28 @@ def show_update():
             )
 
             if y is None:
-                print(f'{show.name} has a new season {x.number}')
+                logging.info(f'{show.name} has a new season {x.number}')
                 sql.session.add(x)
             else:
                 if y.name != x.name:
                     y.name = x.name
-                    print(f'{show.name} Season {y.number} has a new name: {x.name}')
+                    logging.info(f'{show.name} Season {y.number} has a new name: {x.name}')
 
                 if y.image != x.image:
                     y.image = x.image
-                    print(f'{show.name} Season {y.number} has a new image: {x.image}')
+                    logging.info(f'{show.name} Season {y.number} has a new image: {x.image}')
+
+                if y.episodeOrder != x.episodeOrder:
+                    y.episodeOrder = x.episodeOrder
+                    logging.info(f'{show.name} Season {y.number} episode order has changed: {x.episodeOrder}')
+
+                if y.premiereDate != x.premiereDate:
+                    y.premiereDate = x.premiereDate
+                    logging.info(f'{show.name} Season {y.number} has a new premiere date: {x.premiereDate}')
+
+                if y.endDate != x.endDate:
+                    y.endDate = x.endDate
+                    logging.info(f'{show.name} Season {y.number} has a new end date: {x.endDate}')
 
         for episode in episodes:
             try:
@@ -150,23 +167,27 @@ def show_update():
 
             if y is None:
                 sql.session.add(x)
-                print(f'{show.name} has a new episode {x.name}')
+                logging.info(f'{show.name} has a new episode {x.name}')
             else:
                 if y.air_date != x.air_date:
                     y.air_date = x.air_date
-                    print(f'{show.name} Episode {y.name} has a new air date: {x.air_date}')
+                    logging.info(f'{show.name} Episode {y.name} has a new air date: {x.air_date}')
 
                 if y.name != x.name:
-                    print(f'{show.name} Episode {y.name} has a new name: {x.name}')
+                    logging.info(f'{show.name} Episode {y.name} has a new name: {x.name}')
                     y.name = x.name
+
+                if y.number != x.number:
+                    y.number = x.number
+                    logging.info(f'{show.name} Episode {y.name} number has change: {x.number}')
 
                 if y.summary != x.summary:
                     y.summary = x.summary
-                    print(f'{show.name} Episode {y.name} has a new summary: {x.summary}')
+                    logging.info(f'{show.name} Episode {y.name} has a new summary: {x.summary}')
 
                 if y.image != x.image:
                     y.image = x.image
-                    print(f'{show.name} Episode {y.name} has a new image: {x.image}')
+                    logging.info(f'{show.name} Episode {y.name} has a new image: {x.image}')
 
         sql.session.commit()
 
