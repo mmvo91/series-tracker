@@ -26,7 +26,7 @@ export default connect(UserStore)(class Subscription extends Component {
             isLoading: true,
         });
 
-        axios.get('http://api.tvmaze.com/search/shows?q=' + e)
+        axios.get('https://api.tvmaze.com/search/shows?q=' + e)
             .then(res => {
                 this.setState({
                     isLoading: false,

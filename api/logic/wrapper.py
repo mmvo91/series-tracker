@@ -2,7 +2,7 @@ import requests
 
 
 class Wrapper(object):
-    BASE_URL = 'http://api.tvmaze.com'
+    BASE_URL = 'https://api.tvmaze.com'
     BASE_SINGLE = f'{BASE_URL}/singlesearch'
     BASE_SHOW = f'{BASE_URL}/shows'
 
