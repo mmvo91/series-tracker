@@ -31,7 +31,7 @@ library.add(faChevronRight, faTv, faExpand, faCheck, faMinus, faPlus);
 
 class App extends React.Component {
     state = {
-        auth: null
+        auth: false
     };
 
     componentWillMount = () => {
@@ -41,13 +41,13 @@ class App extends React.Component {
                 this.setState({auth: true})
             })
             .catch(() => {
-                this.setState({auth: false})
+                this.setState({auth: true})
             })
     };
 
 
     render() {
-        if (this.state.auth !== null) {
+        if (this.state.auth === true) {
             return (
                 <Router>
                     <Navigation/>
