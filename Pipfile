@@ -23,6 +23,7 @@ flask-jwt-extended = "*"
 gunicorn = "*"
 requests = "*"
 flask-migrate = "*"
+pytz = "*"
 
 [requires]
 python_version = "3.7"

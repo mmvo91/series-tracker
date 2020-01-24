@@ -1,5 +1,6 @@
 import datetime
 
+import pytz
 from flask import request, jsonify
 from flask_jwt_extended import (
     jwt_refresh_token_required, create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies,
@@ -13,7 +14,9 @@ from api.logic import logic, wrapper
 
 
 def today():
-    return datetime.datetime.today()
+    hst = pytz.timezone('US/Hawaii')
+    now = datetime.datetime.today()
+    return now.astimezone(hst)
 
 
 class Token(Resource):
