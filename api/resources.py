@@ -107,6 +107,7 @@ class User(Resource):
 
 
 class Completions(Resource):
+    @jwt_required
     def get(self, user_id):
         subscriptions = sql.session.query(
             models.Watched.show_id,
