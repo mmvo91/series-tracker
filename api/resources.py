@@ -167,7 +167,8 @@ class Completions(Resource):
             models.Season.premiereDate <= today(),
             models.Episode.air_date <= today(),
         ).join(
-            (models.Subscription, models.Subscription.show_id == models.Watched.show_id),
+            (models.Subscription, (models.Subscription.show_id == models.Watched.show_id) & (
+                        models.Subscription.user_id == models.Watched.user_id)),
             (models.Show, models.Show.id == models.Watched.show_id),
             (models.Season, models.Season.id == models.Watched.season_id),
             (seasons, seasons.c.season_id == models.Watched.season_id),
