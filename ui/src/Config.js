@@ -6,7 +6,7 @@ const dev = {
 
 const prod = {
     url: {
-        API: "https://series-tracker.netlify.com/api"
+        API: "https://series-tracker.netlify.app/api"
     }
 };
 
