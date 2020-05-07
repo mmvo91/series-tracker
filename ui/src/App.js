@@ -23,6 +23,8 @@ import Upcoming from "./pages/Upcoming";
 import RecentSub from "./pages/RecentSub";
 import Multiverse from "./pages/Multiverse";
 import Universe from "./pages/Universe";
+import Movies from "./pages/Movies";
+import MovieGroups from "./pages/MovieGroups";
 
 import UserStore from "./stores/UserStore"
 import {connect} from "overstated"
@@ -67,6 +69,8 @@ class App extends React.Component {
                         <PrivateRoute exact path="/shows/:id/season/:season" component={Episodes}/>
                         <PrivateRoute exact path="/universe" component={Multiverse}/>
                         <PrivateRoute exact path="/universe/:id" component={Universe}/>
+                        <PrivateRoute exact path="/movies" component={Movies}/>
+                        <PrivateRoute exact path="/groups" component={MovieGroups}/>
                     </Container>
                 </Router>
             );
