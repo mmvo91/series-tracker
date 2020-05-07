@@ -1,6 +1,7 @@
 import datetime
 
 import pytz
+import requests
 from flask import request, jsonify
 from flask_jwt_extended import (
     jwt_refresh_token_required, create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies,
@@ -8,6 +9,7 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource
 
+from api.config import config
 from api import models, schemas, extensions
 from api.extensions import sql
 from api.logic import logic, wrapper
@@ -441,3 +443,79 @@ class Universe(Resource):
         schema = schemas.SubscriptionWatchSchema(many=True)
 
         return schema.dump(universe_episodes)
+
+
+class Movie(Resource):
+    @jwt_required
+    def get(self, user_id):
+        add_movie = models.AddedMovie.query.join(
+            models.Movie
+        ).order_by(
+            models.AddedMovie.watched,
+            models.Movie.title
+        ).filter(
+            models.AddedMovie.user_id == user_id
+        ).all()
+
+        schema = schemas.UserMovieSchema(many=True)
+
+        return schema.dump(add_movie)
+
+    @jwt_required
+    def post(self, user_id):
+        data = request.json
+
+        user_movie = sql.session.query(models.AddedMovie).get((user_id, data['imdbID']))
+        if user_movie is None:
+            movie = sql.session.query(models.Movie).get(data['imdbID'])
+            if movie is None:
+                url = f"http://www.omdbapi.com/?apikey={config.OMDB_API_KEY}&i={data['imdbID']}&type=movie"
+                data = requests.get(url).json()
+
+                movie = models.Movie(
+                    id=data['imdbID'],
+                    title=data['Title'],
+                    release=datetime.datetime.strptime(data['Released'], '%d %b %Y'),
+                    rating=data['Rated'],
+                    runtime=data['Runtime'].split()[0],
+                    summary=data['Plot'],
+                    image=data['Poster']
+                )
+
+            user = sql.session.query(models.User).get(user_id)
+
+            user_movie = models.AddedMovie()
+
+            user_movie.user = user
+            user_movie.movie = movie
+
+            sql.session.add(user_movie)
+
+            sql.session.commit()
+
+            return {
+                'msg': f"Successfully subscribed to {movie.title}"
+            }
+        else:
+            return {
+                'msg': f"{user_movie.movie.title} already added."
+            }
+
+    @jwt_required
+    def put(self, user_id):
+        data = request.json
+
+        user_movie = sql.session.query(models.AddedMovie).get((user_id, data['movie_id']))
+        if user_movie is not None:
+            user_movie.watched = data['watched']
+            sql.session.commit()
+            return {'msg': f"Movie {user_movie.movie.title} now {user_movie.watched}"}
+        else:
+            return {'msg': 'Unable to find movie for user'}
+
+
+class MovieGroups(Resource):
+    def get(self, user_id):
+        movie_groups = models.MovieGroup.query.all()
+
+        return schemas.MovieGroupSchema(many=True).dump(movie_groups)
