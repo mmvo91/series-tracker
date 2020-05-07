@@ -22,3 +22,5 @@ api.add_resource(resources.Episodes, "/users/<user_id>/subscriptions/<show_id>/e
 api.add_resource(resources.Completions, "/users/<user_id>/completion")
 api.add_resource(resources.Multiverse, "/users/<user_id>/universe")
 api.add_resource(resources.Universe, "/users/<user_id>/universe/<universe_id>")
+api.add_resource(resources.Movie, "/users/<user_id>/movies")
+api.add_resource(resources.MovieGroups, "/users/<user_id>/movies/groups")
