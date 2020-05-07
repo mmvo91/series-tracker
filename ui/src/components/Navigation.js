@@ -7,11 +7,12 @@ import api from "../Api"
 
 import {useStore} from 'overstated'
 import UserStore from '../stores/UserStore'
+import NavDropdown from "react-bootstrap/NavDropdown";
 
 const LinkNav = (props) => {
     return (
         <LinkContainer to={props.to}>
-            <Nav.Link>{props.title}</Nav.Link>
+            <NavDropdown.Item>{props.title}</NavDropdown.Item>
         </LinkContainer>
     )
 };
