@@ -48,13 +48,19 @@ const Navigation = () => {
                             <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                             <Navbar.Collapse className="text-center" id="responsive-navbar-nav">
                                 <Nav className="mr-auto">
-                                    <LinkNav to={"/recent"} title="Recent"/>
-                                    <LinkNav to={"/universe"} title="Universe"/>
-                                    <LinkNav to={"/shows"} title="Shows"/>
-                                    <LinkNav to={"/queue"} title="Queue"/>
-                                    <LinkNav to={"/new"} title="New"/>
-                                    <LinkNav to={"/upcoming"} title="Upcoming"/>
-                                    <LinkNav to={"/completion"} title="Completion"/>
+                                    <NavDropdown id="show-dropdown" title="Shows">
+                                        <LinkNav to={"/recent"} title="Recently Added"/>
+                                        <LinkNav to={"/universe"} title="Universe"/>
+                                        <LinkNav to={"/shows"} title="Shows"/>
+                                        <LinkNav to={"/queue"} title="Queue"/>
+                                        <LinkNav to={"/new"} title="New"/>
+                                        <LinkNav to={"/upcoming"} title="Upcoming"/>
+                                        <LinkNav to={"/completion"} title="Completion"/>
+                                    </NavDropdown>
+                                    <NavDropdown id={"movie-dropdown"} title={"Movies"}>
+                                        <LinkNav to={"/movies"} title="Movies"/>
+                                        <LinkNav to={"/groups"} title="Movie Groups"/>
+                                    </NavDropdown>
                                 </Nav>
                                 <Nav>
                                     <Nav.Link href={"/"} onClick={loggingOut}>Logout</Nav.Link>
