@@ -13,6 +13,8 @@ class Config(object):
     JWT_COOKIE_CSRF_PROTECT = True
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
+    OMDB_API_KEY = os.getenv('REACT_APP_OMDB_API_KEY')
+
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_USERNAME = os.getenv('SQLALCHEMY_USERNAME')

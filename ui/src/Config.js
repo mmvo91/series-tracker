@@ -1,12 +1,20 @@
 const dev = {
     url: {
-        API: "https://127.0.0.1:5000"
+        API: "https://127.0.0.1:5000",
+        OMDB: "http://www.omdbapi.com"
+    },
+    key: {
+        OMDB: process.env.REACT_APP_OMDB_API_KEY
     }
 };
 
 const prod = {
     url: {
-        API: "https://series-tracker.netlify.app/api"
+        API: "https://series-tracker.netlify.app/api",
+        OMDB: "https://www.omdbapi.com"
+    },
+    key: {
+        OMDB: process.env.REACT_APP_OMDB_API_KEY
     }
 };
 
