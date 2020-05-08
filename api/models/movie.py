@@ -52,7 +52,7 @@ class MovieGroup(sql.Model):
     movies = sql.relationship(
         'Movie',
         secondary=movie_group_movies,
-        order_by=movie_group_movies.c.sequence
+        order_by=[movie_group_movies.c.sequence, Movie.release]
     )
 
     ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
