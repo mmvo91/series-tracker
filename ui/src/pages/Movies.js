@@ -123,7 +123,7 @@ const Movies = () => {
                                 key={movie.movie.id}
                                 {...movie}
                             />))
-                        : "No movies added"
+                        : <div className="w-100 text-center py-2">No movies added</div>
                 }
             </Row>
         </Container>
