@@ -2,7 +2,7 @@ import React from 'react';
 import './scss/custom.scss'
 import './App.css';
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faChevronRight, faExpand, faMinus, faPlus, faTv} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faChevronRight, faEdit, faExpand, faMinus, faPlus, faTv} from '@fortawesome/free-solid-svg-icons'
 import Container from "react-bootstrap/Container";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import api from "./Api"
@@ -29,7 +29,7 @@ import MovieGroups from "./pages/MovieGroups";
 import UserStore from "./stores/UserStore"
 import {connect} from "overstated"
 
-library.add(faChevronRight, faTv, faExpand, faCheck, faMinus, faPlus);
+library.add(faChevronRight, faTv, faExpand, faCheck, faMinus, faPlus, faEdit);
 
 class App extends React.Component {
     state = {
