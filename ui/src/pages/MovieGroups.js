@@ -8,9 +8,12 @@ import Title from "../components/Title";
 
 import UserStore from "../stores/UserStore";
 import {useStore} from "overstated";
-import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
+import {Typeahead} from "react-bootstrap-typeahead";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Modal from "react-bootstrap/Modal";
 
 const NewMovieGroup = () => {
     const {user_id} = useStore(UserStore, store => ({
@@ -72,22 +75,40 @@ const MovieGroups = () => {
     }));
 
     const [movieGroup, setMovieGroups] = useState(null);
+    const [showEditMovieGroup, setShowEditMovieGroup] = useState(false);
+    const [selectedGroup, setGroup] = useState({id: null})
 
     useEffect(() => {
         api.get('users/' + user_id + '/movies/groups')
             .then(res => setMovieGroups(res.data))
     }, []);
 
+    const handleOpenEditMovieGroup = (group) => () => {
+        setGroup(group)
+        setShowEditMovieGroup(true)
+    }
+
+    const handleCloseEditMovieGroup = () => {
+        setShowEditMovieGroup(false)
+    }
+
     return (
         <Container fluid>
             <Title title="Movie Groups"/>
             <NewMovieGroup/>
+            <AddMovieToMovieGroup show={showEditMovieGroup} group={selectedGroup}
+                                  handleClose={handleCloseEditMovieGroup}/>
             {
                 movieGroup !== null
                     ? (movieGroup.map(
                     group => (
                         <div>
-                            <Title title={group.name}/>
+                            <Title title={group.name}>
+                                <FontAwesomeIcon
+                                    onClick={handleOpenEditMovieGroup(group)}
+                                    icon="edit"
+                                />
+                            </Title>
                             <Row>
                                 {
                                     group.movies.map(
@@ -106,6 +127,112 @@ const MovieGroups = () => {
                     : <div className="w-100 text-center py-2">Nothing in Movie Groups</div>
             }
         </Container>
+    )
+}
+
+const AddMovieToMovieGroup = (props) => {
+    const {user_id} = useStore(UserStore, store => ({
+        user_id: store.state.id,
+    }));
+
+    const [msg, setMsg] = useState(null)
+    const [movieGroup, setMovieGroup] = useState(null)
+    const [movies, setMovies] = useState(null)
+
+    const [selectedMovieGroup, selectMovieGroup] = useState(null)
+    const [selectedMovie, selectMovie] = useState(null)
+
+    useEffect(() => {
+        api.get('/users/' + user_id +'/movies')
+            .then(res => {
+                setMovies(res.data);
+            })
+
+        api.get('/users/' + user_id + '/movies/groups')
+            .then(res => {
+                setMovieGroup(res.data);
+            })
+    }, [])
+
+    const onSelectMovieGroup = (selected) => {
+        selectMovieGroup(selected[0]['id'])
+    }
+
+    const onSelectMovie = (selected) => {
+        selectMovie(selected[0]['movie']['id'])
+    }
+
+    const handleClick = () => {
+        const data = {
+            movie_id: selectedMovie,
+            movie_group_id: props.group.id
+        }
+
+        api.put('/users/' + user_id + '/movies/groups', data)
+            .then(res => setMsg(res.data['msg']))
+    }
+
+    return (
+        <Modal
+            show={props.show}
+            onHide={props.handleClose}
+            size="lg"
+        >
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    Adding Movie to Movie Group
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Typeahead
+                    id="moviegroup"
+                    disabled
+                    labelKey="name"
+                    defaultSelected={[props.group]}
+                    options={movieGroup}
+                    onChange={onSelectMovieGroup}
+                    placeholder="Select movie group..."
+                    renderMenuItemChildren={(option) => (
+                        <div>
+                            <span className="pr-5">{option.name}</span>
+                        </div>
+                    )}
+                    className="py-2"
+                />
+                <Typeahead
+                    id="movie"
+                    labelKey={option => `${option.movie.title}`}
+                    options={movies}
+                    onChange={onSelectMovie}
+                    placeholder="Select movie..."
+                    renderMenuItemChildren={(option) => (
+                        <div>
+                            <span className="pr-5">{option.movie.title}</span>
+                            {
+                                option.movie.image !== null
+                                    ? <Image
+                                        src={option.movie.image}
+                                        height="54"
+                                        width="40"/>
+                                    : null
+                            }
+                        </div>
+                    )}
+                    className="py-2"
+                />
+                <div className="text-center text-muted">
+                    {msg}
+                </div>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={props.handleClose}>
+                        Close
+                    </Button>
+                    <Button onClick={handleClick}>
+                        Add Movie to Movie Group
+                    </Button>
+                </Modal.Footer>
+            </Modal.Body>
+        </Modal>
     )
 }
 
