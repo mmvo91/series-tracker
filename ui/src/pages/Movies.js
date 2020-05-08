@@ -77,7 +77,7 @@ const AddMovie = () => {
                 {
                     selectedShow !== null && selectedShow !== undefined
                         ? (
-                            <div>
+                            <div className="text-center">
                                 <Image src={selectedShow.Poster}/>
                                 <div>{selectedShow.Title} - {selectedShow.Year}</div>
                             </div>
