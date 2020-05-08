@@ -15,7 +15,7 @@ import {Typeahead} from "react-bootstrap-typeahead";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Modal from "react-bootstrap/Modal";
 
-const NewMovieGroup = () => {
+const NewMovieGroup = (props) => {
     const {user_id} = useStore(UserStore, store => ({
         user_id: store.state.id,
     }));
@@ -38,8 +38,13 @@ const NewMovieGroup = () => {
     }
 
     return (
-        <Card>
-            <Card.Body>
+        <Modal show={props.show} onHide={props.handleClose} size="lg">
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    Adding Movie Group
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="name">
                         <Form.Label>Name</Form.Label>
@@ -60,12 +65,17 @@ const NewMovieGroup = () => {
                     <div className="text-center text-muted">
                         {msg}
                     </div>
-                    <Button type="submit">
-                        Add New Movie Group
-                    </Button>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={props.handleClose}>
+                            Close
+                        </Button>
+                        <Button type="submit">
+                            Add New Movie Group
+                        </Button>
+                    </Modal.Footer>
                 </Form>
-            </Card.Body>
-        </Card>
+            </Modal.Body>
+        </Modal>
     )
 }
 
@@ -76,12 +86,17 @@ const MovieGroups = () => {
 
     const [movieGroup, setMovieGroups] = useState(null);
     const [showEditMovieGroup, setShowEditMovieGroup] = useState(false);
+    const [showMovieGroup, setShowMovieGroup] = useState(false);
     const [selectedGroup, setGroup] = useState({id: null})
 
     useEffect(() => {
         api.get('users/' + user_id + '/movies/groups')
             .then(res => setMovieGroups(res.data))
     }, []);
+
+    const handleOpenMovieGroup = () => {
+        setShowMovieGroup(true)
+    }
 
     const handleOpenEditMovieGroup = (group) => () => {
         setGroup(group)
@@ -94,10 +109,14 @@ const MovieGroups = () => {
 
     return (
         <Container fluid>
-            <Title title="Movie Groups"/>
-            <NewMovieGroup/>
-            <AddMovieToMovieGroup show={showEditMovieGroup} group={selectedGroup}
-                                  handleClose={handleCloseEditMovieGroup}/>
+            <Title title="Movie Groups">
+                <FontAwesomeIcon
+                    onClick={handleOpenMovieGroup}
+                    icon="edit"
+                />
+            </Title>
+            <NewMovieGroup show={showMovieGroup} handleClose={() => setShowMovieGroup(false)}/>
+            <AddMovieToMovieGroup show={showEditMovieGroup} group={selectedGroup} handleClose={handleCloseEditMovieGroup}/>
             {
                 movieGroup !== null
                     ? (movieGroup.map(
