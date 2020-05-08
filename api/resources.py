@@ -9,8 +9,8 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource
 
-from api.config import config
 from api import models, schemas, extensions
+from api.config import config
 from api.extensions import sql
 from api.logic import logic, wrapper
 
@@ -519,3 +519,25 @@ class MovieGroups(Resource):
         movie_groups = models.MovieGroup.query.all()
 
         return schemas.MovieGroupSchema(many=True).dump(movie_groups)
+
+    @jwt_required
+    def post(self, user_id):
+        data = request.json
+
+        if data['name'] is not None and data['name'] != "":
+            movie_group = models.MovieGroup.query.first()
+            if movie_group is None:
+                movie_group = models.MovieGroup(
+                    name=data['name'],
+                    description=data['description'],
+                    type=data['type']
+                )
+
+                extensions.sql.session.add(movie_group)
+                extensions.sql.session.commit()
+
+                return {'msg': f"Created movie group {movie_group.name}"}
+            else:
+                return {'msg': f"Movie group {movie_group.name} exists"}
+        else:
+            return {'msg': f"Unable to create movie group"}
