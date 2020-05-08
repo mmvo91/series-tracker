@@ -515,6 +515,21 @@ class Movie(Resource):
 
 
 class MovieGroups(Resource):
+    def put(self, user_id):
+        data = request.json
+
+        movie_group = models.MovieGroup.query.get(data['movie_group_id'])
+        if movie_group is not None:
+            movie = models.Movie.query.get(data['movie_id'])
+            if movie is not None:
+                movie_group.movies.append(movie)
+                extensions.sql.session.commit()
+                return {'msg': f'Added movie {movie.title} to {movie_group.name}'}
+            else:
+                return {'msg': 'Could not find movie'}
+        else:
+            return {'msg': 'Could not find movie group'}
+
     def get(self, user_id):
         movie_groups = models.MovieGroup.query.all()
 
