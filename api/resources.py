@@ -544,7 +544,7 @@ class MovieGroups(Resource):
 
         if data['name'] is not None and data['name'] != "":
             movie_group = models.MovieGroup.query.first()
-            if movie_group is not None:
+            if movie_group is None:
                 movie_group = models.MovieGroup(
                     name=data['name'],
                     description=data['description'],
