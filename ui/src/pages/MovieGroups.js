@@ -239,9 +239,8 @@ const AddMovieToMovieGroup = (props) => {
                             }
                         </div>
                     )}
-                    className="py-2"
                 />
-                <div className="text-center text-muted">
+                <div className="py-2 text-center text-muted">
                     {msg}
                 </div>
                 <Modal.Footer>
