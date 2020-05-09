@@ -522,9 +522,12 @@ class MovieGroups(Resource):
         if movie_group is not None:
             movie = models.Movie.query.get(data['movie_id'])
             if movie is not None:
-                movie_group.movies.append(movie)
-                extensions.sql.session.commit()
-                return {'msg': f'Added movie {movie.title} to {movie_group.name}'}
+                if movie not in movie_group.movies:
+                    movie_group.movies.append(movie)
+                    extensions.sql.session.commit()
+                    return {'msg': f'Added movie {movie.title} to {movie_group.name}'}
+                else:
+                    return {'msg': f'Movie {movie.title} already in {movie_group.name}'}
             else:
                 return {'msg': 'Could not find movie'}
         else:
