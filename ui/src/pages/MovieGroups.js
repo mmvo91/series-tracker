@@ -38,7 +38,7 @@ const NewMovieGroup = (props) => {
     }
 
     return (
-        <Modal show={props.show} onHide={props.handleClose} size="lg">
+        <Modal show={props.show} onHide={props.handleClose} onExit={() => setMsg(null)} size="lg">
             <Modal.Header closeButton>
                 <Modal.Title>
                     Adding Movie Group
@@ -197,6 +197,7 @@ const AddMovieToMovieGroup = (props) => {
         <Modal
             show={props.show}
             onHide={props.handleClose}
+            onExit={() => setMsg(null)}
             size="lg"
         >
             <Modal.Header closeButton>
