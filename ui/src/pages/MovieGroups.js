@@ -178,7 +178,9 @@ const AddMovieToMovieGroup = (props) => {
     }
 
     const onSelectMovie = (selected) => {
-        selectMovie(selected[0]['movie']['id'])
+        if (selected.length > 0){
+            selectMovie(selected[0]['movie']['id'])
+        }
     }
 
     const handleClick = () => {
