@@ -162,20 +162,12 @@ const AddMovieToMovieGroup = (props) => {
     const [selectedMovie, selectMovie] = useState(null)
 
     useEffect(() => {
-        api.get('/users/' + user_id +'/movies')
+        api.get('/users/' + user_id + '/movies')
             .then(res => {
                 setMovies(res.data);
             })
-
-        api.get('/users/' + user_id + '/movies/groups')
-            .then(res => {
-                setMovieGroup(res.data);
-            })
-    }, [])
-
-    const onSelectMovieGroup = (selected) => {
-        selectMovieGroup(selected[0]['id'])
     }
+    )
 
     const onSelectMovie = (selected) => {
         if (selected.length > 0){
@@ -206,21 +198,12 @@ const AddMovieToMovieGroup = (props) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Typeahead
-                    id="moviegroup"
-                    disabled
-                    labelKey="name"
-                    defaultSelected={[props.group]}
-                    options={movieGroup}
-                    onChange={onSelectMovieGroup}
-                    placeholder="Select movie group..."
-                    renderMenuItemChildren={(option) => (
-                        <div>
-                            <span className="pr-5">{option.name}</span>
-                        </div>
-                    )}
-                    className="py-2"
-                />
+                <Form.Group controlId="name">
+                    <Form.Control
+                        disabled
+                        value={props.group.name}
+                    />
+                </Form.Group>
                 <Typeahead
                     id="movie"
                     labelKey={option => `${option.movie.title}`}
