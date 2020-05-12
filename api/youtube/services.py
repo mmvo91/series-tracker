@@ -21,10 +21,10 @@ class YoutubeAPI(object):
     def _endpoint_url(self, endpoint):
         return f'{self.BASE_URL}/{self.API_VERSION}/{endpoint}/?key={self.KEY}'
 
-    def channel(self, id):
+    def channel(self, channel_id):
         params = {
          'part': 'snippet',
-         'id': id
+         'id': channel_id
         }
 
         return requests.get(self._endpoint_url('channels') + self._serialize_params(params)).json()
