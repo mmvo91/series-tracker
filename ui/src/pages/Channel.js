@@ -83,7 +83,7 @@ const Video = (props) => {
                 </Card.Body>
                 <Card.Footer>
                     <div>
-                        <div className="float-left">
+                        <div className="text-center">
                             <Button
                                 href={'https://www.youtube.com/watch?v=' + props.video.id}
                                 variant="white"
@@ -94,8 +94,6 @@ const Video = (props) => {
                                 <br/>
                                 <small>YouTube Link</small>
                             </Button>
-                        </div>
-                        <div className="float-right">
                             {
                                 watched
                                     ? <IconButton
