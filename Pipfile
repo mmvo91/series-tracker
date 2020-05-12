@@ -24,6 +24,7 @@ gunicorn = "*"
 requests = "*"
 flask-migrate = "*"
 pytz = "*"
+flask-rest-paginate = "*"
 
 [requires]
 python_version = "3.7"
