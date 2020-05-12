@@ -1,7 +1,8 @@
 import requests
 
-from api import extensions, config
-from . import models, config
+from api import extensions
+from api.config import config
+from . import models
 
 
 class YoutubeAPI(object):
