@@ -62,6 +62,9 @@ const Navigation = () => {
                                         <LinkNav to={"/movies"} title="Movies"/>
                                         <LinkNav to={"/groups"} title="Movie Groups"/>
                                     </NavDropdown>
+                                    <LinkContainer to="/youtube">
+                                        <Nav.Link>YouTube</Nav.Link>
+                                    </LinkContainer>
                                 </Nav>
                                 <Nav>
                                     <Nav.Link href={"/"} onClick={loggingOut}>Logout</Nav.Link>
