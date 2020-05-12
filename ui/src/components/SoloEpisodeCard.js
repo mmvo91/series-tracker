@@ -2,7 +2,7 @@ import React from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
-import moment from "moment"
+import moment from "moment-timezone"
 import IconButton from "../components/IconButton"
 
 const SoloEpisode = (props) => {
@@ -13,7 +13,7 @@ const SoloEpisode = (props) => {
                     <Card.Title>{props.episode.name}</Card.Title>
                     <Card.Subtitle>{props.show.name}</Card.Subtitle>
                     <Image fluid src={props.episode.image} className="mx-auto d-block my-3"/>
-                    <p><b>Air Date: </b>{moment(props.episode.air_date).local().format('MMMM Do YYYY @ hh:mm A')}</p>
+                    <p><b>Air Date: </b>{moment.tz(props.episode.air_date, 'Etc/UTC').tz(moment.tz.guess(true)).format('MMMM Do YYYY @ hh:mm A z')}</p>
                     <p><b>Season: </b>{props.episode.season} <b>Episode: </b>{props.episode.number}</p>
                     <div dangerouslySetInnerHTML={{__html: props.episode.summary}}/>
                 </Card.Body>
