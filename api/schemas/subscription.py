@@ -5,7 +5,7 @@ from api.extensions import ma
 from api.schemas import ShowSchema, SeasonSchema, EpisodesSchema
 
 
-class SubscriptionSchema(ma.ModelSchema):
+class SubscriptionSchema(ma.SQLAlchemyAutoSchema):
     watched = ma.Boolean(dump_only=True)
 
     class Meta:
@@ -20,7 +20,7 @@ class SubscriptionSchema(ma.ModelSchema):
     show = ma.Nested(ShowSchema)
 
 
-class SeasonWatchSchema(ma.ModelSchema):
+class SeasonWatchSchema(ma.SQLAlchemyAutoSchema):
     watched = ma.Boolean(dump_only=True)
 
     class Meta:
@@ -35,7 +35,7 @@ class SeasonWatchSchema(ma.ModelSchema):
     season = ma.Nested(SeasonSchema)
 
 
-class WatchSchema(ma.ModelSchema):
+class WatchSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Watched
         exclude = [
@@ -48,7 +48,7 @@ class WatchSchema(ma.ModelSchema):
     episode = ma.Nested(EpisodesSchema)
 
 
-class SubscriptionWatchSchema(ma.ModelSchema):
+class SubscriptionWatchSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Watched
         exclude = [
@@ -62,7 +62,7 @@ class SubscriptionWatchSchema(ma.ModelSchema):
     show = ma.Nested(ShowSchema)
 
 
-class CompletionSchema(ma.Schema):
+class CompletionSchema(ma.SQLAlchemySchema):
     show_id = fields.Int()
     name = fields.Str()
     image = fields.Str()

@@ -2,7 +2,7 @@ from api import models
 from api.extensions import ma
 
 
-class MovieSchema(ma.ModelSchema):
+class MovieSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Movie
         fields = [
@@ -16,7 +16,7 @@ class MovieSchema(ma.ModelSchema):
         ]
 
 
-class UserMovieSchema(ma.ModelSchema):
+class UserMovieSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.AddedMovie
         exclude = [
@@ -29,7 +29,7 @@ class UserMovieSchema(ma.ModelSchema):
     movie = ma.Nested(MovieSchema)
 
 
-class MovieGroupSchema(ma.ModelSchema):
+class MovieGroupSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.MovieGroup
         exclude = [

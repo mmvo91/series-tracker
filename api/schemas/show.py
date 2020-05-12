@@ -2,7 +2,7 @@ from api import models
 from api.extensions import ma
 
 
-class ShowSchema(ma.ModelSchema):
+class ShowSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Show
         fields = [
@@ -15,7 +15,7 @@ class ShowSchema(ma.ModelSchema):
         ]
 
 
-class SeasonSchema(ma.ModelSchema):
+class SeasonSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Season
         fields = [
@@ -30,7 +30,7 @@ class SeasonSchema(ma.ModelSchema):
         ]
 
 
-class EpisodesSchema(ma.ModelSchema):
+class EpisodesSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Episode
         fields = [

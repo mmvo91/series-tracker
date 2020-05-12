@@ -2,7 +2,7 @@ from api import models
 from api.extensions import ma
 
 
-class UniverseSchema(ma.ModelSchema):
+class UniverseSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = models.Universe
         fields = [
