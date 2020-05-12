@@ -2,13 +2,14 @@ import React from 'react';
 import './scss/custom.scss'
 import './App.css';
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faCheck, faChevronRight, faEdit, faExpand, faMinus, faPlus, faTv} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faChevronRight, faEdit, faExpand, faMinus, faPlus, faTv, faLink} from '@fortawesome/free-solid-svg-icons'
 import Container from "react-bootstrap/Container";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import api from "./Api"
 import PrivateRoute from "./components/PrivateRoute"
 import Navigation from "./components/Navigation";
 import Spinner from "react-bootstrap/Spinner";
+
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login"
 import Register from "./pages/Register";
@@ -25,11 +26,14 @@ import Multiverse from "./pages/Multiverse";
 import Universe from "./pages/Universe";
 import Movies from "./pages/Movies";
 import MovieGroups from "./pages/MovieGroups";
+import YouTube from "./pages/YouTube";
+import Videos from "./pages/Channel";
 
 import UserStore from "./stores/UserStore"
 import {connect} from "overstated"
 
-library.add(faChevronRight, faTv, faExpand, faCheck, faMinus, faPlus, faEdit);
+
+library.add(faChevronRight, faTv, faExpand, faCheck, faMinus, faPlus, faEdit, faLink);
 
 class App extends React.Component {
     state = {
@@ -71,6 +75,8 @@ class App extends React.Component {
                         <PrivateRoute exact path="/universe/:id" component={Universe}/>
                         <PrivateRoute exact path="/movies" component={Movies}/>
                         <PrivateRoute exact path="/groups" component={MovieGroups}/>
+                        <PrivateRoute exact path="/youtube" component={YouTube}/>
+                        <PrivateRoute exact path="/youtube/:id" component={Videos}/>
                     </Container>
                 </Router>
             );
