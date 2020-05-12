@@ -57,7 +57,7 @@ def update_show(show):
 def _add_seasons(show_id):
     s = models.Show.query.get(show_id)
 
-    seasons = Wrapper(s.name).seasons()
+    seasons = Wrapper(show_id=show_id).seasons()
 
     for season in seasons:
 
@@ -89,7 +89,7 @@ def _add_seasons(show_id):
 def _add_episodes(show_id):
     file = models.Show.query.get(show_id)
 
-    episodes = Wrapper(file.name).episodes()
+    episodes = Wrapper(show_id=file.id).episodes()
 
     for episode in episodes:
 
@@ -100,7 +100,7 @@ def _add_episodes(show_id):
 
         x = models.Episode(
             id=episode['id'],
-            air_date=episode['airdate'] if episode['airdate'] != '' else None,
+            air_date=episode['airstamp'] if episode['airstamp'] != '' else None,
             name=episode['name'],
             number=episode['number'],
             season=episode['season'],
@@ -124,7 +124,7 @@ def update_episodes(show):  # new episodes
         if x is None:
             x = models.Episode(
                 id=episode['id'],
-                air_date=episode['airdate'],
+                air_date=episode['airstamp'],
                 name=episode['name'],
                 number=episode['number'],
                 season=episode['season'],

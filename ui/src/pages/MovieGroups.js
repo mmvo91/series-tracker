@@ -1,25 +1,18 @@
 import React, {useEffect, useState} from "react";
-import api from "../Api";
+import {Typeahead} from "react-bootstrap-typeahead";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-
-import Movie from "../components/Movie";
-import Title from "../components/Title";
-
-import UserStore from "../stores/UserStore";
-import {useStore} from "overstated";
+import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
-import {Typeahead} from "react-bootstrap-typeahead";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import Modal from "react-bootstrap/Modal";
+
+import api from "../Api";
+import Movie from "../components/Movie";
+import Title from "../components/Title";
 
 const NewMovieGroup = (props) => {
-    const {user_id} = useStore(UserStore, store => ({
-        user_id: store.state.id,
-    }));
-
     const [msg, setMsg] = useState(null)
 
     const handleSubmit = (e) => {
@@ -31,7 +24,7 @@ const NewMovieGroup = (props) => {
             type: e.target.type.value
         }
 
-        api.post('users/' + user_id + '/movies/groups', data)
+        api.post('/movies/groups', data)
             .then(res => (
                 setMsg(res.data['msg'])
             ))
@@ -80,17 +73,13 @@ const NewMovieGroup = (props) => {
 }
 
 const MovieGroups = () => {
-    const {user_id} = useStore(UserStore, store => ({
-        user_id: store.state.id,
-    }));
-
     const [movieGroup, setMovieGroups] = useState(null);
     const [showEditMovieGroup, setShowEditMovieGroup] = useState(false);
     const [showMovieGroup, setShowMovieGroup] = useState(false);
     const [selectedGroup, setGroup] = useState({id: null})
 
     useEffect(() => {
-        api.get('users/' + user_id + '/movies/groups')
+        api.get('/movies/groups')
             .then(res => setMovieGroups(res.data))
     }, []);
 
@@ -150,24 +139,17 @@ const MovieGroups = () => {
 }
 
 const AddMovieToMovieGroup = (props) => {
-    const {user_id} = useStore(UserStore, store => ({
-        user_id: store.state.id,
-    }));
-
     const [msg, setMsg] = useState(null)
-    const [movieGroup, setMovieGroup] = useState(null)
     const [movies, setMovies] = useState(null)
-
-    const [selectedMovieGroup, selectMovieGroup] = useState(null)
     const [selectedMovie, selectMovie] = useState(null)
 
     useEffect(() => {
-        api.get('/users/' + user_id + '/movies')
-            .then(res => {
-                setMovies(res.data);
-            })
-    }
-    )
+            api.get('/movies')
+                .then(res => {
+                    setMovies(res.data);
+                })
+        }
+    , [])
 
     const onSelectMovie = (selected) => {
         if (selected.length > 0){
@@ -181,7 +163,7 @@ const AddMovieToMovieGroup = (props) => {
             movie_group_id: props.group.id
         }
 
-        api.put('/users/' + user_id + '/movies/groups', data)
+        api.put('/movies/groups', data)
             .then(res => setMsg(res.data['msg']))
     }
 

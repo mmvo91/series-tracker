@@ -32,7 +32,6 @@ class AddedMovie(sql.Model):
     movie_id = sql.Column(sql.String, sql.ForeignKey('movies.id'), primary_key=True)
     watched = sql.Column(sql.Boolean, default=False)
 
-    user = sql.relationship('User')
     movie = sql.relationship('Movie')
 
     ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())

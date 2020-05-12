@@ -11,14 +11,8 @@ import config from "../Config";
 import api from "../Api";
 import Movie from "../components/Movie";
 import Title from "../components/Title";
-import {useStore} from "overstated";
-import UserStore from "../stores/UserStore";
 
 const AddMovie = () => {
-    const {user_id} = useStore (UserStore, store => ({
-        user_id: store.state.id,
-    }));
-
     const [isLoading, changeLoading] = useState(false)
     const [shows, changeShows] = useState([])
     const [selectedShow, changeSelected] = useState(null)
@@ -41,7 +35,7 @@ const AddMovie = () => {
     const newSub = (x) => {
         x.preventDefault();
 
-        api.post('/users/' + user_id + '/movies', selectedShow)
+        api.post('/movies', selectedShow)
             .then(res => {
                 changeMsg(res.data['msg'])
             })
@@ -98,13 +92,10 @@ const AddMovie = () => {
 }
 
 const Movies = () => {
-    const {user_id} = useStore (UserStore, store => ({
-        user_id: store.state.id,
-    }));
     const [movies, setMovies] = useState(null)
 
     useEffect(() => {
-            api.get('/users/' + user_id + '/movies')
+            api.get('/movies')
                 .then(res => {
                     setMovies(res.data)
                 })

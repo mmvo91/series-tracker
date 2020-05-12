@@ -9,14 +9,7 @@ import Collapse from "react-bootstrap/Collapse";
 import IconButton from "./IconButton";
 import Button from "react-bootstrap/Button";
 
-import UserStore from "../stores/UserStore"
-import {useStore} from 'overstated';
-
 const Movie = (props) => {
-    const {user_id} = useStore (UserStore, store => ({
-        user_id: store.state.id,
-    }));
-
     const [open, setCollapse] = useState(false);
     const [rotation, setRotation] = useState(0);
     const [watched, setWatch] = useState(props.watched)
@@ -29,7 +22,7 @@ const Movie = (props) => {
             watched: !watched
         }
 
-        api.put('/users/' + user_id + '/movies', data)
+        api.put('/movies', data)
             .then(() => setWatch(!watched))
     }
 
@@ -38,7 +31,7 @@ const Movie = (props) => {
 
         const movie_id = e.target.id
 
-        api.delete('/users/' + user_id + '/movies/' + movie_id)
+        api.delete('/movies/' + movie_id)
             .then(() => {
                 console.log('deleted')
             })
