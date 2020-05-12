@@ -1,5 +1,6 @@
 from flask import Flask
 
+from api.youtube.routes import youtube_bp
 from api import extensions, routes
 from api.config import config
 
@@ -15,6 +16,7 @@ def create_app():
     extensions.pagination.init_app(app, extensions.sql)
 
     app.register_blueprint(routes.api_bp)
+    app.register_blueprint(youtube_bp)
 
     return app
 

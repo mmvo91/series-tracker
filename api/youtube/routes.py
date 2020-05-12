@@ -4,9 +4,9 @@ from flask_restful import Api
 
 from . import resources
 
-bp = Blueprint('youtube', __name__, url_prefix="/channels")
-youtube = Api(bp)
-CORS(bp, supports_credentials=True)
+youtube_bp = Blueprint('youtube', __name__, url_prefix="/channels")
+youtube = Api(youtube_bp)
+CORS(youtube_bp, supports_credentials=True)
 
 youtube.add_resource(resources.Channels, "", strict_slashes=False)
 youtube.add_resource(resources.Channel, "/<channel_id>")
