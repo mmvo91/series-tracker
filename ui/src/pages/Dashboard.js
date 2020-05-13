@@ -5,10 +5,7 @@ import Title from "../components/Title"
 import SoloEpisode from "../components/SoloEpisodeCard";
 import Spinner from "react-bootstrap/Spinner";
 
-import UserStore from "../stores/UserStore"
-import {connect} from "overstated"
-
-export default connect(UserStore)(class New extends Component {
+export default (class New extends Component {
     state = {
         new: null,
         queue: null,
@@ -16,17 +13,17 @@ export default connect(UserStore)(class New extends Component {
     };
 
     componentDidMount() {
-        api.get('/users/' + this.props.store.state.id + '/new')
+        api.get('/shows/new')
             .then(res => {
                 this.setState({new: res.data});
             });
 
-        api.get('/users/' + this.props.store.state.id + '/queue')
+        api.get('/shows/queue')
             .then(res => {
                 this.setState({queue: res.data});
             });
 
-        api.get('/users/' + this.props.store.state.id + '/upcoming')
+        api.get('/shows/upcoming')
             .then(res => {
                 this.setState({upcoming: res.data});
             })

@@ -49,7 +49,7 @@ export default connect(UserStore)(class Subscription extends Component {
             show_id: this.state.selected[0].show.id
         };
 
-        api.post('/users/' + this.props.store.state.id + '/subscriptions', data)
+        api.post('/shows/subscriptions', data)
             .then(res => {
                 this.setState({
                     msg: res.data['msg']

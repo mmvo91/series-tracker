@@ -4,16 +4,13 @@ import Spinner from "react-bootstrap/Spinner"
 import api from "../Api"
 import SoloEpisode from "../components/SoloEpisodeCard";
 
-import UserStore from "../stores/UserStore"
-import {connect} from "overstated"
-
-export default connect(UserStore)(class Queue extends Component {
+export default (class Queue extends Component {
     state = {
         data: null
     };
 
     componentDidMount() {
-        api.get('/users/' + this.props.store.state.id + '/queue')
+        api.get('/shows/queue')
             .then(res => {
                 this.setState({data: res.data});
             })

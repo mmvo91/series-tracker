@@ -3,19 +3,16 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col"
 import Spinner from "react-bootstrap/Spinner"
 import api from "../Api"
-
-import UserStore from "../stores/UserStore"
-import {connect} from "overstated"
 import Card from "react-bootstrap/Card";
 import LinkButton from "../components/LinkButton";
 
-export default connect(UserStore)(class Multiverse extends Component {
+export default (class Multiverse extends Component {
     state = {
         data: null
     };
 
     componentDidMount = () => {
-        api.get('/users/' + this.props.store.state.id + '/universe')
+        api.get('/shows/universe')
             .then(res => {
                 this.setState({data: res.data});
             })

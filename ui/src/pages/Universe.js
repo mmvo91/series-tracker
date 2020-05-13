@@ -4,16 +4,13 @@ import Spinner from "react-bootstrap/Spinner"
 import api from "../Api"
 import SoloEpisode from "../components/SoloEpisodeCard";
 
-import UserStore from "../stores/UserStore"
-import {connect} from "overstated"
-
-export default connect(UserStore)(class Universe extends Component {
+export default (class Universe extends Component {
     state = {
         data: null
     };
 
     componentDidMount = () => {
-        api.get('/users/' + this.props.store.state.id + '/universe/' + this.props.match.params.id)
+        api.get('/shows/universe/' + this.props.match.params.id)
             .then(res => {
                 this.setState({data: res.data});
             })

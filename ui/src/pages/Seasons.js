@@ -4,22 +4,19 @@ import api from "../Api"
 import Season from "../components/SeasonCard"
 import ShowDisplay from "../components/ShowDisplay";
 
-import UserStore from "../stores/UserStore"
-import {connect} from "overstated"
-
-export default connect(UserStore)(class Seasons extends Component {
+export default (class Seasons extends Component {
     state = {
         show: {},
         data: []
     };
 
     componentDidMount() {
-        api.get('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id)
+        api.get('/shows/subscriptions/' + this.props.match.params.id)
             .then(res => {
                 this.setState({show: res.data});
             });
 
-        api.get('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/seasons')
+        api.get('/shows/subscriptions/' + this.props.match.params.id + '/seasons')
             .then(res => {
                 this.setState({data: res.data});
             })
@@ -41,7 +38,7 @@ export default connect(UserStore)(class Seasons extends Component {
             watched: watched
         };
 
-        api.put('/users/' + this.props.store.state.id + '/subscriptions/' + this.props.match.params.id + '/seasons', data)
+        api.put('/shows/subscriptions/' + this.props.match.params.id + '/seasons', data)
             .then(() => {
                 let current_data = this.state.data;
                 current_data[idx]['watched'] = watched;

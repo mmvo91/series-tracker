@@ -3,16 +3,13 @@ import {Row} from "react-bootstrap";
 import api from "../Api"
 import Show from "../components/ShowCard"
 
-import UserStore from "../stores/UserStore"
-import {connect} from "overstated"
-
-export default connect(UserStore)(class RecentSub extends Component {
+export default (class RecentSub extends Component {
     state = {
         data: []
     };
 
     componentDidMount() {
-        api.get('/users/' + this.props.store.state.id + '/recent')
+        api.get('/shows/recent')
             .then(res => {
                 this.setState({data: res.data})
             })

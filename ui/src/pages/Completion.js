@@ -2,8 +2,6 @@ import React, {Component} from "react";
 import {Row} from "react-bootstrap";
 import api from "../Api"
 
-import UserStore from "../stores/UserStore"
-import {connect} from "overstated"
 import ProgressMeter from "../components/ProgressMeter";
 import Image from "react-bootstrap/Image";
 import Card from "react-bootstrap/Card";
@@ -11,13 +9,13 @@ import Col from "react-bootstrap/Col";
 import {LinkContainer} from "react-router-bootstrap";
 import Badge from "react-bootstrap/Badge";
 
-export default connect(UserStore)(class Completion extends Component {
+export default (class Completion extends Component {
     state = {
         data: null
     };
 
     componentDidMount() {
-        api.get('/users/' + this.props.store.state.id + '/completion')
+        api.get('/shows/completion')
             .then(res => {
                 this.setState({data: res.data})
             })
