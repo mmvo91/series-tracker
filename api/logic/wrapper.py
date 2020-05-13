@@ -6,9 +6,9 @@ class Wrapper(object):
     BASE_SINGLE = f'{BASE_URL}/singlesearch'
     BASE_SHOW = f'{BASE_URL}/shows'
 
-    def __init__(self, show=None):
+    def __init__(self, show=None, show_id=None):
         self._show = show
-        self._id = self.query_show(show)['id'] if show is not None else None
+        self._id = show_id  # self.query_show(show)['id'] if show is not None else None
 
     @staticmethod
     def _get(url):

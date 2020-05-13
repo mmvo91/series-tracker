@@ -155,7 +155,7 @@ def show_update():
 
             x = models.Episode(
                 id=episode['id'],
-                air_date=datetime.strptime(episode['airdate'], '%Y-%m-%d') if episode['airdate'] != '' else None,
+                air_date=episode['airstamp'] if episode['airstamp'] != '' else None,
                 name=episode['name'],
                 number=episode['number'],
                 season=episode['season'],
@@ -171,7 +171,7 @@ def show_update():
             else:
                 if y.air_date != x.air_date:
                     y.air_date = x.air_date
-                    logging.info(f'{show.name} Episode {y.name} has a new air date: {x.air_date}')
+                    logging.info(f'{show.name} Episode {y.name} has a new air date: {x.air_date}'.encode("utf-8"))
 
                 if y.name != x.name:
                     logging.info(f'{show.name} Episode {y.name} has a new name: {x.name}')
