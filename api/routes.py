@@ -8,8 +8,6 @@ api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 cors = CORS(api_bp, supports_credentials=True)
 
-api.add_resource(resources.Users, "/users")
-api.add_resource(resources.User, "/users/<user_id>")
 api.add_resource(resources.Queue, "/users/<user_id>/queue")
 api.add_resource(resources.New, '/users/<user_id>/new')
 api.add_resource(resources.Recent, "/users/<user_id>/recent")

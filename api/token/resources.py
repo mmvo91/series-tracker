@@ -5,7 +5,8 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource
 
-from api import models, extensions
+from api import extensions
+from api.users import models
 
 
 class Token(Resource):

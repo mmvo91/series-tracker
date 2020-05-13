@@ -1,4 +1,4 @@
-from api import models, schemas
+from . import models, schemas
 from api.extensions import ma
 
 
