@@ -3,7 +3,7 @@ import axios from "axios";
 import {AsyncTypeahead} from "react-bootstrap-typeahead";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Card from "react-bootstrap/Card";
+import Modal from "react-bootstrap/Modal";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 
@@ -11,8 +11,9 @@ import config from "../Config";
 import api from "../Api";
 import Movie from "../components/Movie";
 import Title from "../components/Title";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const AddMovie = () => {
+const AddMovie = (props) => {
     const [isLoading, changeLoading] = useState(false)
     const [shows, changeShows] = useState([])
     const [selectedShow, changeSelected] = useState(null)
@@ -42,8 +43,18 @@ const AddMovie = () => {
     };
 
     return (
-        <Card>
-            <Card.Body>
+        <Modal
+            show={props.show}
+            onHide={props.handleClose}
+            onExit={() => changeMsg(null)}
+            size="lg"
+        >
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    Adding Movie
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
                 <AsyncTypeahead
                     isLoading={isLoading}
                     options={shows}
@@ -81,18 +92,24 @@ const AddMovie = () => {
                 <div className="text-center text-muted">
                     {msg}
                 </div>
-                <div className="py-2 text-center">
-                    <Button onClick={newSub}>
-                        Add Movie
+                <Modal.Footer>
+                    <Button variant="danger" onClick={props.handleClose}>
+                        Close
                     </Button>
-                </div>
-            </Card.Body>
-        </Card>
+                    <div>
+                        <Button onClick={newSub}>
+                            Add Movie
+                        </Button>
+                    </div>
+                </Modal.Footer>
+            </Modal.Body>
+        </Modal>
     )
 }
 
 const Movies = () => {
     const [movies, setMovies] = useState(null)
+    const [showAddMovie, setAddMovie] = useState(false)
 
     useEffect(() => {
             api.get('/movies')
@@ -102,10 +119,19 @@ const Movies = () => {
         }, [],
     );
 
+    const handleOpenAddMovie = () => {
+        setAddMovie(true)
+    }
+
     return (
         <Container fluid>
-            <Title title="Movies"/>
-            <AddMovie/>
+            <Title title="Movies">
+                <FontAwesomeIcon
+                    onClick={handleOpenAddMovie}
+                    icon="edit"
+                />
+            </Title>
+            <AddMovie show={showAddMovie} handleClose={() => setAddMovie(false)}/>
             <Row>
                 {
                     movies !== null
