@@ -1,7 +1,7 @@
 import datetime
 
 from api.extensions import sql
-from api.models import Episode
+from . import Episode
 
 
 def today():

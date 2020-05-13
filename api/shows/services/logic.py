@@ -1,6 +1,6 @@
-from api import models
+from .. import models
 from api.extensions import sql
-from api.logic.wrapper import Wrapper
+from api.shows.services.wrapper import Wrapper
 
 
 def add_user(user, password):
