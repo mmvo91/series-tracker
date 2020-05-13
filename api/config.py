@@ -16,6 +16,8 @@ class Config(object):
     OMDB_API_KEY = os.getenv('REACT_APP_OMDB_API_KEY')
     YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
+    PAGINATE_PAGE_SIZE = 12
+
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_USERNAME = os.getenv('SQLALCHEMY_USERNAME')
