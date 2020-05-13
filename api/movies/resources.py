@@ -5,7 +5,7 @@ from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 
-from api.extensions import sql
+from api.extensions import sql, pagination
 from api.config import config
 
 from . import models, schemas
@@ -21,11 +21,11 @@ class Movie(Resource):
             models.Movie.title
         ).filter(
             models.AddedMovie.user_id == get_jwt_identity()
-        ).all()
+        )
 
         schema = schemas.UserMovieSchema(many=True)
 
-        return schema.dump(add_movie)
+        return pagination.paginate(add_movie, schema, True)
 
     @jwt_required
     def post(self):
@@ -105,8 +105,6 @@ class MovieGroups(Resource):
     @jwt_required
     def post(self):
         data = request.json
-
-        print(data)
 
         if data['name'] is not None and data['name'] != "":
             movie_group = models.MovieGroup.query.filter_by(name=data['name']).first()
