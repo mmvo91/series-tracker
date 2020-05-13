@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"
 import axios from "axios";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {AsyncTypeahead} from "react-bootstrap-typeahead";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -11,7 +12,7 @@ import config from "../Config";
 import api from "../Api";
 import Movie from "../components/Movie";
 import Title from "../components/Title";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import LoadMore from "../components/LoadMore";
 
 const AddMovie = (props) => {
     const [isLoading, changeLoading] = useState(false)
@@ -108,13 +109,15 @@ const AddMovie = (props) => {
 }
 
 const Movies = () => {
+    const [pagination, setPagination] = useState(null)
     const [movies, setMovies] = useState(null)
     const [showAddMovie, setAddMovie] = useState(false)
 
     useEffect(() => {
             api.get('/movies')
                 .then(res => {
-                    setMovies(res.data)
+                    setPagination(res.data['pagination'])
+                    setMovies(res.data['data'])
                 })
         }, [],
     );
@@ -143,6 +146,12 @@ const Movies = () => {
                         : <div className="w-100 text-center py-2">No movies added</div>
                 }
             </Row>
+            <LoadMore
+                pagination={pagination}
+                newPagination={setPagination}
+                data={movies}
+                newData={setMovies}
+            />
         </Container>
     )
 }
