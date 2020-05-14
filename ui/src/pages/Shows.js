@@ -1,12 +1,16 @@
 import React, {Component} from "react";
 import {Row} from "react-bootstrap";
+
 import api from "../Api"
 import Show from "../components/ShowCard"
 import Subscription from "../components/Subscription"
+import Title from "../components/Title";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export default (class Shows extends Component {
     state = {
-        data: []
+        data: [],
+        show: false
     };
 
     componentDidMount() {
@@ -54,7 +58,16 @@ export default (class Shows extends Component {
     render() {
         return (
             <div>
-                <Subscription/>
+                <Title title="Shows">
+                    <FontAwesomeIcon
+                        onClick={() => this.setState({show: true})}
+                        icon="edit"
+                    />
+                </Title>
+                <Subscription
+                    show={this.state.show}
+                    handleClose={() => this.setState({show: false})}
+                />
                 <Row>
                     {
                         this.state.data.map((datum) => (
