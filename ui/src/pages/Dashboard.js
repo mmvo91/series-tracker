@@ -13,19 +13,19 @@ export default (class New extends Component {
     };
 
     componentDidMount() {
-        api.get('/shows/new')
+        api.get('/shows/new?size=4')
             .then(res => {
-                this.setState({new: res.data});
+                this.setState({new: res.data['data']});
             });
 
-        api.get('/shows/queue')
+        api.get('/shows/queue?size=4')
             .then(res => {
-                this.setState({queue: res.data});
+                this.setState({queue: res.data['data']});
             });
 
-        api.get('/shows/upcoming')
+        api.get('/shows/upcoming?size=4')
             .then(res => {
-                this.setState({upcoming: res.data});
+                this.setState({upcoming: res.data['data']});
             })
     }
 
@@ -38,7 +38,7 @@ export default (class New extends Component {
                         this.state.new !== null
                             ? (
                                 this.state.new.length !== 0
-                                    ? this.state.new.slice(0, 4).map((datum) =>
+                                    ? this.state.new.map((datum) =>
                                         (
                                             <SoloEpisode
                                                 key={datum.id}
@@ -64,7 +64,7 @@ export default (class New extends Component {
                         this.state.queue !== null
                             ? (
                                 this.state.queue.length !== 0
-                                    ? this.state.queue.slice(0, 4).map((datum) =>
+                                    ? this.state.queue.map((datum) =>
                                         (
                                             <SoloEpisode
                                                 key={datum.id}
@@ -90,7 +90,7 @@ export default (class New extends Component {
                         this.state.upcoming !== null
                             ? (
                                 this.state.upcoming.length !== 0
-                                    ? this.state.upcoming.slice(0, 4).map((datum) =>
+                                    ? this.state.upcoming.map((datum) =>
                                         (
                                             <SoloEpisode
                                                 key={datum.id}
