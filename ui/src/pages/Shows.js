@@ -1,22 +1,24 @@
 import React, {Component} from "react";
 import {Row} from "react-bootstrap";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 import api from "../Api"
 import Show from "../components/ShowCard"
 import Subscription from "../components/Subscription"
 import Title from "../components/Title";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import LoadMore from "../components/LoadMore";
 
 export default (class Shows extends Component {
     state = {
         data: [],
-        show: false
+        show: false,
+        pagination: null,
     };
 
     componentDidMount() {
         api.get('/shows/subscriptions')
             .then(res => {
-                this.setState({data: res.data})
+                this.setState({data: res.data['data'], pagination: res.data['pagination']})
             })
     }
 
@@ -79,6 +81,12 @@ export default (class Shows extends Component {
                         ))
                     }
                 </Row>
+                <LoadMore
+                    pagination={this.state.pagination}
+                    newPagination={(e) => this.setState({pagination: e})}
+                    data={this.state.data}
+                    newData={(e) => this.setState({data: e})}
+                />
             </div>
         )
     }

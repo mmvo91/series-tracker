@@ -114,11 +114,11 @@ class Subscriptions(Resource):
             models.Show.name
         ).filter(
             models.Subscription.user_id == get_jwt_identity()
-        ).all()
+        )
 
-        schema = schemas.SubscriptionSchema(many=True)
+        schema = schemas.SubscriptionSchema()
 
-        return schema.dump(subscription)
+        return extensions.pagination.paginate(subscription, schema, True)
 
     @jwt_required
     def post(self):
