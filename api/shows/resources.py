@@ -268,11 +268,11 @@ class Queue(Resource):
             models.Watched.episode.has(models.Episode.air_date <= today()),
             models.Watched.user_id == get_jwt_identity(),
             models.Watched.watched.is_(False)
-        ).limit(50).all()
+        )
 
-        schema = schemas.SubscriptionWatchSchema(many=True)
+        schema = schemas.SubscriptionWatchSchema()
 
-        return schema.dump(queue)
+        return extensions.pagination.paginate(queue, schema, True)
 
 
 class New(Resource):
