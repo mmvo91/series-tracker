@@ -1,11 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
 
 import api from "../Api";
 
 
 const LoadMore = (props) => {
-    const [hasNext, setHasNext] = useState(true)
+    const [hasNext, setHasNext] = useState(false)
+
+    useEffect(() => {
+        if (props.pagination !== null) {
+            setHasNext(props.pagination['hasNext'])
+        }
+    }, [props.pagination])
 
     const getMore = () => {
         api.get(props.pagination['next'])
@@ -16,14 +22,14 @@ const LoadMore = (props) => {
             })
     }
 
-    if (hasNext){
-        return(
+    if (hasNext) {
+        return (
             <Button className="py-2" onClick={getMore} size="sm" block>
                 Load More...
             </Button>
         )
     } else {
-        return(null)
+        return (null)
     }
 }
 
