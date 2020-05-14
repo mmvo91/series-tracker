@@ -25,6 +25,7 @@ requests = "*"
 flask-migrate = "*"
 pytz = "*"
 flask-rest-paginate = "*"
+isodate = "*"
 
 [requires]
 python_version = "3.7"

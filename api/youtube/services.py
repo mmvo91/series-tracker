@@ -1,4 +1,5 @@
 import requests
+import isodate
 
 from api import extensions
 from api.config import config
@@ -41,6 +42,16 @@ class YoutubeAPI(object):
             params['pageToken'] = next
 
         return requests.get(self._endpoint_url('search') + self._serialize_params(params)).json()
+
+    def videos(self, video_ids):
+        params = {
+            "part": "contentDetails",
+            "id": ",".join(video_ids)
+        }
+
+        url = self._endpoint_url("videos") + self._serialize_params(params)
+
+        return requests.get(url).json()
 
 
 class ChannelService(object):
@@ -121,3 +132,36 @@ class ChannelService(object):
             subscribed_video.video = video
 
             extensions.sql.session.add(subscribed_video)
+
+
+class VideoService(object):
+    @staticmethod
+    def get_video_content_details_duration(video_id):
+        data = YoutubeAPI().videos(
+            video_ids=[video_id]
+        )
+
+        return isodate.parse_duration(data['items'][0]['contentDetails']['duration']).seconds
+
+    @staticmethod
+    def update_all_video_content_details_without_duration():
+        videos = models.Video.query.filter(
+            extensions.sql.or_(
+                models.Video.duration.is_(None)
+            )
+        ).all()
+
+        id_list = [video.id for video in videos][0:50]
+
+        data = YoutubeAPI().videos(
+            video_ids=id_list
+        )
+
+        for item in data['items']:
+            video = models.Video.query.get(item['id'])
+
+            video.duration = isodate.parse_duration(item['contentDetails']['duration']).seconds
+
+        extensions.sql.session.commit()
+
+        return data
