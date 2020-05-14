@@ -46,11 +46,14 @@ class Channel(Resource):
 class Videos(Resource):
     @jwt_required
     def get(self, channel_id):
-        subscribed_video = models.SubscribedVideo.query.filter_by(
-            user_id=get_jwt_identity(),
-            channel_id=channel_id
+        subscribed_video = models.SubscribedVideo.query.join(
+            models.Video
+        ).filter(
+            models.SubscribedVideo.user_id == get_jwt_identity(),
+            models.SubscribedVideo.channel_id == channel_id
         ).order_by(
-            models.SubscribedVideo.watched
+            models.SubscribedVideo.watched,
+            models.Video.publish_date
         )
 
         schema = schemas.SubscribedVideoSchema()
