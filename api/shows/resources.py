@@ -287,11 +287,11 @@ class New(Resource):
             models.Watched.episode.has(models.Episode.air_date >= under_two_weeks_ago),
             models.Watched.user_id == get_jwt_identity(),
             models.Watched.watched.is_(False)
-        ).all()
+        )
 
-        schema = schemas.SubscriptionWatchSchema(many=True)
+        schema = schemas.SubscriptionWatchSchema()
 
-        return schema.dump(new)
+        return extensions.pagination.paginate(new, schema, True)
 
 
 class Upcoming(Resource):
