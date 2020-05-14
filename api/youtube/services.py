@@ -99,15 +99,17 @@ class ChannelService(object):
             data = YoutubeAPI().search(self._channel_id, next=page_token)
 
             for item in data['items']:
-
                 try:
                     video = models.Video(
                         id=item['id']['videoId'],
                         channel_id=self._channel_id,
                         title=item['snippet']['title'],
                         description=item['snippet']['description'],
-                        image=item['snippet']['thumbnails']['high']['url']
+                        image=item['snippet']['thumbnails']['high']['url'],
+                        publish_date=item['snippet']['publishedAt'],
                     )
+
+                    video.duration = VideoService().get_video_content_details_duration(video.id)
 
                     videos.append(video)
                 except KeyError:
