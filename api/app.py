@@ -2,6 +2,7 @@ from flask import Flask
 
 from api.users.routes import users_bp
 from api.token.routes import token_bp
+from api.books.routes import book_bp
 from api.shows.routes import shows_bp
 from api.movies.routes import movies_bp
 from api.youtube.routes import youtube_bp
@@ -19,9 +20,9 @@ def create_app():
     extensions.migrate.init_app(app)
     extensions.pagination.init_app(app, extensions.sql)
 
-    # app.register_blueprint(routes.api_bp)
     app.register_blueprint(users_bp)
     app.register_blueprint(token_bp)
+    app.register_blueprint(book_bp)
     app.register_blueprint(shows_bp)
     app.register_blueprint(movies_bp)
     app.register_blueprint(youtube_bp)
