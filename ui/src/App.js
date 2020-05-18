@@ -28,6 +28,7 @@ import Movies from "./pages/Movies";
 import MovieGroups from "./pages/MovieGroups";
 import YouTube from "./pages/YouTube";
 import Videos from "./pages/Channel";
+import Books from "./pages/Books";
 
 import UserStore from "./stores/UserStore"
 import {connect} from "overstated"
@@ -77,6 +78,7 @@ class App extends React.Component {
                         <PrivateRoute exact path="/groups" component={MovieGroups}/>
                         <PrivateRoute exact path="/youtube" component={YouTube}/>
                         <PrivateRoute exact path="/youtube/:id" component={Videos}/>
+                        <PrivateRoute exact path="/books" component={Books}/>
                     </Container>
                 </Router>
             );

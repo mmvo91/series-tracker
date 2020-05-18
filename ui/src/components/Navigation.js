@@ -65,6 +65,9 @@ const Navigation = () => {
                                     <LinkContainer to="/youtube">
                                         <Nav.Link>YouTube</Nav.Link>
                                     </LinkContainer>
+                                    <LinkContainer to="/books">
+                                        <Nav.Link>Books</Nav.Link>
+                                    </LinkContainer>
                                 </Nav>
                                 <Nav>
                                     <Nav.Link href={"/"} onClick={loggingOut}>Logout</Nav.Link>
