@@ -146,7 +146,7 @@ const AddMovieToMovieGroup = (props) => {
     useEffect(() => {
             api.get('/movies')
                 .then(res => {
-                    setMovies(res.data);
+                    setMovies(res.data['data']);
                 })
         }
     , [])
