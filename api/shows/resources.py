@@ -281,7 +281,8 @@ class New(Resource):
         under_two_weeks_ago = today() - datetime.timedelta(days=13)
 
         new = models.Watched.query.join(models.Episode).order_by(
-            models.Episode.air_date
+            models.Episode.air_date,
+            models.Episode.number
         ).filter(
             models.Watched.episode.has(models.Episode.air_date <= today()),
             models.Watched.episode.has(models.Episode.air_date >= under_two_weeks_ago),
@@ -298,7 +299,8 @@ class Upcoming(Resource):
     @jwt_required
     def get(self):
         new = models.Watched.query.join(models.Episode).order_by(
-            models.Episode.air_date
+            models.Episode.air_date,
+            models.Episode.number
         ).filter(
             models.Watched.episode.has(models.Episode.air_date > today()),
             models.Watched.user_id == get_jwt_identity(),
