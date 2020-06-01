@@ -165,7 +165,7 @@ class SubscriptionService(object):
         sql.session.commit()
 
         self._subscribed_season()
-        _subscribed_watched(self._user_id, self._show_id)
+        self._subscribed_watched()
 
     def _subscribed_season(self):
         seasons = models.Season.query.filter_by(show_id=self._show_id).all()
@@ -181,22 +181,24 @@ class SubscriptionService(object):
 
         sql.session.commit()
 
+    def _subscribed_watched(self):
+        s = models.Show.query.get(self._show_id)
 
-def _subscribed_watched(user_id, show_id):
-    s = models.Show.query.get(show_id)
+        for episode in s.episodes:
+            season = models.Season.query.filter_by(
+                show_id=self._show_id,
+                number=episode.season
+            ).first()
 
-    for episode in s.episodes:
-        season = models.Season.query.filter_by(show_id=show_id, number=episode.season).first()
+            x = models.Watched(
+                user_id=self._user_id,
+                show_id=self._show_id,
+                season_id=season.id,
+                episode_id=episode.id
+            )
+            sql.session.add(x)
 
-        x = models.Watched(
-            user_id=user_id,
-            show_id=show_id,
-            season_id=season.id,
-            episode_id=episode.id
-        )
-        sql.session.add(x)
-
-    sql.session.commit()
+        sql.session.commit()
 
 
 def watched(user_id, show_id, episode_id, watch_state):
