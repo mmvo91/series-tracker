@@ -200,11 +200,12 @@ class SubscriptionService(object):
 
         sql.session.commit()
 
+    def watched(self, episode_id, watch_state):
+        x = models.Watched.query.get(
+            (self._user_id, self._show_id, episode_id)
+        )
 
-def watched(user_id, show_id, episode_id, watch_state):
-    x = models.Watched.query.get((user_id, show_id, episode_id))
+        x.watched = watch_state
 
-    x.watched = watch_state
-
-    sql.session.add(x)
-    sql.session.commit()
+        sql.session.add(x)
+        sql.session.commit()
