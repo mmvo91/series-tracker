@@ -150,17 +150,22 @@ class ShowService(object):
         sql.session.commit()
 
 
-def subscribe(user_id, show_id):
-    sub = models.Subscription(
-        user_id=user_id,
-        show_id=show_id
-    )
+class SubscriptionService(object):
+    def __init__(self, user_id, show_id):
+        self._user_id = user_id
+        self._show_id = show_id
 
-    sql.session.add(sub)
-    sql.session.commit()
+    def subscribe(self):
+        sub = models.Subscription(
+            user_id=self._user_id,
+            show_id=self._show_id
+        )
 
-    _subscribed_season(user_id, show_id)
-    _subscribed_watched(user_id, show_id)
+        sql.session.add(sub)
+        sql.session.commit()
+
+        _subscribed_season(self._user_id, self._show_id)
+        _subscribed_watched(self._user_id, self._show_id)
 
 
 def _subscribed_season(user_id, show_id):
