@@ -35,7 +35,7 @@ class ShowService(object):
         sql.session.add(s)
         sql.session.commit()
 
-        _add_seasons(s.id)
+        self._add_seasons()
         _add_episodes(s.id)
 
     def update_show(self):
@@ -60,37 +60,38 @@ class ShowService(object):
         sql.session.add(z)
         sql.session.commit()
 
+    def _add_seasons(self):
+        s = models.Show.query.get(self._show_id)
 
-def _add_seasons(show_id):
-    s = models.Show.query.get(show_id)
+        seasons = Wrapper(
+            show_id=self._show_id
+        ).seasons()
 
-    seasons = Wrapper(show_id=show_id).seasons()
+        for season in seasons:
 
-    for season in seasons:
+            if season['name'] == "":
+                season_name = None
+            else:
+                season_name = season['name']
 
-        if season['name'] == "":
-            season_name = None
-        else:
-            season_name = season['name']
+            try:
+                image = season['image']['medium']
+            except TypeError:
+                image = None
 
-        try:
-            image = season['image']['medium']
-        except TypeError:
-            image = None
+            x = models.Season(
+                id=season['id'],
+                show_id=s.id,
+                number=season['number'],
+                name=season_name,
+                episodeOrder=season['episodeOrder'],
+                premiereDate=season['premiereDate'],
+                endDate=season['endDate'],
+                image=image,
+            )
+            sql.session.add(x)
 
-        x = models.Season(
-            id=season['id'],
-            show_id=s.id,
-            number=season['number'],
-            name=season_name,
-            episodeOrder=season['episodeOrder'],
-            premiereDate=season['premiereDate'],
-            endDate=season['endDate'],
-            image=image,
-        )
-        sql.session.add(x)
-
-        sql.session.commit()
+            sql.session.commit()
 
 
 def _add_episodes(show_id):
