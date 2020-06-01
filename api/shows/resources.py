@@ -136,7 +136,7 @@ class Subscriptions(Resource):
             show = models.Show.query.get(id_)
 
             if show is None:
-                services.add_show(id_)
+                services.ShowService(id_).add_show()
                 show = models.Show.query.get(show_id)
 
                 if show is None:
@@ -148,7 +148,7 @@ class Subscriptions(Resource):
 
         extensions.sql.session.commit()
 
-        services.subscribe(get_jwt_identity(), show.id)
+        services.SubscriptionService(get_jwt_identity(), show.id).subscribe()
 
         return {'msg': f"Successfully subscribed to {new_subscription}"}
 
@@ -164,7 +164,7 @@ class Subscriptions(Resource):
         ).all()
 
         for episode in episodes:
-            services.watched(get_jwt_identity(), show_id, episode.episode_id, watched)
+            services.SubscriptionService(get_jwt_identity(), show_id).watched(episode.episode_id, watched)
 
         return {'msg': 'Updated Show'}
 
@@ -211,7 +211,7 @@ class Seasons(Resource):
 
         episodes = models.Episode.query.filter_by(show_id=show_id, season=season).all()
         for episode in episodes:
-            services.watched(get_jwt_identity(), show_id, episode.id, watched)
+            services.SubscriptionService(get_jwt_identity(), show_id, ).watched(episode.id, watched)
 
         return {'msg': 'Updated Season'}
 
