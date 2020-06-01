@@ -2,10 +2,10 @@ import logging
 from datetime import datetime
 from dateutil import parser
 
-from api import models
 from api.app import create_app
 from api.extensions import sql
-from api.logic import wrapper
+from api.shows import models
+from api.shows.services import wrapper
 
 logging.basicConfig(
     filename='logs/update.log',
