@@ -121,34 +121,33 @@ class ShowService(object):
 
             sql.session.commit()
 
+    def update_episodes(self):  # new episodes
+        file = sql.session.query(models.Show).get(self._show_id)
+        episodes = Wrapper(show_id=self._show_id).episodes()
 
-def update_episodes(show):  # new episodes
-    file = sql.session.query(models.Show).filter_by(name=show).first()
-    episodes = Wrapper(show).episodes()
+        for episode in episodes:
+            x = sql.session.query(models.Episode).get(episode['id'])
+            if x is None:
+                x = models.Episode(
+                    id=episode['id'],
+                    air_date=parser.parse(episode['airstamp'], ignoretz=True),
+                    name=episode['name'],
+                    number=episode['number'],
+                    season=episode['season'],
+                    summary=episode['summary'],
+                    run_time=episodes['runtime'],
+                    image=episode['image']['medium'],
+                    show_id=file.id,
+                )
+            else:
+                try:
+                    x.image = episode['image']['medium']
+                except TypeError:
+                    pass
 
-    for episode in episodes:
-        x = sql.session.query(models.Episode).get(episode['id'])
-        if x is None:
-            x = models.Episode(
-                id=episode['id'],
-                air_date=parser.parse(episode['airstamp'], ignoretz=True),
-                name=episode['name'],
-                number=episode['number'],
-                season=episode['season'],
-                summary=episode['summary'],
-                run_time=episodes['runtime'],
-                image=episode['image']['medium'],
-                show_id=file.id,
-            )
-        else:
-            try:
-                x.image = episode['image']['medium']
-            except TypeError:
-                pass
+            sql.session.add(x)
 
-        sql.session.add(x)
-
-    sql.session.commit()
+        sql.session.commit()
 
 
 def subscribe(user_id, show_id):
