@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from dateutil import parser
 
 from api import models
 from api.app import create_app
@@ -155,7 +156,7 @@ def show_update():
 
             x = models.Episode(
                 id=episode['id'],
-                air_date=episode['airstamp'] if episode['airstamp'] != '' else None,
+                air_date=parser.parse(episode['airstamp'], ignoretz=True) if episode['airstamp'] not in ('', None) else None,
                 name=episode['name'],
                 number=episode['number'],
                 season=episode['season'],

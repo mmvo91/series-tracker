@@ -1,3 +1,5 @@
+from dateutil import parser
+
 from .. import models
 from api.extensions import sql
 from api.shows.services.wrapper import Wrapper
@@ -100,7 +102,7 @@ def _add_episodes(show_id):
 
         x = models.Episode(
             id=episode['id'],
-            air_date=episode['airstamp'] if episode['airstamp'] != '' else None,
+            air_date=parser.parse(episode['airstamp'], ignoretz=True) if episode['airstamp'] != '' else None,
             name=episode['name'],
             number=episode['number'],
             season=episode['season'],
@@ -124,7 +126,7 @@ def update_episodes(show):  # new episodes
         if x is None:
             x = models.Episode(
                 id=episode['id'],
-                air_date=episode['airstamp'],
+                air_date=parser.parse(episode['airstamp'], ignoretz=True),
                 name=episode['name'],
                 number=episode['number'],
                 season=episode['season'],
