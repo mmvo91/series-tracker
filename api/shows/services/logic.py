@@ -1,40 +1,42 @@
 from dateutil import parser
 
-from .. import models
 from api.extensions import sql
+from api.shows import models
 from api.shows.services.wrapper import Wrapper
 
 
-def add_user(user, password):
-    me = models.User(username=user, password=password)
+class ShowService(object):
+    def __init__(self, show_id):
+        self._show_id = show_id
 
-    sql.session.add(me)
-    sql.session.commit()
+    def add_show(self):
+        x = Wrapper()
+        y = x.show(self._show_id)
 
+        if y['status'] == 'Ended':
+            stat = True
+        else:
+            stat = False
 
-def add_show(show_id):
-    x = Wrapper()
-    y = x.show(show_id)
+        try:
+            image = y['image']['medium']
+        except TypeError:
+            image = None
 
-    if y['status'] == 'Ended':
-        stat = True
-    else:
-        stat = False
+        s = models.Show(
+            id=y['id'],
+            name=y['name'],
+            premiered=y['premiered'],
+            status=stat,
+            summary=y['summary'],
+            image=image
+        )
 
-    try:
-        image = y['image']['medium']
-    except TypeError:
-        image = None
+        sql.session.add(s)
+        sql.session.commit()
 
-    s = models.Show(
-        id=y['id'], name=y['name'], premiered=y['premiered'], status=stat, summary=y['summary'],
-        image=image
-    )
-    sql.session.add(s)
-    sql.session.commit()
-
-    _add_seasons(s.id)
-    _add_episodes(s.id)
+        _add_seasons(s.id)
+        _add_episodes(s.id)
 
 
 def update_show(show):
