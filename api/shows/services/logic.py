@@ -38,24 +38,27 @@ class ShowService(object):
         _add_seasons(s.id)
         _add_episodes(s.id)
 
+    def update_show(self):
+        z = sql.session.query(
+            models.Show
+        ).filter_by(
+            name=self._show_id
+        ).first()
 
-def update_show(show):
-    z = sql.session.query(models.Show).filter_by(name=show).first()
+        x = Wrapper(self._show_id)
+        y = x.query_show()
 
-    x = Wrapper(show)
-    y = x.query_show()
+        if y['status'] == 'Ended':
+            stat = True
+        else:
+            stat = False
 
-    if y['status'] == 'Ended':
-        stat = True
-    else:
-        stat = False
+        z.summary = y['summary']
+        z.image = y['image']['medium']
+        z.status = stat
 
-    z.summary = y['summary']
-    z.image = y['image']['medium']
-    z.status = stat
-
-    sql.session.add(z)
-    sql.session.commit()
+        sql.session.add(z)
+        sql.session.commit()
 
 
 def _add_seasons(show_id):
