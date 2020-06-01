@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react"
+import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -75,6 +76,8 @@ const Video = (props) => {
                         {props.video.title}
                     </Card.Title>
                     <Card.Text>
+                        <div>{moment(props.video.publishDate).format("MMMM Do YYYY")}</div>
+                        <div>{moment("2015-01-01").startOf('day').seconds(props.video.duration).format('H [hours] m [minutes]')}</div>
                         <Image fluid src={props.video.image} className="mx-auto d-block my-3"/>
                         <div>
                             {props.video.description}
