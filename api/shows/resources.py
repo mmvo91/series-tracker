@@ -10,7 +10,7 @@ from flask_restful import Resource
 from api import extensions
 from api.extensions import sql
 from . import models, schemas
-from .services import logic, wrapper
+from .services import services, wrapper
 
 
 def today():
@@ -136,7 +136,7 @@ class Subscriptions(Resource):
             show = models.Show.query.get(id_)
 
             if show is None:
-                logic.add_show(id_)
+                services.add_show(id_)
                 show = models.Show.query.get(show_id)
 
                 if show is None:
@@ -148,7 +148,7 @@ class Subscriptions(Resource):
 
         extensions.sql.session.commit()
 
-        logic.subscribe(get_jwt_identity(), show.id)
+        services.subscribe(get_jwt_identity(), show.id)
 
         return {'msg': f"Successfully subscribed to {new_subscription}"}
 
@@ -164,7 +164,7 @@ class Subscriptions(Resource):
         ).all()
 
         for episode in episodes:
-            logic.watched(get_jwt_identity(), show_id, episode.episode_id, watched)
+            services.watched(get_jwt_identity(), show_id, episode.episode_id, watched)
 
         return {'msg': 'Updated Show'}
 
@@ -211,7 +211,7 @@ class Seasons(Resource):
 
         episodes = models.Episode.query.filter_by(show_id=show_id, season=season).all()
         for episode in episodes:
-            logic.watched(get_jwt_identity(), show_id, episode.id, watched)
+            services.watched(get_jwt_identity(), show_id, episode.id, watched)
 
         return {'msg': 'Updated Season'}
 
