@@ -36,7 +36,7 @@ class ShowService(object):
         sql.session.commit()
 
         self._add_seasons()
-        _add_episodes(s.id)
+        self._add_episodes()
 
     def update_show(self):
         z = sql.session.query(
@@ -93,34 +93,33 @@ class ShowService(object):
 
             sql.session.commit()
 
+    def _add_episodes(self):
+        file = models.Show.query.get(self._show_id)
 
-def _add_episodes(show_id):
-    file = models.Show.query.get(show_id)
+        episodes = Wrapper(show_id=file.id).episodes()
 
-    episodes = Wrapper(show_id=file.id).episodes()
+        for episode in episodes:
 
-    for episode in episodes:
+            try:
+                image = episode['image']['medium']
+            except TypeError:
+                image = None
 
-        try:
-            image = episode['image']['medium']
-        except TypeError:
-            image = None
+            x = models.Episode(
+                id=episode['id'],
+                air_date=parser.parse(episode['airstamp'], ignoretz=True) if episode['airstamp'] != '' else None,
+                name=episode['name'],
+                number=episode['number'],
+                season=episode['season'],
+                summary=episode['summary'],
+                run_time=episode['runtime'],
+                image=image,
+                show_id=file.id,
+            )
 
-        x = models.Episode(
-            id=episode['id'],
-            air_date=parser.parse(episode['airstamp'], ignoretz=True) if episode['airstamp'] != '' else None,
-            name=episode['name'],
-            number=episode['number'],
-            season=episode['season'],
-            summary=episode['summary'],
-            run_time=episode['runtime'],
-            image=image,
-            show_id=file.id,
-        )
+            sql.session.add(x)
 
-        sql.session.add(x)
-
-        sql.session.commit()
+            sql.session.commit()
 
 
 def update_episodes(show):  # new episodes
