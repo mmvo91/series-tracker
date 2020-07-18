@@ -19,7 +19,7 @@ const Show = (props) => {
                 <Card.Body>
                     <Card.Title>{props.name}</Card.Title>
                     <Image fluid src={props.image} className="mx-auto d-block my-3"/>
-                    <Card.Text>
+                    <div className="card-text">
                         <p><b>Premiere Date: </b>{moment.utc(props.premiered).format('MMMM Do YYYY')}</p>
                         <p>{props.status}</p>
                         <div>
@@ -34,7 +34,7 @@ const Show = (props) => {
                             <div className="py-2"
                                  dangerouslySetInnerHTML={{__html: props.summary}}/>
                         </Collapse>
-                    </Card.Text>
+                    </div>
                     <div className="text-center">
                         <LinkIconButton
                             to={"/shows/" + props.id + "/season"}
