@@ -11,7 +11,7 @@ import IconButton from "./IconButton";
 
 const Show = (props) => {
     const [open, setCollapse] = useState(false);
-    const [rotation, setRotation] = useState(0);
+    const [rotation, setRotation] = useState(null);
 
     return (
         <Col md={4} lg={3} className="py-2">
@@ -30,7 +30,7 @@ const Show = (props) => {
                         </div>
                         <Collapse in={open}
                                   onEntering={() => setRotation(90)}
-                                  onExiting={() => setRotation(0)}>
+                                  onExiting={() => setRotation(null)}>
                             <div className="py-2"
                                  dangerouslySetInnerHTML={{__html: props.summary}}/>
                         </Collapse>
