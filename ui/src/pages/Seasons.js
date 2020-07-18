@@ -58,7 +58,7 @@ export default (class Seasons extends Component {
                             (
                                 <Season
                                     show_id={this.props.match.params.id}
-                                    key={datum}
+                                    key={datum.season.id}
                                     update={this.update}
                                     watched={datum.watched}
                                     {...datum.season}/>

@@ -41,7 +41,7 @@ export default (class New extends Component {
                                     ? this.state.new.map((datum) =>
                                         (
                                             <SoloEpisode
-                                                key={datum.id}
+                                                key={datum.episode.id}
                                                 update={this.update}
                                                 watched={datum.watched}
                                                 {...datum}/>
@@ -67,7 +67,7 @@ export default (class New extends Component {
                                     ? this.state.queue.map((datum) =>
                                         (
                                             <SoloEpisode
-                                                key={datum.id}
+                                                key={datum.episode.id}
                                                 update={this.update}
                                                 watched={datum.watched}
                                                 {...datum}/>
@@ -93,7 +93,7 @@ export default (class New extends Component {
                                     ? this.state.upcoming.map((datum) =>
                                         (
                                             <SoloEpisode
-                                                key={datum.id}
+                                                key={datum.episode.id}
                                                 update={this.update}
                                                 watched={datum.watched}
                                                 {...datum}/>

@@ -53,7 +53,7 @@ export default (class Completion extends Component {
                     </Col>
                     {
                         this.state.data.show.map(show => (
-                            <Col md={4} lg={3} xl={2} className="py-2">
+                            <Col key={show.show_id} md={4} lg={3} xl={2} className="py-2">
                                     <LinkContainer to={"/shows/" + show.show_id + "/season"}>
                                         <Card className="h-100">
                                             <Card.Body>

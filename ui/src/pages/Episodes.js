@@ -57,7 +57,7 @@ export default (class Episodes extends Component {
                     this.state.data.map((datum) =>
                         (
                             <Episode
-                                key={datum.id}
+                                key={datum.episode.id}
                                 update={this.update}
                                 watched={datum.watched}
                                 {...datum.episode}/>

@@ -25,7 +25,7 @@ export default (class Multiverse extends Component {
                     this.state.data !== null
                         ? (
                             this.state.data.map(datum => (
-                                <Col sm={6} md={4} lg={3} className="py-2">
+                                <Col key={datum.id} sm={6} md={4} lg={3} className="py-2">
                                     <Card>
                                         <Card.Body>
                                             <Card.Title>{datum.name}</Card.Title>
