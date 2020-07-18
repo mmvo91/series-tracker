@@ -20,36 +20,6 @@ export default (class Upcoming extends Component {
             })
     }
 
-    update = (e) => {
-        e.preventDefault();
-
-        const watched_id = e.target.id;
-
-        let idx = this.state.data.findIndex(item => {
-            return item.episode.id.toString() === watched_id.toString()
-        });
-
-        const data = {
-            id: watched_id,
-            watched: !this.state.data[idx]['watched']
-        };
-
-        api.put('/shows/subscriptions/' + e.target.value + '/episodes', data)
-            .then(() => {
-                let previous_data = this.state.data;
-
-                let idx = previous_data.findIndex(item => {
-                    return item.episode.id.toString() === watched_id.toString()
-                });
-
-                previous_data[idx]['watched'] = !this.state.data[idx]['watched'];
-
-                this.setState({
-                    data: previous_data
-                })
-            })
-    };
-
     render() {
         return (
             <div>
