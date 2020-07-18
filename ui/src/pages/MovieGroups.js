@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Typeahead} from "react-bootstrap-typeahead";
+import {AsyncTypeahead} from "react-bootstrap-typeahead";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -139,6 +139,7 @@ const MovieGroups = () => {
 }
 
 const AddMovieToMovieGroup = (props) => {
+    const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState(null)
     const [movies, setMovies] = useState(null)
     const [selectedMovie, selectMovie] = useState(null)
@@ -150,6 +151,16 @@ const AddMovieToMovieGroup = (props) => {
                 })
         }
     , [])
+
+    const changeShow = (e) => {
+        setLoading(true)
+
+        api.get('/movies?s=' + e)
+            .then(res => {
+                setMovies(res.data['data']);
+                setLoading(false)
+            })
+    }
 
     const onSelectMovie = (selected) => {
         if (selected.length > 0){
@@ -186,11 +197,13 @@ const AddMovieToMovieGroup = (props) => {
                         value={props.group.name}
                     />
                 </Form.Group>
-                <Typeahead
+                <AsyncTypeahead
                     id="movie"
                     labelKey={option => `${option.movie.title}`}
                     options={movies}
                     onChange={onSelectMovie}
+                    isLoading={loading}
+                    onSearch={changeShow}
                     placeholder="Select movie..."
                     renderMenuItemChildren={(option) => (
                         <div>

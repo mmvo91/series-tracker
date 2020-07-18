@@ -14,6 +14,8 @@ from . import models, schemas
 class Movie(Resource):
     @jwt_required
     def get(self):
+        s = request.args.get('s')
+
         add_movie = models.AddedMovie.query.join(
             models.Movie
         ).order_by(
@@ -22,6 +24,9 @@ class Movie(Resource):
         ).filter(
             models.AddedMovie.user_id == get_jwt_identity()
         )
+
+        if s is not None:
+            add_movie = add_movie.filter(models.Movie.title.ilike(f'%{s}%'))
 
         schema = schemas.UserMovieSchema(many=True)
 
