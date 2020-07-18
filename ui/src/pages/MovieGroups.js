@@ -110,7 +110,7 @@ const MovieGroups = () => {
                 movieGroup !== null
                     ? (movieGroup.map(
                     group => (
-                        <div>
+                        <div key={group.id}>
                             <Title title={group.name}>
                                 <FontAwesomeIcon
                                     onClick={handleOpenEditMovieGroup(group)}

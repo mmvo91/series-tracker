@@ -11,7 +11,7 @@ import Button from "react-bootstrap/Button";
 
 const Movie = (props) => {
     const [open, setCollapse] = useState(false);
-    const [rotation, setRotation] = useState(0);
+    const [rotation, setRotation] = useState(null);
     const [watched, setWatch] = useState(props.watched)
 
     const update = (e) => {
@@ -43,7 +43,7 @@ const Movie = (props) => {
                 <Card.Body>
                     <Card.Title>{props.movie.title}</Card.Title>
                     <Image fluid src={props.movie.image} className="mx-auto d-block my-3"/>
-                    <Card.Text>
+                    <div className="card-text">
                         <p><b>Premiere Date: </b>{moment.utc(props.movie.release).format('MMMM Do YYYY')}</p>
                         <div>
                             <FontAwesomeIcon onClick={() => setCollapse(!open)}
@@ -53,11 +53,11 @@ const Movie = (props) => {
                         </div>
                         <Collapse in={open}
                                   onEntering={() => setRotation(90)}
-                                  onExiting={() => setRotation(0)}>
+                                  onExiting={() => setRotation(null)}>
                             <div className="py-2"
                                  dangerouslySetInnerHTML={{__html: props.movie.summary}}/>
                         </Collapse>
-                    </Card.Text>
+                    </div>
                     <div className="text-center">
                         {
                             watched
