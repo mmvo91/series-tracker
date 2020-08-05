@@ -30,7 +30,7 @@ const Videos = (props) => {
                     setPagination(res.data['pagination'])
                     setVideos(res.data['data'])
                 })
-        }, [],
+        }, [props.match.params.id],
     );
 
     return (
