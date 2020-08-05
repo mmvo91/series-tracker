@@ -40,3 +40,11 @@ class MovieGroupSchema(ma.SQLAlchemyAutoSchema):
         ]
 
     movies = ma.Nested(MovieSchema, many=True)
+
+
+class UserMovieGroupSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = models.AddedMovieGroup
+
+    movie_group = ma.Nested(MovieGroupSchema, exclude=('movies',))
+    movies = ma.Nested(UserMovieSchema, many=True)
