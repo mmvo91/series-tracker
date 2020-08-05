@@ -26,6 +26,7 @@ import Multiverse from "./pages/Multiverse";
 import Universe from "./pages/Universe";
 import Movies from "./pages/Movies";
 import MovieGroups from "./pages/MovieGroups";
+import GroupManager from "./pages/GroupManager";
 import YouTube from "./pages/YouTube";
 import Videos from "./pages/Channel";
 import Books from "./pages/Books";
@@ -76,6 +77,7 @@ class App extends React.Component {
                         <PrivateRoute exact path="/universe/:id" component={Universe}/>
                         <PrivateRoute exact path="/movies" component={Movies}/>
                         <PrivateRoute exact path="/groups" component={MovieGroups}/>
+                        <PrivateRoute exact path="/group-manager" component={GroupManager}/>
                         <PrivateRoute exact path="/youtube" component={YouTube}/>
                         <PrivateRoute exact path="/youtube/:id" component={Videos}/>
                         <PrivateRoute exact path="/books" component={Books}/>

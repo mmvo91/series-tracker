@@ -61,6 +61,7 @@ const Navigation = () => {
                                     <NavDropdown id={"movie-dropdown"} title={"Movies"}>
                                         <LinkNav to={"/movies"} title="Movies"/>
                                         <LinkNav to={"/groups"} title="Movie Groups"/>
+                                        <LinkNav to={"/group-manager"} title={"Group Manager"}/>
                                     </NavDropdown>
                                     <LinkContainer to="/youtube">
                                         <Nav.Link>YouTube</Nav.Link>
