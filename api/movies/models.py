@@ -58,3 +58,27 @@ class MovieGroup(sql.Model):
     ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
     CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
     CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
+
+
+class AddedMovieGroup(sql.Model):
+    __tablename__ = "added_movie_groups"
+
+    user_id = sql.Column(sql.Integer, sql.ForeignKey('users.id'), primary_key=True)
+    movie_group_id = sql.Column(sql.Integer, sql.ForeignKey('movie_groups.id'), primary_key=True)
+
+    movie_group = sql.relationship('MovieGroup')
+
+    movies = sql.relationship(
+        AddedMovie,
+        primaryjoin=sql.and_(
+            movie_group_id == movie_group_movies.c.movie_group_id,
+            user_id == AddedMovie.user_id
+        ),
+        secondary=movie_group_movies,
+        secondaryjoin=sql.and_(
+            user_id == AddedMovie.user_id,
+            movie_group_id == movie_group_movies.c.movie_group_id,
+            movie_group_movies.c.movie_id == AddedMovie.movie_id
+        ),
+        order_by=[movie_group_movies.c.sequence]
+    )
