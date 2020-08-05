@@ -128,3 +128,12 @@ class MovieGroups(Resource):
                 return {'msg': f"Movie group {movie_group.name} exists"}
         else:
             return {'msg': f"Unable to create movie group"}
+
+
+class UserMovieGroup(Resource):
+    def get(self):
+        user_movie_groups = models.AddedMovieGroup.query
+
+        user_movie_groups = user_movie_groups.all()
+
+        return schemas.UserMovieGroupSchema(many=True).dump(user_movie_groups)

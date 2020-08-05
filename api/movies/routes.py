@@ -10,3 +10,4 @@ CORS(movies_bp, supports_credentials=True)
 
 movies.add_resource(resources.Movie, "", strict_slashes=False)
 movies.add_resource(resources.MovieGroups, "/groups")
+movies.add_resource(resources.UserMovieGroup, "/usergroups")
