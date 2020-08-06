@@ -98,7 +98,9 @@ const AddMovieToMovieGroup = (props) => {
     }
 
     const onSelectMovie = (selected) => {
-        selectMovie(selected[0]['imdbID'])
+        if (selected.length > 0) {
+            selectMovie(selected[0]['imdbID'])
+        }
     }
 
     const handleClick = () => {
