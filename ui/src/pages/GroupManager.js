@@ -10,6 +10,8 @@ import Form from "react-bootstrap/Form";
 import {AsyncTypeahead} from "react-bootstrap-typeahead";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+import config from "../Config";
 
 const NewMovieGroup = (props) => {
     const [msg, setMsg] = useState(null)
@@ -88,17 +90,15 @@ const AddMovieToMovieGroup = (props) => {
     const changeShow = (e) => {
         setLoading(true)
 
-        api.get('/movies?s=' + e)
+        axios.get(config.url.OMDB + '?apikey=' + config.key.OMDB + '&s=' + e + '&type=movie')
             .then(res => {
-                setMovies(res.data['data']);
+                setMovies(res.data['Search'])
                 setLoading(false)
-            })
+            });
     }
 
     const onSelectMovie = (selected) => {
-        if (selected.length > 0) {
-            selectMovie(selected[0]['movie']['id'])
-        }
+        selectMovie(selected[0]['imdbID'])
     }
 
     const handleClick = () => {
@@ -132,7 +132,7 @@ const AddMovieToMovieGroup = (props) => {
                 </Form.Group>
                 <AsyncTypeahead
                     id="movie"
-                    labelKey={option => `${option.movie.title}`}
+                    labelKey={option => `${option.Title}`}
                     options={movies}
                     onChange={onSelectMovie}
                     isLoading={loading}
@@ -140,11 +140,11 @@ const AddMovieToMovieGroup = (props) => {
                     placeholder="Select movie..."
                     renderMenuItemChildren={(option) => (
                         <div>
-                            <span className="pr-5">{option.movie.title}</span>
+                            <span className="pr-5">{option.Title}</span>
                             {
-                                option.movie.image !== null
+                                option.Poster !== null
                                     ? <Image
-                                        src={option.movie.image}
+                                        src={option.Poster}
                                         height="54"
                                         width="40"/>
                                     : null
@@ -195,7 +195,7 @@ const GroupManager = () => {
 
     return (
         <Container fluid>
-            <Title title="Movie Groups">
+            <Title title="Group Manager">
                 <FontAwesomeIcon
                     onClick={handleOpenMovieGroup}
                     icon="edit"
@@ -223,7 +223,7 @@ const GroupManager = () => {
                                             <Movie
                                                 key={movie.id}
                                                 movie={movie}
-                                                watched={movie.watched}
+                                                hasWatched={false}
                                             />
                                         )
                                     )
