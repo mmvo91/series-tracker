@@ -8,7 +8,7 @@ from flask_restful import Resource
 from api.extensions import sql, pagination
 from api.config import config
 
-from . import models, schemas
+from . import models, schemas, services
 
 
 class Movie(Resource):
@@ -39,28 +39,11 @@ class Movie(Resource):
         user_movie = sql.session.query(models.AddedMovie).get((get_jwt_identity(), data['imdbID']))
         if user_movie is None:
             movie = sql.session.query(models.Movie).get(data['imdbID'])
+            service = services.MovieService()
             if movie is None:
-                url = f"http://www.omdbapi.com/?apikey={config.OMDB_API_KEY}&i={data['imdbID']}&type=movie"
-                data = requests.get(url).json()
+                movie = service.create_movie(data['imdbID'])
 
-                movie = models.Movie(
-                    id=data['imdbID'],
-                    title=data['Title'],
-                    release=datetime.datetime.strptime(data['Released'], '%d %b %Y'),
-                    rating=data['Rated'],
-                    runtime=data['Runtime'].split()[0],
-                    summary=data['Plot'],
-                    image=data['Poster']
-                )
-
-            user_movie = models.AddedMovie()
-
-            user_movie.user_id = get_jwt_identity()
-            user_movie.movie = movie
-
-            sql.session.add(user_movie)
-
-            sql.session.commit()
+            service.add_movie_to_user(movie, user_id=get_jwt_identity())
 
             return {
                 'msg': f"Successfully subscribed to {movie.title}"
@@ -90,15 +73,17 @@ class MovieGroups(Resource):
         movie_group = models.MovieGroup.query.get(data['movie_group_id'])
         if movie_group is not None:
             movie = models.Movie.query.get(data['movie_id'])
-            if movie is not None:
-                if movie not in movie_group.movies:
-                    movie_group.movies.append(movie)
-                    sql.session.commit()
-                    return {'msg': f'Added movie {movie.title} to {movie_group.name}'}
-                else:
-                    return {'msg': f'Movie {movie.title} already in {movie_group.name}'}
+            if movie is None:
+                service = services.MovieService()
+                movie = service.create_movie(data['movie_id'])
+
+            if movie not in movie_group.movies:
+                movie_group.movies.append(movie)
+                sql.session.commit()
+                return {'msg': f'Added movie {movie.title} to {movie_group.name}'}
             else:
-                return {'msg': 'Could not find movie'}
+                return {'msg': f'Movie {movie.title} already in {movie_group.name}'}
+
         else:
             return {'msg': 'Could not find movie group'}
 
@@ -137,3 +122,21 @@ class UserMovieGroup(Resource):
         user_movie_groups = user_movie_groups.all()
 
         return schemas.UserMovieGroupSchema(many=True).dump(user_movie_groups)
+
+    @jwt_required
+    def post(self):
+        data = request.json
+
+        if models.AddedMovieGroup.query.get((get_jwt_identity(), data['movie_group_id'])) is None:
+            user_movie_groups = models.AddedMovieGroup(
+                user_id=get_jwt_identity(),
+                movie_group_id=data['movie_group_id']
+            )
+
+            sql.session.add(user_movie_groups)
+            sql.session.commit()
+
+            return {'msg': "Successfully added movie group for user."}
+
+        else:
+            return {'msg': f"User/movie group combination already exists."}
