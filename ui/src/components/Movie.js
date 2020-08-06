@@ -58,32 +58,44 @@ const Movie = (props) => {
                                  dangerouslySetInnerHTML={{__html: props.movie.summary}}/>
                         </Collapse>
                     </div>
-                    <div className="text-center">
-                        {
-                            watched
-                                ? <IconButton
-                                    update={update}
-                                    id={props.movie.id}
-                                    icon="check"
-                                    color="text-success"
-                                    text="Watched"/>
-                                : <IconButton
-                                    update={update}
-                                    id={props.movie.id}
-                                    icon="check"
-                                    text="Unwatched"/>
-                        }
-                        <Button onClick={remove}
-                                key={props.movie.id}
-                                id={props.movie.id}
-                                variant="white">
-                            <FontAwesomeIcon icon="minus"
-                                             className="text-danger"
-                                             size="lg"/>
-                            <br/>
-                            <small>Remove</small>
-                        </Button>
-                    </div>
+                    {
+                        props.hasWatched !== false
+                            ? (
+                                <div className="text-center">
+                                    {
+                                        watched
+                                            ? <IconButton
+                                                update={update}
+                                                id={props.movie.id}
+                                                icon="check"
+                                                color="text-success"
+                                                text="Watched"/>
+                                            : <IconButton
+                                                update={update}
+                                                id={props.movie.id}
+                                                icon="check"
+                                                text="Unwatched"/>
+                                    }
+                                    {
+                                        props.removable !== false
+                                            ? (
+                                                <Button onClick={remove}
+                                                        key={props.movie.id}
+                                                        id={props.movie.id}
+                                                        variant="white">
+                                                    <FontAwesomeIcon icon="minus"
+                                                                     className="text-danger"
+                                                                     size="lg"/>
+                                                    <br/>
+                                                    <small>Remove</small>
+                                                </Button>
+                                            )
+                                            : null
+                                    }
+                                </div>
+                            )
+                            : null
+                    }
                 </Card.Body>
             </Card>
         </Col>
