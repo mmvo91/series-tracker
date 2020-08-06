@@ -78,7 +78,8 @@ class AddedMovieGroup(sql.Model):
         secondaryjoin=sql.and_(
             user_id == AddedMovie.user_id,
             movie_group_id == movie_group_movies.c.movie_group_id,
-            movie_group_movies.c.movie_id == AddedMovie.movie_id
+            movie_group_movies.c.movie_id == AddedMovie.movie_id,
+            AddedMovie.movie_id == Movie.id
         ),
-        order_by=[movie_group_movies.c.sequence]
+        order_by=[movie_group_movies.c.sequence, Movie.id]
     )
