@@ -39,3 +39,22 @@ class MovieService(object):
         sql.session.add(user_movie)
 
         sql.session.commit()
+
+    @staticmethod
+    def sync_user_movie_group(user_id):
+        user_movie_groups = models.AddedMovieGroup.query.filter_by(user_id=user_id)
+
+        for user_movie_group in user_movie_groups:
+            movie_group = models.MovieGroup.query.get(user_movie_group.movie_group_id)
+
+            for movie in movie_group.movies:
+                user_movie = models.AddedMovie.query.get((user_id, movie.id))
+
+                if user_movie is None:
+                    user_movie = models.AddedMovie(
+                        user_id=user_id,
+                        movie_id=movie.id
+                    )
+
+                    sql.session.add(user_movie)
+                    sql.session.commit()
