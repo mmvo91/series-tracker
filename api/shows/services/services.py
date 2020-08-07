@@ -209,3 +209,37 @@ class SubscriptionService(object):
 
         sql.session.add(x)
         sql.session.commit()
+
+    def update_subscription(self):
+        seasons = models.Season.query.filter_by(show_id=self._show_id).all()
+
+        for season in seasons:
+            season_watched = models.SeasonWatched.query.get((self._user_id, self._show_id, season.id))
+            if season_watched is None:
+                x = models.SeasonWatched(
+                    user_id=self._user_id,
+                    show_id=self._show_id,
+                    season_id=season.id
+                )
+
+                sql.session.add(x)
+
+            episodes = models.Episode.query.filter_by(
+                show_id=self._show_id,
+                season=season.number
+            ).all()
+
+            for episode in episodes:
+                z = models.Watched.get((self._user_id, self._show_id, episode.id))
+
+                if z is None:
+                    new = models.Watched(
+                        user_id=self._user_id,
+                        show_id=self._show_id,
+                        season_id=season.id,
+                        episode_id=episode.id
+                    )
+
+                    sql.session.add(new)
+
+        sql.session.commit()
