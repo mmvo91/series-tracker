@@ -81,5 +81,5 @@ class AddedMovieGroup(sql.Model):
             movie_group_movies.c.movie_id == AddedMovie.movie_id,
             AddedMovie.movie_id == Movie.id
         ),
-        order_by=[movie_group_movies.c.sequence, Movie.id]
+        order_by=[movie_group_movies.c.sequence, Movie.release]
     )
