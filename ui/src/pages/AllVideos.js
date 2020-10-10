@@ -9,7 +9,6 @@ import LoadMore from "../components/LoadMore";
 
 
 const AllVideos = (props) => {
-    const [channel, setChannel] = useState({'title': 'Videos'})
     const [pagination, setPagination] = useState(null)
     const [videos, setVideos] = useState(null)
 
@@ -24,7 +23,7 @@ const AllVideos = (props) => {
 
     return (
         <Container fluid>
-            <Title title={channel.title}/>
+            <Title title="Videos"/>
             <Row>
                 {
                     videos !== null
