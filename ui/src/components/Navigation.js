@@ -63,9 +63,10 @@ const Navigation = () => {
                                         <LinkNav to={"/groups"} title="Movie Groups"/>
                                         <LinkNav to={"/group-manager"} title={"Group Manager"}/>
                                     </NavDropdown>
-                                    <LinkContainer to="/youtube">
-                                        <Nav.Link>YouTube</Nav.Link>
-                                    </LinkContainer>
+                                    <NavDropdown id={"youtube-dropdown"} title={"YouTube"}>
+                                        <LinkNav to={"/youtube/channels"} title={"Channels"}/>
+                                        <LinkNav to={"/youtube/videos"} title={"Videos"}/>
+                                    </NavDropdown>
                                     <LinkContainer to="/books">
                                         <Nav.Link>Books</Nav.Link>
                                     </LinkContainer>

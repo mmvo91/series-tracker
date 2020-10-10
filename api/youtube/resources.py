@@ -74,3 +74,20 @@ class Videos(Resource):
             return {'msg': 'Video watched'}
 
         return {'msg': 'Video not found'}
+
+
+class AllVideos(Resource):
+    @jwt_required
+    def get(self):
+        subscribed_video = models.SubscribedVideo.query.join(
+            models.Video
+        ).filter(
+            models.SubscribedVideo.user_id == get_jwt_identity(),
+        ).order_by(
+            models.SubscribedVideo.watched,
+            models.Video.publish_date
+        )
+
+        schema = schemas.SubscribedVideoSchema()
+
+        return extensions.pagination.paginate(subscribed_video, schema, True)
