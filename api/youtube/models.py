@@ -63,6 +63,30 @@ class SubscribedChannel(sql.Model):
         foreign_keys="[SubscribedVideo.user_id, SubscribedVideo.channel_id]"
     )
 
+    watched = sql.column_property(
+        sql.select(
+            [sql.func.count(SubscribedVideo.channel_id)]
+        ).where(
+            sql.and_(
+                user_id == SubscribedVideo.user_id,
+                channel_id == SubscribedVideo.channel_id,
+                SubscribedVideo.watched.is_(True)
+            )
+        )
+    )
+
+    unwatched = sql.column_property(
+        sql.select(
+            [sql.func.count(SubscribedVideo.channel_id)]
+        ).where(
+            sql.and_(
+                user_id == SubscribedVideo.user_id,
+                channel_id == SubscribedVideo.channel_id,
+                SubscribedVideo.watched.is_(False)
+            )
+        )
+    )
+
     ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
     ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
     CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())

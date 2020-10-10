@@ -9,6 +9,7 @@ import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Badge from "react-bootstrap/Badge";
 
 import api from "../Api";
 import Title from "../components/Title";
@@ -101,6 +102,7 @@ const YouTube = () => {
                                                     {channel.channel.title}
                                                 </Card.Title>
                                                 <Card.Text>
+                                                    <Badge pill variant="primary">{channel.unwatched} Unwatched</Badge>
                                                     <Image fluid src={channel.channel.image} className="mx-auto d-block my-3"/>
                                                     <div>
                                                         {channel.channel.description}

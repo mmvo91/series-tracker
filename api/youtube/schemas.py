@@ -26,6 +26,9 @@ class ChannelSchema(CamelCaseSchema):
 
 
 class SubscribedChannelSchema(CamelCaseSchema):
+    watched = ma.Integer(dump_only=True)
+    unwatched = ma.Integer(dump_only=True)
+
     class Meta:
         model = models.SubscribedChannel
         exclude = [
