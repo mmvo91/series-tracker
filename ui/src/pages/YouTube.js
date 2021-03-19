@@ -95,7 +95,7 @@ const YouTube = () => {
                         ? channels.map(
                             channel => (
                                 <Col md={3} lg={2} key={channel.channel.id} className="py-2">
-                                    <LinkContainer to={"/youtube/" + channel.channel.id}>
+                                    <LinkContainer to={"/youtube/channels/" + channel.channel.id}>
                                         <Card>
                                             <Card.Body>
                                                 <Card.Title>
