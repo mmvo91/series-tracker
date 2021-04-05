@@ -19,6 +19,20 @@ const Episode = (props) => {
                 <Card.Footer>
                     <div className="float-right">
                         {
+                            props.hidden
+                                ? <IconButton
+                                    update={props.hide}
+                                    id={props.id}
+                                    icon="eye-slash"
+                                    color="text-success"
+                                    text="Hidden"/>
+                                : <IconButton
+                                    update={props.hide}
+                                    id={props.id}
+                                    icon="eye-slash"
+                                    text="Not Hidden"/>
+                        }
+                        {
                             props.watched
                                 ? <IconButton
                                     update={props.update}

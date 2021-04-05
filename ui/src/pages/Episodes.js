@@ -50,6 +50,34 @@ export default (class Episodes extends Component {
             })
     };
 
+    hide = (e) => {
+                e.preventDefault();
+
+        const watched_id = e.target.id;
+
+        let previous_data = this.state.data;
+
+        let idx = previous_data.findIndex(item => {
+            return item.episode.id.toString() === watched_id.toString()
+        });
+
+        const data = {
+            id: watched_id,
+            hidden: !this.state.data[idx]['hidden']
+        };
+
+        api.patch('/shows/subscriptions/' + this.props.match.params.id + '/episodes', data)
+            .then(res => {
+
+
+                previous_data[idx]['hidden'] = !this.state.data[idx]['hidden'];
+
+                this.setState({
+                    data: previous_data
+                })
+            })
+    }
+
     render() {
         return (
             <Row>
@@ -60,6 +88,8 @@ export default (class Episodes extends Component {
                                 key={datum.episode.id}
                                 update={this.update}
                                 watched={datum.watched}
+                                hidden={datum.hidden}
+                                hide={this.hide}
                                 {...datum.episode}/>
                         ))
                 }

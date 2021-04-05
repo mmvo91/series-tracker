@@ -8,6 +8,7 @@ import IconButton from "../components/IconButton"
 
 const SoloEpisode = (props) => {
     const [watched, setWatched] = useState(props.watched)
+    const [hidden, setHidden] = useState(props.hidden)
 
     const update = (e) => {
         e.preventDefault();
@@ -20,6 +21,21 @@ const SoloEpisode = (props) => {
         api.put('/shows/subscriptions/' + e.target.value + '/episodes', data)
             .then(() => {
                 setWatched(!watched)
+            })
+
+    }
+
+    const hide = (e) => {
+        e.preventDefault();
+
+        const data = {
+            id: e.target.id,
+            hidden: !hidden
+        }
+
+        api.patch('/shows/subscriptions/' + e.target.value + '/episodes', data)
+            .then(() => {
+                setHidden(!hidden)
             })
 
     }
@@ -44,6 +60,22 @@ const SoloEpisode = (props) => {
                 </Card.Body>
                 <Card.Footer>
                     <div className="float-right">
+                        {
+                            hidden
+                                ? <IconButton
+                                    update={hide}
+                                    id={props.episode.id}
+                                    value={props.episode.show_id}
+                                    icon="eye-slash"
+                                    color="text-success"
+                                    text="Hidden"/>
+                                : <IconButton
+                                    update={hide}
+                                    id={props.episode.id}
+                                    value={props.episode.show_id}
+                                    icon="eye-slash"
+                                    text="Not Hidden"/>
+                        }
                         {
                             watched
                                 ? <IconButton
