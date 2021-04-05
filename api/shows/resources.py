@@ -255,6 +255,16 @@ class Episodes(Resource):
 
         return {'msg': 'Updated'}
 
+    @jwt_required
+    def patch(self, show_id):
+        episode_id = request.json['id']
+        hidden_state = request.json['hidden']
+
+        service = services.SubscriptionService(get_jwt_identity(), show_id)
+        service.hidden(episode_id, hidden_state)
+
+        return {'msg': 'Episode hidden'}
+
 
 class Queue(Resource):
     @jwt_required
@@ -267,7 +277,8 @@ class Queue(Resource):
         ).filter(
             models.Watched.episode.has(models.Episode.air_date <= today()),
             models.Watched.user_id == get_jwt_identity(),
-            models.Watched.watched.is_(False)
+            models.Watched.watched.is_(False),
+            models.Watched.hidden.is_(False),
         )
 
         schema = schemas.SubscriptionWatchSchema()

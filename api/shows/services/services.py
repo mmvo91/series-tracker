@@ -210,6 +210,15 @@ class SubscriptionService(object):
         sql.session.add(x)
         sql.session.commit()
 
+    def hidden(self, episode_id, hidden_state):
+        x = models.Watched.query.get(
+            (self._user_id, self._show_id, episode_id)
+        )
+
+        x.hidden = hidden_state
+
+        sql.session.commit()
+
     def update_subscription(self):
         seasons = models.Season.query.filter_by(show_id=self._show_id).all()
 

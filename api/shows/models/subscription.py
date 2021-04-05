@@ -16,6 +16,7 @@ class Watched(sql.Model):
     season_id = sql.Column(sql.Integer, sql.ForeignKey('seasons.id'))
     episode_id = sql.Column(sql.Integer, sql.ForeignKey('episodes.id'), primary_key=True)
     watched = sql.Column(sql.Boolean, default=False)
+    hidden = sql.Column(sql.Boolean, default=False)
     ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
     ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
     CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
