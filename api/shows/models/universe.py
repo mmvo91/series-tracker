@@ -1,22 +1,28 @@
-from api.extensions import sql
+from datetime import datetime
+from typing import Optional, List
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Table, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-universe_shows = sql.Table(
+from api.database import Base
+
+universe_shows = Table(
     'universe_shows',
-    sql.Column('universe_id', sql.Integer, sql.ForeignKey('universe.id')),
-    sql.Column('show_id', sql.Integer, sql.ForeignKey('shows.id'))
+    Base.metadata,
+    Column('universe_id', Integer, ForeignKey('universe.id')),
+    Column('show_id', Integer, ForeignKey('shows.id'))
 )
 
 
-class Universe(sql.Model):
+class Universe(Base):
     __tablename__ = 'universe'
 
-    id = sql.Column(sql.Integer, primary_key=True)
-    name = sql.Column(sql.String)
-    summary = sql.Column(sql.String)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[Optional[str]] = mapped_column(String)
+    summary: Mapped[Optional[str]] = mapped_column(String)
 
-    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
-    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
-    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
-    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
+    ModifiedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
+    ModifiedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
+    CreatedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    CreatedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
 
-    shows = sql.relationship("Show", secondary=universe_shows)
+    shows: Mapped[List["Show"]] = relationship("Show", secondary=universe_shows)  # type: ignore

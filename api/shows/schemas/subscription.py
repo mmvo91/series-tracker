@@ -1,75 +1,63 @@
-from marshmallow import fields
+from typing import Optional
+from pydantic import BaseModel, ConfigDict
 
-from .. import models
-from api.extensions import ma
-from . import ShowSchema, SeasonSchema, EpisodesSchema
-
-
-class SubscriptionSchema(ma.SQLAlchemyAutoSchema):
-    watched = ma.Boolean(dump_only=True)
-
-    class Meta:
-        model = models.Subscription
-        exclude = [
-            'ModifiedDate',
-            'ModifiedBy',
-            'CreatedDate',
-            'CreatedBy'
-        ]
-
-    show = ma.Nested(ShowSchema)
+from .show import ShowSchema, SeasonSchema, EpisodesSchema
 
 
-class SeasonWatchSchema(ma.SQLAlchemyAutoSchema):
-    watched = ma.Boolean(dump_only=True)
+class SubscriptionSchema(BaseModel):
+    user_id: int
+    show_id: int
+    watched: bool = False
+    show: Optional[ShowSchema] = None
 
-    class Meta:
-        model = models.SeasonWatched
-        exclude = [
-            'ModifiedDate',
-            'ModifiedBy',
-            'CreatedDate',
-            'CreatedBy'
-        ]
-
-    season = ma.Nested(SeasonSchema)
+    model_config = ConfigDict(from_attributes=True)
 
 
-class WatchSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = models.Watched
-        exclude = [
-            'ModifiedDate',
-            'ModifiedBy',
-            'CreatedDate',
-            'CreatedBy'
-        ]
+class SeasonWatchSchema(BaseModel):
+    user_id: int
+    show_id: int
+    season_id: int
+    watched: bool = False
+    season: Optional[SeasonSchema] = None
 
-    episode = ma.Nested(EpisodesSchema)
+    model_config = ConfigDict(from_attributes=True)
 
 
-class SubscriptionWatchSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = models.Watched
-        exclude = [
-            'ModifiedDate',
-            'ModifiedBy',
-            'CreatedDate',
-            'CreatedBy'
-        ]
+class WatchSchema(BaseModel):
+    user_id: int
+    show_id: int
+    season_id: Optional[int] = None
+    episode_id: int
+    watched: bool = False
+    hidden: bool = False
+    episode: Optional[EpisodesSchema] = None
 
-    episode = ma.Nested(EpisodesSchema)
-    show = ma.Nested(ShowSchema)
+    model_config = ConfigDict(from_attributes=True)
 
 
-class CompletionSchema(ma.SQLAlchemySchema):
-    show_id = fields.Int()
-    name = fields.Str()
-    image = fields.Str()
-    watched_subscriptions = fields.Int()
-    subscriptions = fields.Int()
-    watched_seasons = fields.Int()
-    seasons = fields.Int()
-    watched_episodes = fields.Int()
-    episodes = fields.Int()
-    unwatched_run_time = fields.Int()
+class SubscriptionWatchSchema(BaseModel):
+    user_id: int
+    show_id: int
+    season_id: Optional[int] = None
+    episode_id: int
+    watched: bool = False
+    hidden: bool = False
+    episode: Optional[EpisodesSchema] = None
+    show: Optional[ShowSchema] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CompletionSchema(BaseModel):
+    show_id: Optional[int] = None
+    name: Optional[str] = None
+    image: Optional[str] = None
+    watched_subscriptions: Optional[int] = None
+    subscriptions: Optional[int] = None
+    watched_seasons: Optional[int] = None
+    seasons: Optional[int] = None
+    watched_episodes: Optional[int] = None
+    episodes: Optional[int] = None
+    unwatched_run_time: Optional[int] = None
+
+    model_config = ConfigDict(from_attributes=True)
