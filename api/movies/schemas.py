@@ -1,50 +1,42 @@
-from . import models
-from api.extensions import ma
+from datetime import date
+from typing import Optional, List
+from pydantic import BaseModel, ConfigDict
 
 
-class MovieSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = models.Movie
-        fields = [
-            'id',
-            'title',
-            'release',
-            'rating',
-            'rating',
-            'summary',
-            'image'
-        ]
+class MovieSchema(BaseModel):
+    id: str
+    title: Optional[str] = None
+    release: Optional[date] = None
+    rating: Optional[str] = None
+    summary: Optional[str] = None
+    image: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
-class UserMovieSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = models.AddedMovie
-        exclude = [
-            'ModifiedDate',
-            'ModifiedBy',
-            'CreatedDate',
-            'CreatedBy'
-        ]
+class UserMovieSchema(BaseModel):
+    user_id: int
+    movie_id: str
+    watched: bool = False
+    movie: Optional[MovieSchema] = None
 
-    movie = ma.Nested(MovieSchema)
+    model_config = ConfigDict(from_attributes=True)
 
 
-class MovieGroupSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = models.MovieGroup
-        exclude = [
-            'ModifiedDate',
-            'ModifiedBy',
-            'CreatedDate',
-            'CreatedBy'
-        ]
+class MovieGroupSchema(BaseModel):
+    id: int
+    name: Optional[str] = None
+    description: Optional[str] = None
+    type: Optional[str] = None
+    movies: List[MovieSchema] = []
 
-    movies = ma.Nested(MovieSchema, many=True)
+    model_config = ConfigDict(from_attributes=True)
 
 
-class UserMovieGroupSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = models.AddedMovieGroup
+class UserMovieGroupSchema(BaseModel):
+    user_id: int
+    movie_group_id: int
+    movie_group: Optional[MovieGroupSchema] = None
+    movies: List[UserMovieSchema] = []
 
-    movie_group = ma.Nested(MovieGroupSchema, exclude=('movies',))
-    movies = ma.Nested(UserMovieSchema, many=True)
+    model_config = ConfigDict(from_attributes=True)

@@ -1,31 +1,25 @@
-from api.books import models
-from api.extensions import ma
-from api.utils.schema import CamelCaseSchema
+from datetime import date
+from typing import Optional
+from pydantic import BaseModel, ConfigDict
+
+from api.utils.pydantic_utils import CamelCaseModel
 
 
-class BookSchema(CamelCaseSchema):
-    class Meta:
-        model = models.Book
-        fields = [
-            'id',
-            'title',
-            'subtitle',
-            'description',
-            'publish_date',
-            'image',
-            'author',
-            'publisher'
-        ]
+class BookSchema(CamelCaseModel):
+    id: str
+    title: Optional[str] = None
+    subtitle: Optional[str] = None
+    description: Optional[str] = None
+    publish_date: Optional[date] = None
+    image: Optional[str] = None
+    author: Optional[str] = None
+    publisher: Optional[str] = None
 
 
-class UserBookSchema(CamelCaseSchema):
-    class Meta:
-        model = models.UserBook
-        exclude = [
-            'ModifiedDate',
-            'ModifiedBy',
-            'CreatedDate',
-            'CreatedBy'
-        ]
+class UserBookSchema(BaseModel):
+    user_id: int
+    book_id: str
+    read: bool = False
+    book: Optional[BookSchema] = None
 
-    book = ma.Nested(BookSchema)
+    model_config = ConfigDict(from_attributes=True)

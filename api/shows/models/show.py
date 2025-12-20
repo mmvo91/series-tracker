@@ -1,53 +1,60 @@
-from api.extensions import sql
+from datetime import date, datetime
+from typing import Optional, List
+from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from api.database import Base
 
 
-class Show(sql.Model):
+class Show(Base):
     __tablename__ = 'shows'
 
-    id = sql.Column(sql.Integer, primary_key=True)
-    name = sql.Column(sql.String)
-    premiered = sql.Column(sql.Date)
-    status = sql.Column(sql.Boolean)
-    summary = sql.Column(sql.String)
-    image = sql.Column(sql.String)
-    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
-    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
-    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
-    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[Optional[str]] = mapped_column(String)
+    premiered: Mapped[Optional[date]] = mapped_column(Date)
+    status: Mapped[Optional[bool]] = mapped_column(Boolean)
+    summary: Mapped[Optional[str]] = mapped_column(String)
+    image: Mapped[Optional[str]] = mapped_column(String)
+    ModifiedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
+    ModifiedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
+    CreatedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    CreatedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
 
-    episodes = sql.relationship("Episode")
+    episodes: Mapped[List["Episode"]] = relationship("Episode", back_populates="show")
 
 
-class Season(sql.Model):
+class Season(Base):
     __tablename__ = 'seasons'
 
-    id = sql.Column(sql.Integer, primary_key=True)
-    show_id = sql.Column(sql.Integer, sql.ForeignKey('shows.id'))
-    number = sql.Column(sql.Integer)
-    name = sql.Column(sql.String)
-    episodeOrder = sql.Column(sql.Integer)
-    premiereDate = sql.Column(sql.Date)
-    endDate = sql.Column(sql.Date)
-    image = sql.Column(sql.String)
-    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
-    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
-    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
-    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    show_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('shows.id'))
+    number: Mapped[Optional[int]] = mapped_column(Integer)
+    name: Mapped[Optional[str]] = mapped_column(String)
+    episodeOrder: Mapped[Optional[int]] = mapped_column(Integer)
+    premiereDate: Mapped[Optional[date]] = mapped_column(Date)
+    endDate: Mapped[Optional[date]] = mapped_column(Date)
+    image: Mapped[Optional[str]] = mapped_column(String)
+    ModifiedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
+    ModifiedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
+    CreatedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    CreatedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
 
 
-class Episode(sql.Model):
+class Episode(Base):
     __tablename__ = 'episodes'
 
-    id = sql.Column(sql.Integer, primary_key=True)
-    air_date = sql.Column(sql.DateTime)
-    name = sql.Column(sql.String)
-    number = sql.Column(sql.Integer)
-    season = sql.Column(sql.Integer)
-    summary = sql.Column(sql.String)
-    run_time = sql.Column(sql.Integer)
-    image = sql.Column(sql.String)
-    show_id = sql.Column(sql.Integer, sql.ForeignKey('shows.id'))
-    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
-    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
-    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
-    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    air_date: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    name: Mapped[Optional[str]] = mapped_column(String)
+    number: Mapped[Optional[int]] = mapped_column(Integer)
+    season: Mapped[Optional[int]] = mapped_column(Integer)
+    summary: Mapped[Optional[str]] = mapped_column(String)
+    run_time: Mapped[Optional[int]] = mapped_column(Integer)
+    image: Mapped[Optional[str]] = mapped_column(String)
+    show_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('shows.id'))
+    ModifiedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
+    ModifiedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
+    CreatedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    CreatedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
+
+    show: Mapped[Optional["Show"]] = relationship("Show", back_populates="episodes")

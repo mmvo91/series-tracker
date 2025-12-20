@@ -1,40 +1,56 @@
 import os
+from typing import Optional
+from pydantic_settings import BaseSettings
 
 
-class Config(object):
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ECHO = False
+class Settings(BaseSettings):
+    # Database
+    database_url: str = ""
+    sqlalchemy_echo: bool = False
 
-    JWT_TOKEN_LOCATION = ['cookies']
-    JWT_COOKIE_SECURE = False
-    JWT_SESSION_COOKIE = False
-    JWT_ACCESS_COOKIE_PATH = '/'
-    JWT_REFRESH_COOKIE_PATH = '/'
-    JWT_COOKIE_CSRF_PROTECT = True
-    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+    # JWT
+    jwt_secret_key: str
+    jwt_algorithm: str = "HS256"
+    jwt_access_token_expire_minutes: int = 30
+    jwt_refresh_token_expire_days: int = 7
 
-    OMDB_API_KEY = os.getenv('REACT_APP_OMDB_API_KEY')
-    YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
+    # API Keys
+    omdb_api_key: Optional[str] = None
+    youtube_api_key: Optional[str] = None
 
-    PAGINATE_PAGE_SIZE = 12
+    # Pagination
+    paginate_page_size: int = 12
+
+    # CORS
+    cors_origins: list = ["http://localhost:3000"]
+
+    # Environment
+    environment: str = "production"
+
+    class Config:
+        env_file = ".env"
+        case_sensitive = False
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Build database URL if not provided
+        if not self.database_url:
+            if self.environment == "development":
+                username = os.getenv('SQLALCHEMY_USERNAME', '')
+                password = os.getenv('SQLALCHEMY_PASSWORD', '')
+                db_name = 'series'
+                self.database_url = f'postgresql://{username}:{password}@localhost:5432/{db_name}'
+            else:
+                self.database_url = os.getenv('DATABASE_URL', '')
+                # Fix for Heroku postgres:// to postgresql://
+                if self.database_url.startswith('postgres://'):
+                    self.database_url = self.database_url.replace('postgres://', 'postgresql://', 1)
 
 
-class DevelopmentConfig(Config):
-    SQLALCHEMY_USERNAME = os.getenv('SQLALCHEMY_USERNAME')
-    SQLALCHEMY_PASSWORD = os.getenv('SQLALCHEMY_PASSWORD')
-    SQLALCHEMY_DB = 'series'
-    SQLALCHEMY_DATABASE_URI = f'postgresql://{SQLALCHEMY_USERNAME}:{SQLALCHEMY_PASSWORD}@localhost:5432/{SQLALCHEMY_DB}'
-
-
-class HerokuConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
-
-    JWT_COOKIE_SECURE = True
-
-
-configs = {
-    'development': DevelopmentConfig,
-    'heroku': HerokuConfig
-}
-
-config = configs[os.getenv('FLASK_ENV', 'heroku')]
+# Create settings instance
+settings = Settings(
+    jwt_secret_key=os.getenv('JWT_SECRET_KEY', 'your-secret-key-change-in-production'),
+    omdb_api_key=os.getenv('REACT_APP_OMDB_API_KEY'),
+    youtube_api_key=os.getenv('YOUTUBE_API_KEY'),
+    environment=os.getenv('ENVIRONMENT', os.getenv('FLASK_ENV', 'production'))
+)

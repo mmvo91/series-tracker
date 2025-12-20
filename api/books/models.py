@@ -1,35 +1,40 @@
-from api.extensions import sql
+from datetime import date, datetime
+from typing import Optional
+from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from api.database import Base
 
 
-class Book(sql.Model):
+class Book(Base):
     __tablename__ = "books"
 
-    id = sql.Column(sql.String, primary_key=True)
-    title = sql.Column(sql.String)
-    subtitle = sql.Column(sql.String)
-    description = sql.Column(sql.String)
-    publish_date = sql.Column(sql.Date)
-    image = sql.Column(sql.String)
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    title: Mapped[Optional[str]] = mapped_column(String)
+    subtitle: Mapped[Optional[str]] = mapped_column(String)
+    description: Mapped[Optional[str]] = mapped_column(String)
+    publish_date: Mapped[Optional[date]] = mapped_column(Date)
+    image: Mapped[Optional[str]] = mapped_column(String)
 
-    author = sql.Column(sql.String)
-    publisher = sql.Column(sql.String)
+    author: Mapped[Optional[str]] = mapped_column(String)
+    publisher: Mapped[Optional[str]] = mapped_column(String)
 
-    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
-    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
-    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
-    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
+    ModifiedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
+    ModifiedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
+    CreatedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    CreatedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
 
 
-class UserBook(sql.Model):
+class UserBook(Base):
     __tablename__ = "user_books"
 
-    user_id = sql.Column(sql.Integer, sql.ForeignKey('users.id'), primary_key=True)
-    book_id = sql.Column(sql.String, sql.ForeignKey('books.id'), primary_key=True)
-    read = sql.Column(sql.Boolean, default=False)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), primary_key=True)
+    book_id: Mapped[str] = mapped_column(String, ForeignKey('books.id'), primary_key=True)
+    read: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    ModifiedDate = sql.Column(sql.DateTime, default=sql.func.now(), onupdate=sql.func.now())
-    ModifiedBy = sql.Column(sql.String, default="sqlAlchemy")
-    CreatedDate = sql.Column(sql.DateTime, default=sql.func.now())
-    CreatedBy = sql.Column(sql.String, default="sqlAlchemy")
+    ModifiedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
+    ModifiedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
+    CreatedDate: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    CreatedBy: Mapped[str] = mapped_column(String, default="sqlAlchemy")
 
-    book = sql.relationship('Book')
+    book: Mapped["Book"] = relationship('Book')
